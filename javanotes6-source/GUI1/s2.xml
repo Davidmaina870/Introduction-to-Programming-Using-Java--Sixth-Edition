@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<section id="GUI1.2" title="Applets and HTML">
+   
+<p><start><big>A</big>lthough stand-alone applications</start> are much
+more important than applets at this point in the history of Java, applets are
+still widely used.  They can do things on Web pages that can't easily be done with
+other technologies.  It is easy to distribute applets to users: The user just has
+to open a Web page, and the applet is there, with no special installation required
+(although the user must have an appropriate version of Java installed on their
+computer).  And of course, applets are fun; now that the Web has become such a
+common part of life, it's nice to be able to see your work running on a web
+page.</p>
+
+<p>The good news is that writing applets is not much different from writing
+stand-alone applications.  The structure of an applet is essentially the same
+as the structure of the <classname>JFrames</classname> that were introduced
+in the <localref href="GUI1.1">previous section</localref>, and events are
+handled in the same way in both types of program.  So, most of what you
+learn about applications applies to applets, and <i>vice versa</i>.</p>
+   
+<p>Of course, one difference is that an applet is dependent on a Web page,
+so to use applets effectively, you have to learn at least a little about
+creating Web pages.  Web pages are written using a language called <newword>HTML</newword>
+(HyperText Markup Language).  In <localref href="GUI1.2.3"/>, below, you'll learn how to use
+HTML to create Web pages that display applets.</p>
+   
+<subsection id="GUI1.2.1" title="JApplet">
+   
+<p>The <classname>JApplet</classname> class (in package <code>javax.swing</code>) can be
+used as a basis for writing applets in the same way that <classname>JFrame</classname>
+is used for writing stand-alone applications.  The basic <classname>JApplet</classname>
+class represents a blank rectangular area.  Since an applet is not a stand-alone
+application, this area must appear on a Web page, or in some other environment that
+knows how to display an applet.
+Like a <classname>JFrame</classname>, a <classname>JApplet</classname> contains a content pane
+(and can contain a menu bar).  You can add content to an applet either by adding
+content to its content pane or by replacing the content pane with another component.
+In my examples, I will generally create a <classname>JPanel</classname> and use it
+as a replacement for the applet's content pane.</p>
+   
+<p>To create an applet, you will write a subclass of <classname>JApplet</classname>.
+The <classname>JApplet</classname> class defines several instance methods that are
+unique to applets.  These methods are called by the applet's environment at certain
+points during the applet's "life cycle."  In the <classname>JApplet</classname> class
+itself, these methods do nothing; you can override these methods in a subclass.
+The most important of these special applet methods is</p>
+
+<pre>public void init()</pre>
+   
+<np>An applet's <code>init()</code> method is called when the applet is created.
+You can use the <code>init()</code> method as a place where you can set up the
+physical structure of the applet and the event handling that will determine its
+behavior.  (You can also do some initialization in the constructor for your class,
+but there are certain aspects of the applet's environment that are set up after
+its constructor is called but before the <code>init()</code> method is called,
+so there are a few operations that will work in the <code>init()</code> method
+but will not work in the constructor.)  The other applet life-cycle methods
+are <code>start()</code>, <code>stop()</code>, and <code>destroy()</code>.
+I will not use these methods for the time being and will not discuss them here
+except to mention that <code>destroy()</code> is called at the end of the
+applet's lifetime and can be used as a place to do any necessary cleanup,
+such as closing any windows that were opened by the applet.</np>
+
+<p>With this in mind, we can look at our first example of a <classname>JApplet</classname>.
+It is, of course, an applet that says "Hello World!".  To make it a little more interesting,
+I have added a button that changes the text of the message, and a state variable,
+<code>currentMessage</code>, that holds the text of the current message.  This example is very
+similar to the stand-alone application <sourceref href="HelloWorldGUI2.java">HelloWorldGUI2</sourceref>
+from the <localref href="GUI1.1.1">previous section</localref>.  It uses an event-handling
+class to respond when the user clicks the button, a panel to display
+the message, and another panel that serves as a container for the message panel and the button.
+The second panel becomes the content pane of the applet.  Here is the source code
+for the applet; again, you are not expected to understand all the details at
+this time:</p>
+      
+<pre>import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+/**
+ * A simple applet that can display the messages "Hello World"
+ * and "Goodbye World".  The applet contains a button, and it
+ * switches from one message to the other when the button is
+ * clicked.
+ */
+public class HelloWorldApplet extends JApplet {
+   
+   private String currentMessage = "Hello World!"; // Currently displayed message.
+   private MessageDisplay displayPanel;  // The panel where the message is displayed.
+   
+   private class MessageDisplay extends JPanel {   // Defines the display panel.
+      public void paintComponent(Graphics g) {
+         super.paintComponent(g);
+         g.drawString(currentMessage, 20, 30);
+      }
+   }
+   
+   private class ButtonHandler implements ActionListener {  // The event listener.
+      public void actionPerformed(ActionEvent e) {
+         if (currentMessage.equals("Hello World!"))
+            currentMessage = "Goodbye World!";
+         else
+            currentMessage = "Hello World!";
+         displayPanel.repaint(); // Paint display panel with new message.
+      }
+   }
+   
+   /**
+    * The applet's init() method creates the button and display panel and
+    * adds them to the applet, and it sets up a listener to respond to
+    * clicks on the button.
+    */
+   public void init() {
+      
+      displayPanel = new MessageDisplay();
+      JButton changeMessageButton = new JButton("Change Message");
+      ButtonHandler listener = new ButtonHandler();
+      changeMessageButton.addActionListener(listener);
+
+      JPanel content = new JPanel();
+      content.setLayout(new BorderLayout());
+      content.add(displayPanel, BorderLayout.CENTER);
+      content.add(changeMessageButton, BorderLayout.SOUTH);
+
+      setContentPane(content);
+   }
+   
+}</pre>
+   
+<p>You should compare this class with <sourceref href="HelloWorldGUI2.java"/> from
+the previous section.  One subtle difference that you will notice is that the
+member variables and nested classes in this example are non-static.  Remember that
+an applet is an object.  A single class can be used to make several applets,
+and each of those applets will need its own copy of the applet data, so the
+member variables in which the data are stored must be non-static instance
+variables.  Since the variables are non-static, the two nested classes,
+which use those variables, must also be non-static.  (Static nested classes
+cannot access non-static member variables in the containing class;
+see <localref href="OOP.7.2"/>.)  Remember the basic rule for deciding whether to
+make a nested class static: If it needs access to any instance variable or instance
+method in the containing class, the nested class must be non-static; otherwise, it
+can be declared to be <code>static</code>.</p>
+
+<webdiv>
+<p>You can try out the applet itself.  Click the "Change Message" button to switch the
+message back and forth between "Hello World!" and "Goodbye World!":</p>
+<applet code="HelloWorldApplet.class" archive="HelloWorldApplet.jar" width="250" height="70"/>
+</webdiv>
+
+<p>(By the way, <classname>JApplet</classname> is a subclass of a more basic class,
+named <classname>Applet</classname> and found in the package <code>java.applet</code>.
+<classname>JApplet</classname> is part of the Swing GUI framework
+<classname>Applet</classname> is part of the older AWT and is no longer 
+commonly used directly for writing applets.)
+</p>
+   
+</subsection>
+   
+<subsection id="GUI1.2.2" title="Reusing Your JPanels">
+   
+<p>Both applets and frames can be programmed in the same way:  Design a <classname>JPanel</classname>,
+and use it to replace the default content pane in the applet or frame.  This makes it very
+easy to write two versions of a program, one which runs as an applet and one which runs as
+a frame.  The idea is to create a subclass of <classname>JPanel</classname> that represents
+the content pane for your program; all the hard programming work is done in this panel class.
+An object of this class can then be used as the content pane either in a frame or in an applet&mdash;or both.
+Only a very simple <code>main()</code> program is needed to show your panel in a frame,
+and only a very simple applet class is needed to show your panel in an applet, so it's easy
+to make both versions.</p>
+   
+<p>As an example, we can rewrite <classname>HelloWorldApplet</classname> by writing
+a subclass of <classname>JPanel</classname>. That class can then be reused to make a frame
+in a standalone application.  This class is very similar to
+<classname>HelloWorldApplet</classname>, but now the initialization is done in
+a constructor instead of in an <code>init()</code> method:</p>
+   
+<pre>import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class HelloWorldPanel extends JPanel {
+   
+   private String currentMessage = "Hello World!"; // Currently displayed message.
+   private MessageDisplay displayPanel;  // The panel where the message is displayed.
+   
+   private class MessageDisplay extends JPanel {   // Defines the display panel.
+      public void paintComponent(Graphics g) {
+         super.paintComponent(g);
+         g.drawString(currentMessage, 20, 30);
+      }
+   }
+   
+   private class ButtonHandler implements ActionListener {  // The event listener.
+      public void actionPerformed(ActionEvent e) {
+         if (currentMessage.equals("Hello World!"))
+            currentMessage = "Goodbye World!";
+         else
+            currentMessage = "Hello World!";
+         displayPanel.repaint(); // Paint display panel with new message.
+      }
+   }
+   
+   /**
+    * The constructor creates the components that will be contained inside this
+    * panel, and then adds those components to this panel.
+    */
+   public HelloWorldPanel() {
+
+      displayPanel = new MessageDisplay();  // Create the display subpanel.
+
+      JButton changeMessageButton = new JButton("Change Message"); // The button.
+      ButtonHandler listener = new ButtonHandler();
+      changeMessageButton.addActionListener(listener);
+
+      setLayout(new BorderLayout());  // Set the layout manager for this panel.
+      add(displayPanel, BorderLayout.CENTER);  // Add the display panel.
+      add(changeMessageButton, BorderLayout.SOUTH);  // Add the button.
+
+   }
+   
+}</pre>
+   
+<np>Once this class exists, it can be used in an applet.  The applet class only
+has to create an object of type <classname>HelloWorldPanel</classname> and use
+that object as its content pane:</np>
+   
+<pre>import javax.swing.JApplet;
+
+public class HelloWorldApplet2 extends JApplet {
+   public void init() {  
+      HelloWorldPanel content = new HelloWorldPanel();
+      setContentPane(content);
+   }
+}</pre>
+   
+<np>Similarly, it's easy to make a frame that uses an object of type <classname>HelloWorldPanel</classname>
+as its content pane:</np>
+   
+<pre>import javax.swing.JFrame;
+   
+public class HelloWorldGUI3 {
+   
+   public static void main(String[] args) {
+      JFrame window = new JFrame("GUI Test");
+      HelloWorldPanel content = new HelloWorldPanel();
+      window.setContentPane(content);
+      window.setSize(250,100);
+      window.setLocation(100,100);
+      window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+      window.setVisible(true);
+   }
+   
+}</pre>
+
+<np>One new feature of this example is the line</np>
+
+<pre>window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );</pre>
+   
+<np>This says that when the user closes the window by clicking the close box in the 
+title bar of the window, the program should be terminated.  This is necessary because
+no other way is provided to end the program.  Without this line, the default close
+operation of the window would simply hide the window when the user clicks the close
+box, leaving the program running even though nothing is visible on the screen.  
+This brings up one of the difficulties of reusing
+the same panel class both in an applet and in a frame:  There are some things that
+a stand-alone application can do that an applet can't do.  Terminating the program
+is one of those things.  If an applet calls <code>System.exit()</code>, it has
+no effect except to generate an error.</np>
+   
+<p>Nevertheless, in spite of occasional minor difficulties, many of the GUI examples
+in this book will be written as subclasses of <classname>JPanel</classname> that can
+be used either in an applet or in a frame.</p>
+
+</subsection>
+
+<subsection id="GUI1.2.3" title="Basic HTML">
+   
+<p>Before you can actually use an applet that you have written, you need to create
+a Web page on which to place the applet. Such pages are themselves written in a language
+called <newword>HTML</newword> 
+(HyperText Markup Language). An HTML document describes
+the contents of a page. A Web browser interprets the HTML code to determine
+what to display on the page. The HTML code doesn't look much like the resulting
+page that appears in the browser. The HTML document does contain all the text
+that appears on the page, but that text is "marked up" with commands that
+determine the structure and appearance of the text and determine what will
+appear on the page in addition to the text.</p>
+
+<p>HTML has become a rather complicated language, and it is only one of the
+languages that you need to be familiar with if you want to write sophisticated
+modern web pages.  Many aspects of the visual style of a page can be controlled
+using a language called CSS (cascading style sheets).  Web pages can be
+dynamic and interactive, and their behavior can be programmed using a programming
+language called JavaScript (which is only very distantly related to Java).
+Furthermore, interactive web pages often work with programs that run on the
+Web server, which can be written in Java or in several other languages.
+Programming for the web has become very complicated indeed!
+</p>
+
+<p>Nevertheless, it's fairly easy to write basic web pages using only plain
+HTML.  In this section,
+I will cover just the most basic aspects of the language.  You can easily
+find more information on the Web, if you want to learn more.
+Although there are many Web-authoring
+programs that make it possible to create Web pages without ever looking at the
+underlying HTML code, it is possible to write an HTML page using an ordinary text editor, typing
+in all the mark-up commands by hand, and it is worthwhile to learn how to create
+at least simple pages in this way.</p>
+   
+<p>There is a strict syntax for HTML documents (although in practice Web browsers will do
+their best to display a page even if it does not follow the syntax strictly).  Leaving out
+optional features, an HTML document has the form:
+</p>
+   
+<pre>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;<bnf>document-title</bnf>&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+<bnf>document-content</bnf>
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+   
+<np>The <bnf>document-title</bnf> is text that will appear in the title bar of the Web
+browser window when the page is displayed.  The <bnf>document-content</bnf> is what is
+displayed on the page itself.  The rest of this section describes some of the things
+that can go into the <bnf>document-content</bnf> section of an HTML document.</np>
+   
+<break/>
+   
+<p>The mark-up commands used by HTML are called <newword>tags</newword>.  Examples
+include <code>&lt;html&gt;</code> and <code>&lt;title&gt;</code> in the document
+outline given above.  An HTML tag takes the form</p>
+
+<pre>&lt;<bnf>tag-name</bnf>&nbsp; <bnf>optional-modifiers</bnf>&gt;</pre>
+
+<np>where the <bnf>tag-name</bnf> is a word that specifies
+the command, and the <bnf>optional-modifiers</bnf>, if
+present, are used to provide additional information for the command (much like
+parameters in subroutines).   A modifier takes the form</np>
+
+<pre><bnf>modifier-name</bnf> = <bnf>value</bnf></pre>
+
+<np>Usually, the <bnf>value</bnf> is enclosed in quotes,
+and it must be if it is more than one word long or if it contains certain
+special characters. There are a few modifiers which have no value, in which
+case only the name of the modifier is present. HTML is case insensitive, which
+means that you can use upper case and lower case letters interchangeably in tags
+and modifiers.  (However, lower case is generally used because XHTML, a successor
+language to HTML, requires lower case.)</np>
+
+<p>A simple example of a tag is <code>&lt;hr&gt;</code>, which draws a line&mdash;also
+called a "horizontal rule"&mdash;across the page. The <code>hr</code> tag can take
+several possible modifiers such as <code>width</code> and <code>align</code>. For
+example, a horizontal line that extends halfway across the page could be generated
+with the tag:</p>
+
+<pre>&lt;hr&nbsp; width="50%"&gt;</pre>
+
+<np>The <code>width</code> here is specified as <code>50%</code> of the available space,
+meaning a line that extends halfway across the page.
+The width could also be given as a fixed number of pixels.</np>
+
+<p>Many tags require matching closing tags, which take the form</p>
+
+<pre>&lt;<b>/</b><bnf>tag-name</bnf>&gt;</pre>
+
+<p>For example, the <code>&lt;html&gt;</code> tag at the beginning of an HTML document
+must be matched by a closing <code>&lt;/html&gt;</code> tag at the end of the document.
+As another example, the tag <code>&lt;pre&gt;</code> must always have a matching
+closing tag <code>&lt;/pre&gt;</code> later in the document. An opening/closing tag pair applies to
+everything that comes between the opening tag and the closing tag. The
+<code>&lt;pre&gt;</code> tag tells a Web browser to display everything between the
+<code>&lt;pre&gt;</code> and the <code>&lt;/pre&gt;</code> just as it is formatted in
+the original HTML source code, including all the spaces and carriage returns.
+(But tags between <code>&lt;pre&gt;</code> and <code>&lt;/pre&gt;</code> are still
+interpreted by the browser.) "Pre" stands for preformatted text.  All of the
+sample programs in <tex>the on-line version of</tex> this book are formatted using the
+<code>&lt;pre&gt;</code> command.</p>
+
+<p>It is important for you to understand that when you don't use <code>&lt;pre&gt;</code>,
+the computer will completely ignore the formatting of the text in the HTML
+source code. The only thing it pays attention to is the tags. Five blank lines
+in the source code have no more effect than one blank line or even a single
+blank space. Outside of <code>&lt;pre&gt;</code>, if you want to force a new line
+on the Web page, you can use the tag <code>&lt;br&gt;</code>, which stands for
+"break". For example, I might give my address as:</p>
+
+<pre>David Eck&lt;br&gt;
+Department of Mathematics and Computer Science&lt;br&gt;
+Hobart and William Smith Colleges&lt;br&gt;
+Geneva, NY 14456&lt;br&gt;</pre>
+
+<p>If you want extra vertical space in your web page, you can use several
+<code>&lt;br&gt;</code>'s in a row.</p>
+
+<p>Similarly, you need a tag to indicate how the text should be broken up into
+paragraphs. This is done with the <code>&lt;p&gt;</code> tag, which should be
+placed at the beginning of every paragraph. The <code>&lt;p&gt;</code> tag has a
+matching <code>&lt;/p&gt;</code>, which should be placed at the end of each
+paragraph. The closing <code>&lt;/p&gt;</code> is technically optional, but it is
+considered good form to use it. If you want all the lines of the paragraph to
+be shoved over to the right, you can use <code>&lt;p&nbsp;align=right&gt;</code> instead
+of <code>&lt;p&gt;</code>. (This is mostly useful when used with one short line, or
+when used with <code>&lt;br&gt;</code> to make several short lines.) You can also
+use <code>&lt;p&nbsp;align=center&gt;</code> for centered lines.</p>
+
+<p>By the way, if tags like <code>&lt;p&gt;</code> and <code>&lt;hr&gt;</code> have
+special meanings in HTML, you might wonder how to get them to appear <web>here on
+this page</web><tex>literally on a web page</tex>.
+To get certain special characters to appear on the page, you have to
+use an <newword>entity name</newword> in the HTML source code. The
+entity name for <code>&lt;</code> is <code>&amp;lt;</code>, and the entity name for
+<code>&gt;</code> is <code>&amp;gt;</code>. Entity names begin with <code>&amp;</code> and
+end with a semicolon. The character <code>&amp;</code> is itself a special
+character whose entity name is <code>&amp;amp;</code>. There are also entity names
+for nonstandard characters such as an accented "e", which has the entity name
+<code>&amp;eacute;</code> and the Greek letter &pi;, which is written as <code>&amp;pi;</code>.</p>
+
+   
+<p>There are several useful tags that change the appearance of text.  To
+get italic text, enclose the text between <code>&lt;i&gt;</code> and <code>&lt;/i&gt;</code>.
+For example,</p>
+   
+<pre>&lt;i&gt;Introduction to Programming using Java&lt;/i&gt;</pre>
+   
+<np>in an HTML document gives <i>Introduction to Programming using Java</i> in italics when
+the document is displayed as a Web page.  The tags <code>&lt;b&gt;</code>,
+<code>&lt;u&gt;</code>, and <code>&lt;tt&gt;</code> can be used in a similar way for
+<b>bold</b>, <u>underlined</u>, and <code>typewriter-style</code> ("monospace") text.</np>
+   
+<p>A headline, with very large text, can be made by placing the text between <code>&lt;h1&gt;</code>
+and <code>&lt;/h1&gt;</code>.  Headlines with smaller text can be made using
+<code>&lt;h2&gt;</code> or <code>&lt;h3&gt;</code> instead of <code>&lt;h1&gt;</code>.  Note
+that these headline tags stand on their own; they are not used inside paragraphs.
+You can add the modifier <code>align=center</code> to center the headline, and you
+can right-justify it with <code>align=right</code>. You can
+include break tags (<code>&lt;br&gt;</code>) in a headline to break it up into multiple
+lines.  For example, the following HTML code will produce a medium--sized, centered, two-line
+headline:</p>
+
+<pre>&lt;h2 align=center&gt;Chapter 6:&lt;br&gt;Introduction to GUI Programming&lt;/h2&gt;</pre>
+   
+<break/>
+   
+<p>The most distinctive feature of HTML is that documents can contain
+<newword>links</newword> to other documents. The user can follow
+links from page to page and in the process visit pages from all over the
+Internet.</p>
+
+<p>The <code>&lt;a&gt;</code> tag is used to create a link. The text between the
+<code>&lt;a&gt;</code> and its matching <code>&lt;/a&gt;</code> appears on the page
+as the text of the link; the user can follow the link
+by clicking on this text. The <code>&lt;a&gt;</code> tag uses the modifier
+<code>href</code> to say which document the link should connect to. The value for
+<code>href</code> must be a <newword>URL</newword> (Uniform Resource
+Locator). A URL is a coded set of instructions for finding a document on the
+Internet. For example, the URL for my own "home page" is</p>
+
+<pre>http://math.hws.edu/eck/</pre>
+
+<np>To make a link to this page, <web>such as <a href= "http://math.hws.edu/eck/">David's Home Page</a>,</web> 
+I would use the HTML source code</np>
+
+<pre>&lt;a href="http://math.hws.edu/eck/"&gt;David's Home Page&lt;/a&gt;</pre>
+
+<np>The best place to find URLs is on existing Web pages. Web browsers display
+the URL for the page you are currently viewing, and many browsers will display the URL of
+a link if you point to the link with the mouse.</np>
+
+<p>If you are writing an HTML document and you want to make a link to another
+document that is in the same directory, you can use a <newword>relative URL</newword>. 
+The relative URL consists of just the name of the file. For example,
+to create a link to a file named "s1.html" in the same directory as the HTML document
+that you are writing, you could use</p>
+
+<pre>&lt;a href="s1.html"&gt;Section 1&lt;/a&gt;</pre>
+
+<np>There are also relative URLs for linking to files that are in other
+directories. Using relative URLs is a good idea, since if you use them, you can
+move a whole collection of files without changing any of the links between them
+(as long as you don't change the relative locations of the files).</np>
+
+<p>When you type a URL into a Web browser, you can omit the "http://" at the
+beginning of the URL. However, in an <code>&lt;a&gt;</code> tag in an HTML
+document, the "http://" can only be omitted if the URL is a relative URL. For a
+normal URL, it is required.</p>
+
+<break/>
+   
+<p>You can add images to a Web page with the <code>&lt;img&gt;</code> tag. (This is
+a tag that has no matching closing tag.) The actual image must be stored in a
+separate file from the HTML document. The <code>&lt;img&gt;</code> tag has a
+required modifier, named <code>src</code>, to specify the URL of the image file.
+For most browsers, the image should be in one of the formats PNG (with a file
+name ending in ".png"), JPEG (with a file name ending in ".jpeg" or ".jpg"),
+or GIF (with a file name ending in ".gif").  Usually, the
+image is stored in the same place as the HTML document, and a relative URL&mdash;that is,
+just the name of the file&mdash;is used to specify the image file.</p>
+
+<p>The <code>&lt;img&gt;</code> tag also has several optional modifiers. It's a
+good idea to always include the <code>height</code> and <code>width</code> modifiers,
+which specify the size of the image in pixels. Some browsers handle images better
+if they know in advance how big they are.
+The <code>align</code> modifier can be used to affect the placement of the
+image: "align=right" will shove the image to the right edge of the page, and
+the text on the page will flow around the image; "align=left" works similarly.
+(Unfortunately, "align=center" doesn't have the meaning you would expect.
+Browsers treat images as if they are just big characters. Images can occur
+inside paragraphs, links, and headings, for example. Alignment values of
+<code>center</code>, <code>top</code>, and <code>bottom</code> are used to specify how the
+image should line up with other characters in a line of text: Should the
+baseline of the text be at the center, the top, or the bottom of the image?
+Alignment values of <code>right</code> and <code>left</code> were added to HTML later,
+but they are the most useful values.  If you want an image centered on the page,
+put it inside a <code>&lt;p&nbsp;align=center&gt;</code> tag.)</p>
+
+<p>For example, here is HTML code that will place an image from a file named
+figure1.png on the page.</p>
+
+<pre>&lt;img src="figure1.png" align=right height=150 width=100&gt;</pre>
+
+<np>The image is 100 pixels wide and 150 pixels high, and it will appear on the
+right edge of the page.</np>
+
+      
+</subsection>
+
+<subsection id="GUI1.2.4" title="Applets on Web Pages">
+   
+<p>The main point of this whole discussion of HTML is to learn how to use applets
+on the Web.  The <code>&lt;applet&gt;</code> tag can be used to add a Java applet to a Web page.
+This tag must have a matching <code>&lt;/applet&gt;</code>. A required modifier
+named <code>code</code> gives the name of the compiled class file that contains the
+applet class. The modifiers <code>height</code> and <code>width</code> are required to specify
+the size of the applet, in pixels. If you want the applet to be centered on the page, you
+can put the applet in a paragraph with <code>center</code> alignment. So, an applet
+tag to display an applet named <code>HelloWorldApplet</code> centered on a Web page
+would look like this:</p>
+
+<pre>&lt;p align=center&gt; 
+&lt;applet code="HelloWorldApplet.class" height=100 width=250&gt;
+&lt;/applet&gt;
+&lt;/p&gt;</pre>
+
+<p>This assumes that the file <code>HelloWorldApplet.class</code> is located in the same
+directory with the HTML document.  If this is not the case, you can use another
+modifier, <code>codebase</code>, to give the URL of the directory that contains the
+class file. The value of <code>code</code> itself is always just a class, not a
+URL.</p>
+
+<p>If the applet uses other classes in addition to the applet class itself, then
+those class files must be in the same directory as the applet class (always assuming
+that your classes are all in the "default package"; see <localref href="basics.6.4"/>;
+if not, they must be in subdirectories).
+If an applet requires more than one or two class files, it's a good idea to collect all the
+class files into a single jar file.  Jar files are
+"archive files" which hold a number of smaller files.
+If your class files are in a jar archive, then you have to specify the
+name of the jar file in an <code>archive</code> modifier in the
+<code>&lt;applet&gt;</code> tag, as in</p>
+
+<pre>&lt;applet code="HelloWorldApplet.class" archive="HelloWorld.jar" height=50&dots;</pre>
+   
+<np>I will have more to say about creating and using jar files at the end of this chapter.</np> 
+
+<p>Applets can use <newword>applet parameters</newword> to customize
+their behavior. Applet parameters are specified by using <code>&lt;param&gt;</code>
+tags, which can only occur between an <code>&lt;applet&gt;</code> tag and the
+closing <code>&lt;/applet&gt;</code>. The <code>param</code> tag has required modifiers
+named <code>name</code> and <code>value</code>, and it takes the form</p>
+
+<pre>&lt;param  name="<bnf>param-name</bnf>"  value="<bnf>param-value</bnf>"&gt;</pre>
+
+<np>The parameters are available to the applet when it runs. An applet uses
+the predefined method <code>getParameter()</code> to check for parameters specified
+in <code>param</code> tags. The <code>getParameter()</code> method has the following
+interface:</np>
+
+<pre>String getParameter(String paramName)</pre>
+
+<np>The parameter <code>paramName</code> corresponds to the <bnf>param-name</bnf> 
+in a <code>param</code> tag. If the specified
+<code>paramName</code> actually occurs in one of the <code>param</code> tags, then
+<code>getParameter(paramName)</code> returns the associated <bnf>param-value</bnf>. 
+If the specified <code>paramName</code> does not
+occur in any <code>param</code> tag, then <code>getParameter(paramName)</code> returns the value
+<code>null</code>. Parameter names are case-sensitive, so you cannot use "size" in
+the <code>param</code> tag and ask for "Size" in <code>getParameter</code>.
+The <code>getParameter()</code> method is often called in the applet's <code>init()</code>
+method.  It will not work correctly in the applet's constructor, since it depends on information
+about the applet's environment that is not available when the constructor is called.</np>
+
+
+<p>Here is an example of an <code>applet</code> tag with several <code>params</code>:</p>
+
+<pre>
+      &lt;applet code="ShowMessage.class" width=200 height=50&gt;
+         &lt;param name="message" value="Goodbye World!"&gt;
+         &lt;param name="font" value="Serif"&gt;
+         &lt;param name="size" value="36"&gt;
+      &lt;/applet&gt;
+</pre>
+
+<p>The <code>ShowMessage</code> applet would presumably read these parameters in
+its <code>init()</code> method, which could go something like this:</p>
+
+<pre>String message;  // Instance variable: message to be displayed.
+String fontName; // Instance variable: font to use for display.
+int fontSize;    // Instance variable: size of the display font.
+ 
+public void init() {
+    String value;
+    value = getParameter("message"); // Get message param, if any.
+    if (value == null)
+       message = "Hello World!";  // Default value, if no param is present.
+    else
+       message = value;  // Value from PARAM tag.
+    value = getParameter("font");
+    if (value == null)
+       fontName = "SansSerif";  // Default value, if no param is present.
+    else
+       fontName = value;
+    value = getParameter("size");
+    try {
+       fontSize = Integer.parseInt(value);  // Convert string to number.
+    }
+    catch (NumberFormatException e) {
+       fontSize = 20; // Default value, if no param is present, or if
+    }                 //   the parameter value is not a legal integer.
+     .
+     .
+     .</pre>
+
+<np>Elsewhere in the applet, the instance variables <code>message</code>, <code>fontName</code>,
+and <code>fontSize</code> would be used to determine the message displayed by the applet and
+the appearance of that message.  Note that the value returned by <code>getParameter()</code>
+is always a <classname>String</classname>.  If the <code>param</code> represents a numerical
+value, the string must be converted into a number, as is done here for
+the <code>size</code> parameter.</np>
+
+
+</subsection>
+
+
+</section>

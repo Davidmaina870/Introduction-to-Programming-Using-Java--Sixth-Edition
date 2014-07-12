@@ -1,0 +1,1046 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<exercises>
+
+
+<exercise id="control.ex.1">
+<exercise-question><p>How many times do you have
+to roll a pair of dice before they come up snake eyes? You could do the
+experiment by rolling the dice by hand. Write a computer program that simulates
+the experiment. The program should report the number of rolls that it makes
+before the dice come up snake eyes. (Note: "Snake eyes" means that both dice
+show a value of 1.) <localref href="basics.ex.2"/> explained how to simulate rolling a pair of dice.</p>
+</exercise-question>   
+<exercise-discuss><p>Since we want to roll the dice at least once, a <code>do..while</code> is
+appropriate. A pseudocode algorithm for the program is</p>
+
+<pre>Let countRolls = 0
+do:
+    roll the dice
+    count this roll by adding 1 to countRolls
+while the roll is not snake eyes
+Output the value of countRolls</pre>
+
+<np>As in <localref href="basics.ex.2"/>, we can simulate
+rolling one die by computing <code>(int)(Math.random()*6)&nbsp;+&nbsp;1</code>.</np>
+
+<p>We want to <b>stop</b> rolling the dice when the roll is a double
+1. We want to <b>continue</b> rolling the dice while the roll is
+<b>not</b> a double 1. If <code>die1</code> and <code>die2</code> are
+variables representing the values of the dice, the condition for continuing to
+roll can be expressed as</p>
+
+<pre>while ( ! (die1 == 1 &amp;&amp; die2 == 1) )</pre>
+
+<np>The exclamation point means "not", so the condition says that it is not the
+case that both <code>die1</code> is 1 and <code>die2</code> is 1. That is, it is not
+the case that the dice came up snake eyes. Another way to express the same
+condition is that at least one of the dice is not 1, that is, that either
+<code>die1</code> is not 1 <b>or</b> <code>die2</code> is not 1. In Java
+code, this is written:</np>
+
+<pre>while ( die1 != 1  ||  die2 != 1 )</pre>
+
+<np>This is the test that I use in my program. Students often get the
+<code>&amp;&amp;</code> and <code>||</code> operators mixed up, especially when
+negation is involved. (In this case, we could have avoided the problem by
+testing <code>while (die1+die2 != 2)</code>.)</np>
+
+<p>Filling in some details gives an algorithm that can be easily converted into
+a program:</p>
+
+<pre>Let countRolls = 0
+do:
+    die1 = (int)(Math.random()*6) + 1
+    die2 = (int)(Math.random()*6) + 1
+    count this roll by adding 1 to countRolls
+while die1 is not 1 or die2 is not 1
+Output the value of countRolls</pre>
+</exercise-discuss>
+<exercise-code>
+<pre>public class SnakeEyes {
+  
+   /*  This program simulates rolling a pair of dice until they
+       come up snake eyes.  It reports how many rolls were needed.
+   */
+
+   public static void main(String[] args) {
+   
+       int die1, die2;   // The values rolled on the two dice.
+       
+       int countRolls;   // Used to count the number of rolls.
+       
+       countRolls = 0;
+       
+       do {
+          die1 = (int)(Math.random()*6) + 1;   // roll the dice
+          die2 = (int)(Math.random()*6) + 1;
+          countRolls++;                        // and count this roll
+       } while ( die1 != 1 || die2 != 1 );
+       
+       System.out.println("It took " + countRolls + " rolls to get snake eyes.");
+   
+   }  // end main()
+
+}  // end class</pre>
+</exercise-code>
+</exercise>
+
+
+<exercise id="control.ex.2">
+<exercise-question><p>Which integer between 1
+and 10000 has the largest number of divisors, and how many divisors does it
+have? Write a program to find the answers and print out the results. It is
+possible that several integers in this range have the same, maximum number of
+divisors. Your program only has to print out one of them.  An example in
+<localref href="control.4.2"/> discussed divisors. The source code for
+that example is <sourceref href="CountDivisors.java"/>.</p>
+
+<p>You might need some hints about how to find a maximum value. The basic idea
+is to go through all the integers, keeping track of the largest number of
+divisors that you've seen <i>so far</i>. Also, keep track of the integer that
+had that number of divisors.</p>
+</exercise-question>   
+<exercise-discuss>
+<p>Let's use a variable named <code>maxDivisors</code> to keep track of the largest
+number of divisors we have seen so far and use <code>numWithMax</code> to store the
+number that had that many divisors. We have to compute the number of divisors
+of each integer from 1 to 10000. Whenever we find a larger number of divisors
+than <code>maxDivisors</code>, we have to make note of that fact by changing the
+values of <code>maxDivisors</code> and <code>numWithMax</code>. At the end of the
+process, <code>maxDivisors</code> will be the absolute maximum number of divisors
+and <code>numWithMax</code> will be a number that had that many divisors. These are
+the values we want to print out. We can express this with a pseudocode
+algorithm</p>
+
+<pre>for each integer N from 1 to 10000:
+   Count the number of divisors of N
+   If that number is greater than maxDivisors:
+       Let maxDivisors = the number of divisors of N
+       Let numWithMax = N
+Output maxDivisors and numWithMax</pre>
+
+<p>However, there is a problem here: The very first time <code>maxDivisors</code>
+is used in the test "If that number is greater than maxDivisors," the variable
+<code>maxDivisors</code> hasn't yet been assigned a value. The computer will report
+this as an error. This can be fixed by assigning a value to
+<code>maxDivisors</code> before the beginning of the <code>for</code> loop. One way to
+do this is to handle <code>N=1</code> as a special case before the loop and then to
+let <code>N</code> go from 2 to 10000 in the for loop. We know that <code>N=1</code>
+has just 1 divisor:</p>
+
+<pre>Let maxDivisors = 1  // number of divisors of 1
+Let numWithMax = 1
+for each integer N from 2 to 10000:
+   Count the number of divisors of N
+   If that number is greater than maxDivisors:
+       Let maxDivisors = the number of divisors of N
+       Let numWithMax = N
+Output maxDivisors and numWithMax</pre>
+
+<p>Here's a curious thing: If you leave out the line "<code>numWithMax = 1</code>"
+from the program, the computer will report a syntax error where you try to
+output the value of <code>numWithMax</code>. It will say that the variable
+<code>numWithMax</code> might not have been initialized. That is, it might never
+have been assigned a value. Now, <b>you</b> know that it will be
+assigned a value (since when <code>N=2</code> is processed, <code>numWithMax</code>
+will become 2). However, when the computer compiles the program,
+<b>it</b> doesn't know whether the body of the <code>if</code> statement
+will ever be executed, so it doesn't know whether <code>numWithMax</code> will ever
+be assigned a value. The syntax rule is that every variable must be "definitely
+assigned" before its value is used. This means that it is assigned a value on
+every possible execution path through the program.</p>
+
+<p>We still have to expand the step "Count the number of divisors of N." This
+was already done in <localref href="control.4.2"/> for the example program
+<code>CountDivisors.java</code>. This step requires another <code>for</code> loop, so
+we have here an example of one <code>for</code> loop nested inside another. Here is
+a complete algorithm, which can be translated into a program:</p>
+
+<pre>Let maxDivisors = 1  // number of divisors of 1
+Let numWithMax = 1
+for each integer N from 2 to 10000:
+    Let divisorCount = 0
+    for each D from 1 to N:
+        if D is a divisor of N:
+            add 1 to divisorCount
+    If divisorCount is greater than maxDivisors:
+        Let maxDivisors = the number of divisors of N
+        Let numWithMax = N
+Output maxDivisors and numWithMax</pre>
+
+<p>This can be translated pretty much directly into a program. By the way, the
+maximum number of divisors is 64. There are two numbers between 1 and 10000
+that have 64 divisors, 7560 and 9240. The program will output the first of
+these. (It would output the second if the test "<code>if (divisorCount &gt;
+maxDivisors)</code>" were changed to "<code>if (divisorCount &gt;=
+maxDivisors)</code>". Do you see why?)</p>
+</exercise-discuss>
+<exercise-code>
+<pre>public class MostDivisors {
+
+   /* This program finds an integer between 1 and 10000 that has
+      the largest number of divisors.  It prints out the maximum
+      number of divisors and an integer that has that many divisors.
+   */
+
+   public static void main(String[] args) {
+   
+       int N;            // One of the integers whose divisors we have to count.
+       int maxDivisors;  // Maximum number of divisors seen so far.
+       int numWithMax;   // A value of N that had the given number of divisors.
+       
+       maxDivisors = 1;  // Start with the fact that 1 has 1 divisor.
+       numWithMax = 1;
+
+       /* Process all the remaining values of N from 2 to 10000, and
+          update the values of maxDivisors and numWithMax whenever we
+          find a value of N that has more divisors than the current value
+          of maxDivisors.
+       */
+       
+       for ( N = 2;  N &lt;= 10000;  N++ ) {
+       
+           int D;  // A number to be tested to see if it's a divisor of N.
+           int divisorCount;  // Number of divisors of N.
+           
+           divisorCount = 0;
+           
+           for ( D = 1;  D &lt;= N;  D++ ) {  // Count the divisors of N.
+              if ( N % D == 0 )
+                 divisorCount++;
+           }
+           
+           if (divisorCount &gt; maxDivisors) {
+              maxDivisors = divisorCount;
+              numWithMax = N;
+           }
+       
+       }
+       
+       System.out.println("Among integers between 1 and 10000,");
+       System.out.println("The maximum number of divisors is " + maxDivisors);
+       System.out.println("A number with " + maxDivisors + " divisors is " + numWithMax);
+   
+   } // end main()
+
+}</pre>
+</exercise-code>
+</exercise>
+
+
+
+<exercise>
+<exercise-question><p>Write a program that will
+evaluate simple expressions such as 17 + 3 and 3.14159 * 4.7. The expressions
+are to be typed in by the user. The input always consist of a number, followed
+by an operator, followed by another number. The operators that are allowed are
++, -, *, and /. You can read the numbers with <code>TextIO.getDouble()</code> and
+the operator with <code>TextIO.getChar()</code>. Your program should read an
+expression, print its value, read another expression, print its value, and so
+on. The program should end when the user enters 0 as the first number on the
+line.</p>
+</exercise-question>   
+<exercise-discuss>
+<p>We need a loop to read and evaluate expressions. It's easiest to use a
+<code>break</code> statement to end the loop at the appropriate time:</p>
+
+<pre>Repeat indefinitely:
+    Get the user's input.
+    if the first number is 0:
+        Break out of the loop
+    Find the value of the expression
+    Display the value.</pre>
+
+<p>Getting the user's input involves reading three data values. We need three
+variables to store these values. It's best to test whether the first number is
+0 right after we read it, so the user will just have to type a 0 to end the
+program, not a complete expression such as 0 + 0. "Repeat indefinitely" can be
+written as "<code>while (true)</code>":</p>
+
+<pre>while (true):
+    Let firstNum = TextIO.getDouble()
+    if firstNum is 0:
+        Break out of the loop
+    Let operator = TextIO.getChar()
+    Let secondNum = TextIO.getlnDouble()
+    Find the value of the expression
+    Display the value.</pre>
+
+<p>To evaluate the user's expression, we have to test the <code>operator</code> to
+find out which operation to compute. We can do this with either a multi-way
+<code>if</code> statement or with a <code>switch</code> statement. In the program
+below, I use a <code>switch</code>. The <code>if</code> statement would be:</p>
+
+<pre>if ( operator == '+' )
+   value = firstNum + secondNum;
+else if ( operator == '-' )
+   value = firstNum - secondNum;
+else if ( operator == '*' )
+   value = firstNum * secondNum;
+else if ( operator == '/' )
+   value = firstNum / secondNum;
+else {
+   TextIO.putln("Unknown operator: " + operator);
+   continue;  // back to start of loop
+}</pre>
+
+<np>The computer won't let you get away without the <code>else</code> part of the
+<code>if</code> statement or the <code>default</code> case in the <code>switch</code>,
+since that would leave a possibility that the variable, <code>value</code>, is not
+assigned a value before it is printed out.  Note that <ptype>char</ptype> values are
+tested for equality using the <code>==</code> operator.  Chars are not Strings!
+Strings would have to be compared using the <code>equals()</code> method from
+the <classname>String</classname> class; <ptype>chars</ptype> however are primitive
+type values, and they don't even include any methods.</np>
+
+<p>This program could be improved by having it print out an error message if
+the user tries to divide by zero.</p>
+
+<p>(This program could use a <classname>Scanner</classname> instead of <classname>TextIO</classname>
+for input, replacing <code>TextIO.getDouble()</code> with <code>stdin.nextDouble()</code>
+and <code>TextIO.getChar()</code> with <code>stdin.next()</code>, where <code>stdin</code>
+is the <classname>Scanner</classname>.  (See <localref href="basics.4.6"/>)  One difference between the
+behavior of the two versions of the program would be that the <code>TextIO</code> version
+would accept expressions that have no spaces, such as <code>17+42</code>, whereas the
+<code>Scanner</code> version would give an error for such an expression.  Another is that
+<code>scanner.next()</code> returns a <classname>String</classname> rather than
+a <ptype>char</ptype>, and the character that you want would be the first, and only,
+character in that string.)</p>
+
+</exercise-discuss>
+<exercise-code>
+<pre>public class SimpleCalculator {
+  
+   /*  This program evaluates simple expressions such as 2 + 2
+       and 34.2 * 7.81, consisting of a number, an operator,
+       and another number.  The operators +, -, *, / are allowed.
+       The program will read and evaluate expressions until
+       the user inputs a line that starts with the number 0.
+   */
+
+   public static void main(String[] args) {
+   
+      double firstNum;    // First number in the expression.
+      double secondNum;   // Second number in the expression.
+      char operator;      // The operator in the expression.
+      double value;       // The value of the expression.
+      
+      TextIO.putln("Enter expressions such as  2 + 2  or  34.2 * 7.81");
+      TextIO.putln("using any of the operators +, -, *, /.");
+      TextIO.putln("To end, enter a 0.");
+      TextIO.putln();
+      
+      while (true) {
+          
+          /* Get user's input, ending program if first number is 0. */
+      
+          TextIO.put("? ");
+          firstNum = TextIO.getDouble();
+          if (firstNum == 0)
+             break;
+          operator = TextIO.getChar();
+          secondNum = TextIO.getlnDouble();
+          
+          /* Compute the value of the expression. */
+          
+          switch (operator) {
+              case '+':
+                 value = firstNum + secondNum;
+                 break;
+              case '-':
+                 value = firstNum - secondNum;
+                 break;
+              case '*':
+                 value = firstNum * secondNum;
+                 break;
+              case '/':
+                 value = firstNum / secondNum;
+                 break;
+              default:
+                 TextIO.putln("Unknown operator: " + operator);
+                 continue;  // Back to start of loop!
+          } // end switch
+          
+          /* Display the value. */
+          
+          TextIO.putln("Value is " + value);
+          TextIO.putln();
+                    
+      } // end while
+      
+      TextIO.putln("Good bye");
+   
+   }  // end main()
+
+}  // end class SimpleCalculator</pre>
+</exercise-code>
+</exercise>
+
+
+
+<exercise id="control.ex.4">
+<exercise-question><p>Write a program that reads
+one line of input text and breaks it up into words. The words should be output
+one per line. A word is defined to be a sequence of letters. Any characters in
+the input that are not letters should be discarded. For example, if the user
+inputs the line</p>
+
+<pre>He said, "That's not a good idea."</pre>
+
+<np>then the output of the program should be</np>
+
+<pre>He
+said
+That
+s
+not
+a
+good
+idea</pre>
+
+<np>An improved version of the program would list "that's" as a single word. An
+apostrophe can be considered to be part of a word if there is a letter on each
+side of the apostrophe.</np>
+
+<p>To test whether a character is a letter, you might use <code>(ch &gt;= 'a'
+&amp;&amp; ch &lt;= 'z') || (ch &gt;= 'A' &amp;&amp; ch &lt;= 'Z')</code>.
+However, this only works in English and similar languages. A better choice is
+to call the standard function <code>Character.isLetter(ch)</code>, which returns a
+boolean value of <code>true</code> if <code>ch</code> is a letter and <code>false</code> if
+it is not. This works for any Unicode character.</p>
+</exercise-question>   
+<exercise-discuss><p>There are many ways to approach this problem, and probably all of them are
+sort of tricky to get right. Here's a simple idea that almost works: Go through
+all the characters in the string. If the character is a letter, write it out.
+If it's not a letter, write a carriage return instead. If <code>line</code> is a
+<classname>String</classname> variable representing the line of text, this algorithm can be
+coded as</p>
+
+<pre>for ( i = 0;  i &lt; line.length(); i++ ) {
+   ch = line.charAt(i);
+   if ( Character.isLetter(ch) )
+      TextIO.put(ch);
+   else
+      TextIO.putln();   
+}</pre>
+
+<np>This prints all the letters in a word on the same line of output. Since
+words in the string are separated by non-letter characters, and the computer
+prints a carriage return when it finds a non-letter, words in the output are
+separated by carriage returns. But there are is a problem with this: If two
+words in the string are separated by <b>several</b> non-letters, then
+there will be one or more blank lines between the words in the output. We don't
+want to output two carriage returns in a row. To avoid this, we can keep track
+of whether the previous output was a letter or a carriage return. When we find
+a non-letter, we will only output a carriage return if the previous output was
+<b>not</b> a carriage return. To keep track of the necessary
+information, I'll use a <ptype>boolean</ptype> variable named <code>didCR</code>. The
+value of this variable will be true if the previous output was a carriage
+return. I have to remember to set the value of <code>didCR</code> each time I
+output something. With this modification, the code becomes:</np>
+
+<pre>for ( i = 0;  i &lt; line.length(); i++ ) {
+   ch = line.charAt(i);
+   if ( Character.isLetter(ch) ) {
+      TextIO.put(ch);
+      didCR = false;  // previous output was not a CR
+   }
+   else {
+      if ( didCR == false ) {  // output CR, if previous output was NOT a CR
+         TextIO.putln();
+         didCR = true;  // previous output was a CR
+      }
+   }
+}</pre>
+
+<p>The program requires an initial value for <code>didCR</code>. In the program
+below, I output a carriage return before the <code>for</code> loop and set
+<code>didCR</code> to true. You should be able to follow the rest of the
+program.</p>
+
+<p>An entirely different approach to this problem is given by the algorithm,
+"while there are more words in the string, get the next word and print it."
+This turns out to be even harder to implement than the above.</p>
+</exercise-discuss>
+<exercise-code>
+<pre>public class ListWordsInString {
+  
+   /*  This program will read one line of input typed by the user.
+       It will print the words from the input, one word to a line.
+       A word is defined to be a sequence of letters.  All non-letters
+       in the input are discarded.
+   */
+
+   public static void main(String[] args) {
+   
+       String line;    // A line of text, typed in by the user.
+       int i;          // Position in line, from 0 to line.length() - 1.
+       char ch;        // One of the characters in line.
+       boolean didCR;  // Set to true if the previous output was a carriage return.
+       
+       TextIO.putln("Enter a line of text.");
+       TextIO.put("? ");
+       line = TextIO.getln();
+       
+       TextIO.putln();
+       didCR = true;
+       
+       for ( i = 0;  i &lt; line.length();  i++ ) {
+          ch = line.charAt(i);
+          if ( Character.isLetter(ch) ) {
+             TextIO.put(ch);
+             didCR = false;
+          }
+          else {
+             if ( didCR == false ) {
+                TextIO.putln();
+                didCR = true;
+             }
+          }
+       }
+       
+       TextIO.putln();  // Make sure there's at least one carriage return at the end.
+         
+   }  // end main()
+
+}  // end class ListWordsInString</pre>
+</exercise-code>
+</exercise>
+
+
+<exercise>
+<exercise-question><p>Suppose that a file contains information about sales figures for a company in various cities.
+Each line of the file contains a city name, followed by a colon&nbsp;(:) followed by the data for that
+city.  The data is a number of type <ptype>double.</ptype>
+However, for some cities, no data was available.  In these lines, the data is replaced by
+a comment explaining why the data is missing.  For example, several lines from the file might
+look like:</p>
+<pre>San Francisco:  19887.32
+Chicago:  no report received
+New York: 298734.12</pre>
+<np>Write a program that will compute and print the total sales from all the cities together. The
+program should also report the number of cities for which data was not available.  The name of the
+file is "sales.dat".</np>
+<p>To complete this program, you'll need one fact about file input with <classname>TextIO</classname>
+that was not covered in <localref href="basics.4.5"/>.  Since you don't know in advance how many
+lines there are in the file, you need a way to tell when you have gotten to the end of the file.
+When <classname>TextIO</classname> is reading from a file, the function <code>TextIO.eof()</code>
+can be used to test for <newword>end of file</newword>.  This <ptype>boolean</ptype>-valued
+function returns <code>true</code> if the file has been entirely read and returns <code>false</code>
+if there is more data to read in the file.  This means that you can read the lines of the
+file in a loop <code>while&nbsp;(TextIO.eof()&nbsp;==&nbsp;false)&dots;</code>. The loop will end
+when all the lines of the file have been read.</p>
+<p>Suggestion:  For each line, read and ignore characters up to the colon.  Then read the rest
+of the line into a variable of type <classname>String</classname>.  Try to convert the string
+into a number, and use <code>try..catch</code> to test whether the conversion succeeds.</p>
+</exercise-question>   
+<exercise-discuss>
+<p>The statement <code>TextIO.readFile("sales.dat")</code> can be used at the beginning of
+the program to make <classname>TextIO</classname> read from the file instead of from the user's input.
+This statement throws an <classname>IllegalArgumentException</classname> if the file can't be
+found.  Although it's not required by the statement of the problem, it would be nice to detect
+the exception and print an error message about the missing file.  This can be done as follows,
+using <code>System.exit</code> to end the program if the error occurs:</p>
+   
+<pre>try {
+   TextIO.readFile("sales.dat");
+}
+catch (IllegalArgumentException e) {
+   System.out.println("Can't open file \"sales.dat\" for reading!");
+   System.out.println("Please make sure the file is present before");
+   System.out.println("running the program.");
+   System.exit(1);  // Terminates the program.
+}</pre>
+   
+<p>We have two main quantities to keep track of in the program:  The total amount of sales and
+the number of cities for which data is missing.  These quantities can be represented by
+two variables, <code>salesTotal</code> of type <ptype>double</ptype> and <code>missingCount</code>
+of type <ptype>int</ptype>.  These variables are initialized to zero before processing any data
+from the file, and their values are output at the end of the program, after reading the
+entire file.</p>
+   
+<p>The main processing loop of the program is the <code>while</code> loop mentioned in the
+statement of the exercise, which begins <code>while&nbsp;(TextIO.eof()&nbsp;==&nbsp;false)</code>.  
+(In my program, I've chosen to use the equivalent but more elegant test
+<code>while&nbsp;(&nbsp;!&nbsp;TextIO.eof()&nbsp;)</code>; you should try to understand why
+this is equivalent&mdash;and why it is more elegant!)  In pseudocode form, we want a loop
+that does the following:</p>
+
+<pre>while there are more lines in the file:
+   read the name of the city and the colon that follows it
+   read the rest of the line into a string
+   try to convert the string into a number
+      if the conversion succeeds, add the number to the total sales
+      otherwise add 1 to the count of missing data</pre>
+   
+<np>To read past the name of the city, we can simply read characters using
+<code>TextIO.getChar()</code> until we get to the colon:</np>
+   
+<pre>do {  // Read past characters up to the ':'.
+   ch = TextIO.getChar();
+} while (ch != ':');</pre>
+   
+<np>where <code>ch</code> is a variable of type <ptype>char</ptype>.  We can read the rest
+of the line using <code>TextIO.getln()</code>.  (As a side note, it's important here
+that we read the entire line, including the carriage return at the end.  <code>TextIO.getln()</code>
+does this.  If we neglected to read the carriage return at the end of the line,
+<code>TextIO.eof()</code> would not detect the end of the file correctly.  After the
+data from the last line is read, the carriage return character would still be there in
+the file waiting to be read; since there is still something left to read in the file,
+<code>TextIO.eof()</code> would be false <code>false</code> and the while loop would
+continue, even though all the cities have already been processed.  In fact, the program
+would crash while looking for the next&nbsp;':', which is not there.  Text processing
+can be surprisingly subtle!)</np>
+   
+<p>Once we have the information in the form of a <classname>String</classname>, we can try to
+convert the string into a number with <code>Double.parseDouble</code>.  If the string is
+not a number, this will throw an exception of type <classname>NumberFormatException</classname>.
+We can catch the error in a <code>try..catch</code> statement.  The "missing data"
+processing is done in the <code>catch</code> part of this statement.  In the program,
+this takes the form:</p>
+<pre>try {
+   sales = Double.parseDouble(dataString);
+   salesTotal += sales;  // This is skipped if the conversion fails.
+}
+catch (NumberFormatException e) {
+       // The dataString is not a number, so it counts as
+       // missing data.  Add 1 to the missing data count.
+   missingCount++;
+}</pre>
+   
+<p>(Note that my solution assumes that the data file (if it exists at all) has exactly the
+format that is specified in the problem.  The problem would be more difficult if we had
+to check the format of the file, to see whether it conforms to the specification.)</p>
+</exercise-discuss>
+<exercise-code>
+<pre>/**
+ * This program reads from a file named "sales.dat".  Each line of the
+ * file contains the name of a city, followed by a colon, followed by
+ * either a number giving the amount of sales in that city or by a
+ * message saying why the sales figure is not available.  The program
+ * prints the total sales for all cities and the number of cites for
+ * which the figure was not available.
+ */
+   
+public class SalesFigures {
+   
+   public static void main( String[] args ) {
+      
+      /* Open file for reading; if it can't be opened, end the program */
+      
+      try {
+         TextIO.readFile("sales.dat");
+      }
+      catch (IllegalArgumentException e) {
+         System.out.println("Can't open file \"sales.dat\" for reading!");
+         System.out.println("Please make sure the file is present before");
+         System.out.println("running the program.");
+         System.exit(1);  // Terminates the program.
+      }
+      
+      /* Read the file, keeping track of total sales and missing data. */
+      
+      double salesTotal;  // Total of all sales figures seen so far.
+      int missingCount;   // Number of cities for which data is missing.
+      
+      salesTotal = 0;
+      missingCount = 0;
+      
+      while ( ! TextIO.eof() ) {  // process one line of data.
+         
+         char ch;  // For reading past the name of the city.
+         String dataString;  // Contents of line, after the city name.
+         double sales;  // The sales figure for the city.
+         
+         do {  // Read past characters up to the ':'.
+            ch = TextIO.getChar();
+         } while (ch != ':');
+         
+         dataString = TextIO.getln();  // Get the rest of the line.
+         
+         try {
+            sales = Double.parseDouble(dataString);
+            salesTotal += sales;  // This is skipped if the conversion fails.
+         }
+         catch (NumberFormatException e) {
+                // The dataString is not a number, so it counts as
+                // missing data.  Add 1 to the missing data count.
+            missingCount++;
+         }
+   
+      } // end while
+      
+      /* Report the results. */
+      
+      System.out.printf("Total sales recorded from all cities: $%1.2f\n\n", salesTotal);
+      if (missingCount == 0)
+         System.out.println("Data was received from all cities.");
+      else if (missingCount == 1)
+         System.out.println("Data was missing from 1 city.");
+      else
+         System.out.printf("Data was missing from %d cities.\n", missingCount);
+      
+   } // end main()
+   
+} // end class SalesFigures
+</pre>
+</exercise-code>
+</exercise>
+
+
+
+<exercise id="control.ex.6">
+<exercise-question><p>Write an applet that draws
+a checkerboard.  Write your solution as a subclass of
+<classname>AnimationBase</classname>, even though all the
+frames that it draws will be the same.
+Assume that the size of the applet is 160 by 160 pixels. Each
+square in the checkerboard is 20 by 20 pixels. The checkerboard contains 8 rows
+of squares and 8 columns. The squares are red and black. Here is a tricky way
+to determine whether a given square should be red or black: If the row number and the
+column number are either both even or both odd, then the square is red.
+Otherwise, it is black. Note that a square is just a rectangle in which the
+height is equal to the width, so you can use the subroutine
+<code>g.fillRect()</code> to draw the squares. Here is an image of the
+checkerboard:</p>
+
+<img src="checkerboard.gif" alt="checkerboard" width="170" height="169" tex="checkerboard.eps"/>
+
+<p>(To run an applet, you need a Web page to display it. A very simple page
+will do. Assume that your applet class is called <code>Checkerboard</code>, so that
+when you compile it you get a class file named <code>Checkerboard.class</code> Make
+a file that contains only the lines:</p>
+
+<pre>&lt;applet code="Checkerboard.class" width=160 height=160&gt;
+&lt;/applet&gt;</pre>
+
+<np>Call this file <code>Checkerboard.html</code>. This is the source code for a
+simple Web page that shows nothing but your applet. The compiled class file,
+<code>Checkerboard.class</code>, must be in the same directory with the Web-page
+file, <code>Checkerboard.html</code>.  Furthermore, since your program depends on
+the non-standard class <classname>AnimationBase</classname>, you also have to
+make that class available to your program.  To do this, you should 
+compile the source code, <sourceref href="AnimationBase.java"/>.  <tex>You
+can find a copy on the Source Code page of the on-line version of this book.</tex>
+The result will 
+be <b>two</b> class files, <code>AnimationBase.class</code> and
+<code>AnimationBase$1.class</code>.  Place <b>both</b> of these class
+files in the same directory, together with <code>Checkerboard.html</code>
+and <code>Checkerboard.class</code>. Now, to run the applet, simply
+open <code>Checkerboard.html</code> in a web browser.  Alternatively,
+on the command line, you can use the command</np>
+
+<pre>appletviewer Checkerboard.html</pre>
+
+<np>The <code>appletviewer</code> command, like <code>java</code> and <code>javac</code>
+is part of a standard installation of the JDK.</np>
+
+<p>If you are using the Eclipse Integrated Development Environment, you should add
+<sourceref href="AnimationBase.java"/> to the project where you want to write
+<code>Checkerboard.java</code>.  You can then
+simply right-click the name of the source code file in the Package Explorer.
+In the pop-up menu, go to "Run&nbsp;As" then to "Java Applet".  This will open
+the window in which the applet appears.  The default size for the window
+is bigger than 160-by-160, so the drawing of the checkerboard will not fill the
+entire window.)</p>
+</exercise-question>   
+<exercise-discuss>
+<p>The basic algorithm is obvious:</p>
+
+<pre>for each row on the checkerboard:
+    Draw all the squares in that row</pre>
+
+<np>Since any given row contains eight squares, one in each column of the
+checkerboard, we can expand the body of the for loop into another for loop:</np>
+
+<pre>for each row on the checkerboard:
+    for each of the eight columns:
+        Draw the square in that row and column</pre>
+
+<p>Each square is a rectangle with height 20 and width 20, so it can be drawn
+with the command <code>g.fillRect(x,y,20,20)</code>, where <code>x</code> and
+<code>y</code> are the coordinates of the top-left corner of the square. Before
+drawing the square, we have to determine whether it should be red or black, and
+we have to set the correct color with <code>g.setColor</code>. So, the algorithm
+becomes</p>
+
+<pre>for each row on the checkerboard:
+    for each of the eight columns:
+        Compute x,y for the top-left corner of the square
+        if its a red square:
+           g.setColor(Color.red)
+        else
+           g.setColor(Color.black)
+        g.fillRect(x,y,20,20)</pre>
+
+<p>The top of the first row of squares is at <code>y=0</code>. Since each square is
+20 pixels high, the top of the second row is at <code>y=20</code>, followed by 40
+for the third row, then 60, 80, 100, 120, and 140. If we assume that the rows
+are numbered 0, 1, 2, &dots;, 7, then the tops are given by <code>y&nbsp;=&nbsp;row*20</code>,
+where <code>row</code> is the row number. (If you number the rows 1, 2, &dots;, 8, the
+formula would be <code>(row-1)*20</code>. The simpler formula in this and in many
+similar cases is one reason why computer scientists like to start counting with
+0 instead of 1.) Similarly, the left edge of the squares in column <code>col</code>
+is given by <code>x&nbsp;=&nbsp;col*20</code>, where again the columns are numbered 0, 1, 2,
+&dots;, 7. I'll use "<code>for (row=0;&nbsp;row&lt;8;&nbsp;row++)</code>" to count off the rows,
+rather than the equivalent "<code>for (row=0;&nbsp;row&lt;=7;&nbsp;row++)</code>". The 8
+reminds me that I am counting off the <b>eight</b> numbers 0, 1, 2,
+&dots;, 7. Again, this is typical computer science style.</p>
+
+<p>The only problem remaining is how to determine whether the square is red. As
+noted in the exercise, a square is red if <code>row</code> and <code>col</code> are
+either both even or both odd. Since an integer <code>N</code> is even if
+<code>N%2</code> is 0, the test could be expressed as</p>
+
+<pre>if ((row%2 == 0 &amp;&amp; col%2 == 0) || (row%2 == 1 &amp;&amp; col%2 == 1))</pre>
+
+<np>However,
+note that this is the same as asking whether <code>row%2</code> and <code>col%2</code>
+have the same value. So the test can be written more simply as 
+"<code>if&nbsp;(row%2&nbsp;==&nbsp;col%2)</code>". Putting this all together into syntactically correct Java
+code, the algorithm becomes</np>
+
+<pre>for ( row = 0;  row &lt; 8;  row++ ) {
+   for ( col = 0;  col &lt; 8;  col++ ) {
+       x = 20*col;
+       y = 20*row;
+       if ( (row % 2) == (col % 2) )
+          g.setColor(Color.red);
+       else
+          g.setColor(Color.black);
+       g.fillRect(x,y,20,20);
+   }
+}</pre>
+
+<p>Of course, the variables <code>row</code>, <code>col</code>, <code>x</code>, and
+<code>y</code> have to be declared to be of type <ptype>int</ptype>. Then, the code goes
+into the body of the <code>drawFrame()</code> method of an applet. The syntax of the
+applet definition must follow the format given in <localref href="control.8"/>.</p>
+</exercise-discuss>
+<exercise-code>
+<pre>import java.awt.*;
+
+public class Checkerboard extends AnimationBase {
+  
+   /*  This applet draws a red-and-black checkerboard.
+       It is assumed that the size of the applet is 160
+       by 160 pixels.
+   */
+
+   public void drawFrame(Graphics g) {
+      
+      int row;   // Row number, from 0 to 7
+      int col;   // Column number, from 0 to 7
+      int x,y;   // Top-left corner of square
+   
+      for ( row = 0;  row &lt; 8;  row++ ) {
+      
+         for ( col = 0;  col &lt; 8;  col++) {
+            x = col * 20;
+            y = row * 20;
+            if ( (row % 2) == (col % 2) )
+               g.setColor(Color.red);
+            else
+               g.setColor(Color.black);
+            g.fillRect(x, y, 20, 20);
+         } 
+      
+      } // end for row
+   
+   }  // end paint()
+
+}  // end class Checkerboard</pre>
+</exercise-code>
+</exercise>
+
+
+
+<exercise>
+<exercise-question><p>Write an animation applet
+that shows a checkerboard pattern in which the even numbered rows slide to the
+left while the odd numbered rows slide to the right. You can assume that the
+applet is 160 by 160 pixels. Each row can be offset towards the left or right from its usual position
+by the amount <code>getFrameNumber()&nbsp;%&nbsp;40</code>. Hints: Anything you draw outside
+the boundaries of the applet will be invisible, so you can draw more than 8
+squares in a row. You can use negative values of x in
+<code>g.fillRect(x,y,w,h)</code>. <web>Here is a working solution to this exercise:</web>
+<tex>(Before trying to do this exercise, it would be a good idea to look at a working
+applet, which can be found in the on-line version of this book.)</tex></p>
+<webdiv>
+<applet code="SlidingCheckerboard.class" archive="SlidingCheckerboard.jar" width="160" height="160"/>
+</webdiv>
+<p>As with <localref href="control.ex.6"/>, you can write your class as a subclass of
+<classname>AnimationBase</classname>.  Compile and run the program in the same way,
+as described in that exercise.  Assuming that the name of your class is <code>SlidingCheckerboard</code>, then the
+source file for the Web page this time should contain the lines:</p>
+
+<pre>&lt;applet code="SlidingCheckerboard.class" width=160 height=160&gt;
+&lt;/applet&gt;</pre>
+</exercise-question>   
+<exercise-discuss><p>Obviously, this exercise builds on the previous exercise, so you should read
+and understand the <localref href="control.ex.6">solution to the previous exercise</localref>
+first.</p>
+
+<p>The squares on the checkerboard are 20 pixels on each side. Looking from
+left to right, the pattern of red and black squares repeats itself after two
+squares, that is, after 40 pixels. If a row moves one pixel per frame, then
+after 40 frames, the pattern will look the same as it did in the first frame.
+So there are only 40 distinct frames in the animation. The appearance of the
+frame is determined by how far each row is offset from its original position.
+The offsets are given by 0, 1, 2, &dots;, 39. This sequence repeats itself over
+and over. The proper offset for a given frame can be computed as
+<code>getFrameNumber()&nbsp;%&nbsp;40</code>, as noted in the statement of the exercise.
+For rows that are sliding towards the left, this amount is subtracted from the
+horizontal position of each square; for rows that are sliding towards the right, this
+amount is added to the square's horizontal position.</p>
+
+<p>If we just slide a row of eight squares, it will leave a blank area on the
+right as the row slides left, or a blank area on the left as the row slides
+right. It's useful to think of the checkerboard as being extended by two extra
+squares on each side. With all the rows in their usual position, only the middle eight squares will be visible. Instead of
+8 squares extending from <code>x = 0</code> to <code>x = 160</code>, we have 12 squares
+extending from <code>x = -40</code> to <code>x = 200</code>. Even when the rows are
+offset by up to two squares, the whole visible area of the applet will be
+filled with squares. Here, for example, is what it looks like for an offset of
+13 pixels:</p>
+
+<img src="SlidingCheckerboard.gif" alt="checkerboard with rows offset"
+   width="302" height="193" tex="SlidingCheckerboard.eps"/>
+
+
+<p>A white rectangle is drawn around the visible area of the applet. The parts
+of the rows outside this rectangle are shown in this picture, and my program
+will issue commands for drawing them, but they are not visible when the applet
+is run.</p>
+
+<p>With all this figured out, it's not terribly difficult to adapt the solution
+from the previous exercise. If we were just drawing a static, 12-column
+checkerboard where the first column starts at <code>x&nbsp;=&nbsp;-40</code> instead of 
+<code>x&nbsp;=&nbsp;0</code>, the code would be almost identical to the code from that
+exercise:</p>
+
+<pre>for ( row = 0;  row &lt; 8;  row++ ) {
+   for ( col = 0;  col &lt; 12;  col++ ) {
+   
+       x = -40 + 20*col;
+       y = 20*row;
+       
+       if ( (row % 2) == (col % 2) )
+          g.setColor(Color.red);
+       else
+          g.setColor(Color.black);
+          
+       g.fillRect(x,y,20,20);
+   }
+}</pre>
+
+<p>The only problem is that the starting point of the first square is not -40.
+It is offset from -40 by an amount that depends on the frame number. It also
+depends on whether the row number is odd or even, since odd rows are offset to
+the left and even rows are offset to the right. The amount of offset is
+computed as <code>offset&nbsp;=&nbsp;frameNumber()&nbsp;%&nbsp;40</code>. This offset has to be added
+to -40 to give the starting point of the row. Let <code>leftEdge</code> be a
+variable that will store the starting point of the row. If the row number is
+even, <code>leftEdge</code> is computed as <code>-40&nbsp;-&nbsp;offset</code>. If the row number
+is even, <code>leftEdge</code> is <code>-40&nbsp;+&nbsp;offset</code>. Adding these computations
+to the above code gives a complete algorithm for drawing one frame in the
+animation:</p>
+
+<pre>offset = frameNumber() % 40;  // Amount by which each row is offset.
+
+for ( row = 0;  row &lt; 8;  row++ ) {
+
+   if ( row % 2 == 0)    // if row number is even
+      leftEdge = -40 - offset;
+   else
+      leftEdge = -40 + offset;
+   
+   for ( col = 0;  col &lt; 12;  col++ ) {
+   
+       x = leftEdge + 20*col;
+       y = 20*row;
+       
+       if ( (row % 2) == (col % 2) )
+          g.setColor(Color.red);
+       else
+          g.setColor(Color.black);
+          
+       g.fillRect(x,y,20,20);
+   }
+}</pre>
+
+<p>Once the variable declarations are added, this becomes the body of the
+<code>drawFrame()</code> subroutine of the applet. The applet must follow the
+general framework for animations based on the <sourceref href="AnimationBase.java"/>,
+as given in <localref href="control.8"/>.</p>
+</exercise-discuss>
+<exercise-code>
+<pre>import java.awt.*;
+
+public class SlidingCheckerboard extends AnimationBase {
+
+   /* 
+      Applet shows a checkerboard pattern in which the even numbered
+      rows slide to the left and the odd numbered rows slide to the
+      right.  It is ASSUMED that the applet is 160x160 pixels, since
+      the individual squares in the board are 20 pixels on a side.
+   */
+
+  public void drawFrame(Graphics g) {
+
+         // Draw one frame in the animation.  
+         
+      int offset;    // Amount by which the rows are offset from their usual
+                     //   position.  Even numbered rows are offset by this
+                     //   amount to the left, odd numbered rows to the right.
+                     
+      int row, col;  // Row and column numbers, used as loop control variables.
+      
+      int x,y;       // Top-left corner of a square.
+                    
+      offset = getFrameNumber() % 40;  // horizontal offset is in the range 0 to 39.
+      
+      for ( row = 0; row &lt; 8; row++ ) {
+      
+         /* Draw one row. */
+      
+         int leftEdge;  // Position of left edge of this row, after it is offset from its
+                        // usual position.  This is given by -40-offset if row is even
+                        // and by -40+offset if row is odd.
+         
+         if (row % 2 == 0)
+            leftEdge = -40 - offset;
+         else
+            leftEdge = -40 + offset;
+            
+         /* Draw 12 squares per row, to make sure that the part of the row that
+            is visible in the applet is completely filled with squares.  When offset
+            is zero, the row extends two squares to the left and two squares to the
+            right of the applet, starting at x = -40.  When offset &gt; 0, the rows
+            are offset by that amount to the left or right.
+         */
+            
+         for ( col = 0; col &lt; 12; col++) {
+            x = leftEdge + col * 20;
+            y = row * 20;
+            if ( (row % 2) == (col % 2) ) // Make colors alternate in a checkerboard fashion.
+               g.setColor(Color.red);
+            else
+               g.setColor(Color.black);
+            g.fillRect(x, y, 20, 20);
+         }
+      
+      }  // end for row
+      
+   }  // end drawFrame()
+
+}  // end class SlidingCheckerboard
+</pre>
+</exercise-code>
+</exercise>
+
+
+
+</exercises>

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<preface>
+<p><start><big>P</big>engenalan Pemrograman Menggunakan Java</start> merupakan sebuah
+buku teks gratis untuk pengenalan pemrograman komputer yang menggunakan bahasa Java sebagai bahasa
+instruksinya.  Buku ini cocok digunakan dalam pelajaran pengenalan pemrograman
+dan untuk orang yang ingin mencoba belajar pemrograman secara mandiri. Tidak diperlukan
+pengetahuan awal melebihi dari mengenal ide dari komputer dan program.
+Tersedia materi yang cukup untuk pemrograman setahun penuh di tingkat universitas.
+Bab 1 hingga Bab 7 dapat digunakan sebagai buku teks satu semester untuk pelajaran
+tingkat mahasiswa atau di dalam pelajaran setahun tingkat SMA. Sisa dari Bab
+dapat dicakup pada pelajaran sesi kedua.</p>
+
+<p>Edisi ke-6 dari buku ini mencakup "Java&nbsp;5.0", bersamaan dengan beberapa fitur
+yang diperkenalkan di Java&nbsp;6 dan Java&nbsp;7.  Pada Java&nbsp;5.0
+diperkenalkan fitur-fitur utama yang baru yang perlu dicakup di pelajaran pengenalan pemrograman,
+sementara di Java&nbsp;6 dan Java&nbsp;7 tidak.  Fitur yang tidak terdapat di Java 5.0 akan 
+dicatat secara eksplisit saat dicakup di teks. 
+Sebagai catatan, Java applets tampil di keseluruhan halaman dari <tex>versi online</tex>
+buku ini.  Kebanyakan dari applets memerlukan Java&nbsp;5.0 atau lebih tinggi.</p>
+   
+<p>Situs web dari buku ini adalah
+<a href="http://math.hws.edu/javanotes/">http://math.hws.edu/javanotes/</a>.
+Halaman dari alamat tersebut mengandung tautan untuk mendownload kopi dari
+situs web dan untuk mendownload versi PDF dari buku ini.</p>
+
+<break/>   
+
+<p>Buku ini menggunakan gaya bahasa buku teks daripada tutorial. Dimana buku ini
+mengkonsentrasikan dalam penjelasan konsep daripada memberikan petunjuk dengan 
+  langkah per langkah seperti di <i>How-to-do-it</i>.
+Saya telah mencoba menggunakan gaya penulisan percakapan yang lebih dekat ke kuliah di kelas 
+daripada buku teks umumnya. Anda akan menemukan
+latihan pemrograman pada akhir setiap bab, kecuali di Bab&nbsp;1.
+Untuk masing-masing latihan, tersedia halaman web yang memberikan solusi lengkap
+untuk latihan tersebut, dengan semacam diskusi yang saya akan berikan jika saya
+mempresentasikan solusi di kelas. <tex>(Solusi untuk latihan hanya dapat
+ditemukan di versi web buku teks.) </tex>Saya <b>sangat</b> menyarankan agar Anda membaca
+solusi latihan jika Anda ingin mendapatkan hasil maksimal dari buku ini.</p>
+
+<p>Buku ini
+bukan merupakan buku referensi Java, dan bukan
+survei menyeluruh dari semua fitur Java. Buku ini <b>tidak</b> ditulis sebagai
+pengenalan cepat ke Java untuk orang-orang yang telah mengetahui bahasa pemrograman
+lainnya. Tetapi buku ini ditujukan umumnya untuk orang yang belajar
+pemrograman pertama kalinya, dimana dibahas mengenai konsep pemrograman secara umum
+dan Java secara khusus. Saya percaya <i>Pengenalan Pemrograman 
+Menggunakan Java</i> sangat kompetitif dengan buku pemrograman yang dicetak secara konvensional,
+yang tersedia di pasar.
+(Yah, baiklah, Saya akui bahwa saya berpikir buku ini lebih baik.)</p>
+
+<p>Ada beberapa pendekatan untuk mengajar Java. Salah satu cara dengan menggunakan
+pemrograman grafis antarmuka pengguna dari awal. Beberapa orang
+percaya bahwa pemrograman berorientasi objek seharusnya ditekankan dari awal juga.
+Ini <b>bukan</b> pendekatan yang saya gunakan. Pendekatan yang saya senangi adalah
+memulai dari blok bangunan pemrograman dasar dan membangun dari sana.
+Setelah bab pengenalan,
+Saya mencakup pemrograman prosedural di Bab 2, 3 dan&nbsp;4.
+Pemrograman berorientasi objek diperkenalkan di Bab&nbsp;5. Bab&nbsp;6
+mencakup topik yang berhubungan erat dengan pemrograman berorientasi kejadian (event) dan
+grafis antarmuka pengguna. Array dicakup di Bab&nbsp;7.
+Bab&nbsp;8 merupakan bab pendek yang menandai titik balik di buku, berpindah dari
+ide dasar pemrograman ke cakupan topik yang lebih lanjut.
+Bab&nbsp;8 membahas mengenai penulisan program yang kokoh, benar, dan efisien.
+Bab&nbsp;9 dan 10 mencakup rekursi dan struktur data, termasuk Java Collection
+Framework.  Bab&nbsp;11 membahas mengenai berkas-berkas dan jaringan.  Bab&nbsp;12
+mencakup thread dan pemrosesan paralel.  Akhirnya,
+Bab&nbsp;13 kembali ke topik pemrograman grafis antarmuka pengguna
+untuk mencakup beberapa kemampuan Java yang lebih lanjut.</p>
+
+<break/>
+   
+<p>Perubahan besar dilakukan pada edisi <b>sebelumnya</b> (kelima) dari buku ini.  Mungkin perubahan
+paling signifikan adalah penggunaan tipe diparameterkan di bab mengenai
+pemrograman generik.  Tipe diparameterkan&mdash;versi Java
+dari template&mdash;merupakan fitur baru yang paling dinantikan di
+Java&nbsp;5.0. Fitur baru lainnya di Java 5.0 juga diperkenalkan di edisi ke-6,
+termasuk tipe dienumerasikan, keluaran yang diformat, kelas
+<classname>Scanner</classname>, dan metode variabel <i>arity</i>.
+Sebagai tambahan, komentar Javadoc dicakup pertama sekali disini.</p>
+
+<p>Perubahan di edisi <b>ke-6</b> jauh lebih kecil.  Perubahan utama berupa
+bab baru tentang thread di Bab&nbsp;12.  Materi mengenai thread dari edisi awal sudah
+dipindahkan ke bab ini, dan sejumlah banyak materi baru telah ditambahkan.
+Perubahan lainnya meliputi beberapa pembahasan fitur yang ditambahkan di Java versi 6 dan&nbsp;7
+dan penyertaan kamus istilah. Ada juga beberapa perubahan kecil di seluruh bagian
+buku.</p>   
+   
+<break/>
+
+<p>Edisi lengkap yang terbaru dari <i>Pengenalan Pemrograman Menggunakan Java</i> selalu tersedia secara online di
+<a href="http://math.hws.edu/javanotes/">http://math.hws.edu/javanotes/</a>.
+Versi pertama dari buku ini ditulis pada tahun 1996, karena itu terdapat
+beberapa versi setelahnya.  semua edisi diarsipkan pada alamat web berikut ini:</p>
+   
+<ul>
+<li>Edisi pertama: <a href=
+"http://math.hws.edu/eck/cs124/javanotes1/">http://math.hws.edu/eck/cs124/javanotes1/</a> (Mencakup Java 1.0.)</li>
+<li>Edisi ke-2: <a href=
+"http://math.hws.edu/eck/cs124/javanotes2/">http://math.hws.edu/eck/cs124/javanotes2/</a> (Mencakup Java 1.1.)</li>
+<li>Edisi ke-3: <a href=
+"http://math.hws.edu/eck/cs124/javanotes3/">http://math.hws.edu/eck/cs124/javanotes3/</a> (Mencakup Java 1.1.)</li>
+<li>Edisi ke-4: <a href=
+"http://math.hws.edu/eck/cs124/javanotes4/">http://math.hws.edu/eck/cs124/javanotes4/</a> (Mencakup Java 1.4.)</li>
+<li>Edisi ke-5: <a href=
+"http://math.hws.edu/eck/cs124/javanotes5/">http://math.hws.edu/eck/cs124/javanotes5/</a> (Mencakup Java 5.0.)</li>
+<li>Edisi ke-6: <a href=
+"http://math.hws.edu/eck/cs124/javanotes6/">http://math.hws.edu/eck/cs124/javanotes6/</a> (Mencakup Java 5.0 and later.)</li>
+</ul>
+   
+
+<p><i>Pengenalan Pemrograman Menggunakan Java</i> bersifat <b>gratis</b>, tetapi tidak berlisensi
+public domain. Untuk versi 6.0 diterbitkan dengan ketentuan lisensi
+Creative Commons Attribution-NonCommercial-ShareAlike 3.0. 
+Untuk meninjau kopi dari lisensi ini, kunjungi 
+<a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">http://creativecommons.org/licenses/by-nc-sa/3.0/</a>.
+Sebagai contoh, Anda dapat:</p>
+
+<ul>
+<li>Memposting kopi nonmodifikasi dari versi on-line di situs web Anda (Mencakup
+bagian yang mencantumkan penulis dan status lisensi dari kopi yang didistribusikan!).
+</li>
+
+<li>Memberikan secara gratis versi nonmodifikasi dari buku ini atau menjual seharga ongkos produksi, selama masih di dalam
+batasan yang diberikan lisensi.</li>
+
+<li>Membuat versi modifikasi dari buku lengkap atau bagian buku
+dan mempostingnya ke web atau mendistribusikannya secara nonkomersial, dengan menyertakan atribusi ke penulis,
+modifikasi dengan jelas dicatat, dan kopi dari versi modifikasinya
+didistribusikan dengan lisensi yang sama dengan yang asli.  Ini termasuk terjemahan
+ke bahasa lain.</li>
+
+</ul>
+
+<p>Untuk penggunaan buku ini yang tidak dicakup oleh lisensi, izin dari
+penulis dibutuhkan.</p>
+
+<p>Walaupun sebenarnya tidak diperlukan di dalam lisensi, tetapi saya sangat menghargai jika mendengar kabar
+dari orang-orang yang menggunakan atau mendistribusikan pekerjaan saya.</p>
+   
+<break/>
+   
+ 
+<p><b>Catatan teknis untuk produksi:</b> Versi on-line dan PDF dari buku
+ini dibuat dari satu sumber, yang sebagian besar ditulis dalam XML. 
+Untuk memproduksi
+versi PDF, berkas XML diproses menjadi bentuk yang dapat digunakan oleh 
+program typesetting TeX.  Selain berkas-berkas
+XML, sumber termasuk DTD, transformasi XSLT, berkas kode sumber Java,
+berkas gambar, sebuah berkas makro TeX, dan beberapa skrip yang digunakan dalam pemrosesan.
+</p>
+
+<p><b>Saya telah membuat berkas kode yang lengkap tersedia untuk didownload pada
+alamat berikut:</b></p>
+
+<p align="center"><a href="http://math.hws.edu/eck/cs124/downloads/javanotes6-full-source.zip">http://math.hws.edu/eck/cs124/downloads/javanotes6-full-source.zip</a></p>
+
+<p>Berkas-berkas ini pada mulanya tidak ditujukan untuk publikasi, oleh karena itu tidak cukup baik
+ditulis.  Selain itu, memerlukan cukup banyak keahlian untuk menggunakannya secara
+efektif.  Namun, saya mendapatkan beberapa permintaan untuk sumber dan telah membuatnya
+tersedia secara "apa adanya".  Untuk informasi lebih lanjut mengenai sumber dan
+bagaimana menggunakannya, silahkan melihat di <tex>berkas README</tex><web><a href="README-full-source.txt">README file</a></web> dari
+sumber downloadnya.</p>
+   
+<break/>   
+   
+
+<np>Profesor David J. Eck<br />
+Departemen Matematika dan Ilmu Komputer<br />
+Hobart and William Smith Colleges<br />
+300 Pulteney Street<br />
+Geneva, New York 14456, USA<br />
+Email: <a href="mailto:eck@hws.edu">eck@hws.edu</a><br />
+WWW: <a href="http://math.hws.edu/eck/">http://math.hws.edu/eck/</a><br /><br />
+</np>
+
+
+
+  
+   
+</preface>

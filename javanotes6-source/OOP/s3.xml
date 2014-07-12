@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<section id="OOP.3" title="Programming with Objects">
+
+
+<p><start><big>T</big>here are several ways</start> in which object-oriented
+concepts can be applied to the process of designing and writing programs. The
+broadest of these is <newword>object-oriented analysis and design</newword> 
+which applies an object-oriented methodology to the earliest
+stages of program development, during which the overall design of a program is
+created. Here, the idea is to identify things in the problem domain that can be
+modeled as objects. On another level, object-oriented programming encourages
+programmers to produce <newword>generalized software components</newword> 
+that can be used in a wide variety of programming projects.</p>
+   
+   
+<p>Of course, for the most part, you will experience "generalized software
+components" by using the standard classes that come along with Java.  We begin
+this section by looking at some built-in classes that are used for creating
+objects.  At the end of the section, we will get back to generalities.</p>
+
+<subsection id="OOP.3.1" title="Some Built-in Classes">
+
+<p>Although the focus of object-oriented programming is generally on the design
+and implementation of new classes, it's important not to forget that the
+designers of Java have already provided a large number of reusable classes.
+Some of these classes are meant to be extended to produce new classes, while
+others can be used directly to create useful objects. A true mastery of Java
+requires familiarity with a large number of built-in classes&mdash;something that
+takes a lot of time and experience to develop. In the <localref href="GUI1">next chapter</localref>,
+we will begin the study of Java's GUI
+classes, and you will encounter other built-in classes throughout the remainder
+of this book. But let's take a moment to look at a few built-in classes that
+you might find useful.</p>
+
+<p>A string can be built up from smaller pieces using the <code>+</code> operator,
+but this is not always efficient. If <code>str</code> is a <classname>String</classname> and
+<code>ch</code> is a character, then executing the command
+"<code>str&nbsp;= str&nbsp;+&nbsp;ch;</code>" involves creating a whole new
+string that is a copy of <code>str</code>, with the value of <code>ch</code> appended
+onto the end. Copying the string takes some time. Building up a long string
+letter by letter would require a surprising amount of processing. The class
+<classname>StringBuffer</classname> makes it possible to be efficient about
+building up a long string from a number of smaller pieces.  To do this,
+you must make an object belonging to the <classname>StringBuffer</classname>
+class.  For example:</p>
+   
+<pre>StringBuffer buffer = new StringBuffer();</pre>
+   
+<np>(This statement both declares the variable <code>buffer</code> and initializes
+it to refer to a newly created <classname>StringBuffer</classname> object.  Combining
+declaration with initialization was covered in <localref href="subroutines.7.1"/> and works
+for objects just as it does for primitive types.)</np> 
+   
+ <p>Like a <classname>String</classname>, a <classname>StringBuffer</classname> 
+contains a sequence of characters.
+However, it is possible to add new characters onto the end of a
+<code>StringBuffer</code> without making a copy of the data that it already
+contains. If
+<code>x</code> is a value of any type and <code>buffer</code> is the variable
+defined above, then the command <code>buffer.append(x)</code>
+will add <code>x</code>, converted into a string representation, onto the end of
+the data that was already in the buffer. This command actually modifies the
+buffer, rather than making a copy, and that can be done efficiently. A long
+string can be built up in a <classname>StringBuffer</classname> using a sequence of
+<code>append()</code> commands. When the string is complete, the function
+<code>buffer.toString()</code> will return a copy of the string in the buffer as an
+ordinary value of type <classname>String</classname>. The <classname>StringBuffer</classname>
+class is in the standard package <code>java.lang</code>, so you can use its simple name without
+importing it.</p>
+
+<p>A number of useful classes are collected in the package <code>java.util</code>.
+For example, this package contains classes for working with collections of
+objects.  We will encounter an example in <localref href="OOP.5"/>, and we
+will study the collection classes extensively in <localref href="generics"/>.
+Another class in this package, <code>java.util.Date</code>, is
+used to represent times. When a <code>Date</code> object is constructed without
+parameters, the result represents the current date and time, so an easy way to
+display this information is:</p>
+
+<pre>System.out.println( new Date() );</pre>
+
+<np>Of course, since it is in the package <code>java.util</code>,
+in order to use the <code>Date</code> class in your program, you must make it
+available by importing it with one of the statements
+"<code>import&nbsp;java.util.Date;</code>" or "<code>import&nbsp;java.util.*;</code>"
+at the beginning of your program. (See <localref href="subroutines.5.3"/>
+for a discussion of packages and <code>import</code>.)</np>
+
+<p>I will also mention the class <code>java.util.Random</code>. An object
+belonging to this class is a <i>source</i> of random numbers (or, more precisely
+pseudorandom numbers).  The standard
+function <code>Math.random()</code> uses one of these objects behind the scenes to
+generate its random numbers. An object of type <code>Random</code> can generate
+random integers, as well as random real numbers. If <code>randGen</code> is created
+with the command:</p>
+
+<pre>Random randGen = new Random();</pre>
+
+<np>and if <code>N</code> is a positive integer, then <code>randGen.nextInt(N)</code>
+generates a random integer in the range from <code>0</code> to <code>N-1</code>. For
+example, this makes it a little easier to roll a pair of dice. Instead of
+saying "<code>die1&nbsp;= (int)(6*Math.random())+1;</code>", one can say
+"<code>die1&nbsp;= randGen.nextInt(6)+1;</code>". (Since you also have to
+import the class <code>java.util.Random</code> and create the <code>Random</code>
+object, you might not agree that it is actually easier.)  An object of
+type <code>Random</code> can also be used to generate so-called
+Gaussian distributed random real numbers.</np>
+
+<p>The main point here, again, is that many problems have already been solved,
+and the solutions are available in Java's standard classes. If you are faced
+with a task that looks like it should be fairly common, it might be worth
+looking through a Java reference to see whether someone has already written a
+class that you can use.</p>
+   
+</subsection>
+   
+<subsection id="OOP.3.2" title="Wrapper Classes and Autoboxing">
+
+<p>We have already encountered the classes <classname>Double</classname> and
+<classname>Integer</classname> in <localref href="basics.5.7"/>.  These classes
+contain the <code>static</code> methods <code>Double.parseDouble</code>
+and <code>Integer.parseInteger</code> that are used to convert strings to
+numerical values.  We have also encountered the <classname>Character</classname>
+class in some examples, with static methods such as <code>Character.isLetter</code>,
+which can be used to test whether a given value of type <code>char</code> is a
+letter.  There is a similar class for each of the other primitive types,
+<classname>Long</classname>, <classname>Short</classname>, <classname>Byte</classname>, 
+<classname>Float</classname>, and <classname>Boolean</classname>.
+These classes are called <newword>wrapper classes</newword>.  Although they
+contain useful <code>static</code> members, they have another use as
+well:  They are used for creating objects that represent primitive type
+values.</p>
+   
+<p>Remember that the primitive types are not classes, and values of primitive type
+are not objects.  However, sometimes it's useful to treat a primitive value
+as if it were an object.  You can't do that literally, but you can "wrap" the
+primitive type value in an object belonging to one of the wrapper classes.</p>
+   
+<p>For example, an object of type <classname>Double</classname> contains a single instance
+variable, of type <ptype>double</ptype>.  The object is a wrapper for the <ptype>double</ptype> value.
+For example, you can create an object that
+wraps the <ptype>double</ptype> value <code>6.0221415e23</code> with</p>
+   
+<pre>Double d = new Double(6.0221415e23);</pre>
+   
+<np>The value of <code>d</code> contains the same information as the value of type
+<ptype>double</ptype>, but it is an object.   If you want to retrieve the <ptype>double</ptype>
+value that is wrapped in the object, you can call the function <code>d.doubleValue()</code>.
+Similarly, you can wrap an <ptype>int</ptype>
+in an object of type <classname>Integer</classname>, a <ptype>boolean</ptype> value
+in an object of type <classname>Boolean</classname>, and so on.  (As an example of where
+this would be useful, the collection classes that will be studied in <localref href="generics"/>
+can only hold objects.  If you want to add a primitive type value to a collection,
+it has to be put into a wrapper object first.)</np>
+   
+<p>Since Java 5.0, wrapper classes have  been even easier to use.  Java 5.0 introduced automatic
+conversion between a primitive type and the corresponding wrapper class.  For example,
+if you use a value of type <ptype>int</ptype> in a context that requires an object
+of type <classname>Integer</classname>, the <ptype>int</ptype> will automatically be
+wrapped in an <classname>Integer</classname> object.  For example, you can say</p>
+   
+<pre>Integer answer = 42;</pre>
+   
+<np>and the computer will silently read this as if it were</np>
+   
+<pre>Integer answer = new Integer(42);</pre>
+   
+<np>This is called <newword>autoboxing</newword>.   It works in the other direction, too. For example, if
+<code>d</code> refers to an object of type <code>Double</code>, you can use <code>d</code>
+in a numerical expression such as <code>2*d</code>.  The <ptype>double</ptype> value inside
+<code>d</code> is automatically <newword>unboxed</newword> and multiplied by&nbsp;2.  Autoboxing
+and unboxing also apply to subroutine calls.  For example, you can pass an actual parameter of type
+<ptype>int</ptype> to a subroutine that has a formal parameter of type <classname>Integer</classname>.
+In fact, autoboxing and unboxing make it possible in many circumstances to ignore the difference
+between primitive types and objects.</np>
+     
+<break/>
+   
+<p>The wrapper classes contain a few other things that deserve to be mentioned.  <classname>Integer</classname>,
+for example, contains constants <code>Integer.MIN_VALUE</code> and <code>Integer.MAX_VALUE</code>,
+which are equal to the largest and smallest possible values of type <ptype>int</ptype>, that
+is, to -2147483648 and 2147483647 respectively. It's certainly easier to remember the
+names than the numerical values.  There are similar named constants in <classname>Long</classname>,
+<classname>Short</classname>, and <classname>Byte</classname>.  <classname>Double</classname>
+and <classname>Float</classname> also have constants named <code>MIN_VALUE</code> and
+<code>MAX_VALUE</code>.  <code>MAX_VALUE</code> still gives the largest number that can
+be represented in the given type, but <code>MIN_VALUE</code> represents the smallest possible
+<b>positive</b> value.  For type <ptype>double</ptype>, 
+<code>Double.MIN_VALUE</code> is 4.9 times 10<sup>-324</sup>.  Since <ptype>double</ptype> values
+have only a finite accuracy, they can't get arbitrarily close to zero.  This is the closest
+they can get without actually being equal to zero.</p>
+   
+<p>The class <classname>Double</classname> deserves special mention, since <ptype>double</ptype>s are so
+much more complicated than integers.  The encoding of real numbers into values of type <ptype>double</ptype>
+has room for a few special values that are not real numbers at all in the mathematical sense.
+These values are given by named constants in class <classname>Double</classname>:
+<code>Double.POSITIVE_INFINITY</code>, <code>Double.NEGATIVE_INFINITY</code>, and
+<code>Double.NaN</code>.  The infinite values can occur as the values of certain mathematical
+expressions.  For example, dividing a positive number by zero will give the result
+<code>Double.POSITIVE_INFINITY</code>.  (It's even more complicated than this, actually,
+because the <ptype>double</ptype> type includes a value called "negative zero", written
+<code>-0.0</code>.  Dividing a positive number by negative zero gives <code>Double.NEGATIVE_INFINITY</code>.)
+You also get <code>Double.POSITIVE_INFINITY</code> whenever the mathematical value of an
+expression is greater than <code>Double.MAX_VALUE</code>.  For example, <code>1e200*1e200</code> is
+considered to be infinite. The value <code>Double.NaN</code> is even more interesting.  "NaN" stands for
+<newword>Not a Number</newword>, and it represents an undefined value such as the square root
+of a negative number or the result of dividing zero by zero.  Because of the existence of
+<code>Double.NaN</code>, no mathematical operation on real numbers will ever throw an exception;
+it simply gives <code>Double.NaN</code> as the result.</p>
+   
+<p>You can test whether a value, <code>x</code>, of type <ptype>double</ptype> is infinite or undefined
+by calling the  boolean-valued static functions <code>Double.isInfinite(x)</code> and
+<code>Double.isNaN(x)</code>.  (It's especially important to use <code>Double.isNaN()</code> to
+test for undefined values, because <code>Double.NaN</code> has really weird behavior when used
+with relational operators such as&nbsp;<code>==</code>.  In fact, the values of
+<code>x&nbsp;==&nbsp;Double.NaN</code> and <code>x&nbsp;!=&nbsp;Double.NaN</code> are always
+<b>both false</b>&mdash;no matter what the value of&nbsp;<code>x</code> is&mdash;so you can't use
+these expressions to test whether <code>x</code> is <code>Double.NaN</code>.)</p>
+   
+   
+</subsection>
+   
+<subsection id="OOP.3.3" title='The class &leftquote;Object"'>
+
+<p>We have already seen that one of the major features of object-oriented programming
+is the ability to create subclasses of a class.   The subclass inherits all the properties
+or behaviors of the class, but can modify and add to what it inherits.  In <localref href="OOP.5"/>,
+you'll learn how to create subclasses.   What you don't
+know yet is that <b>every</b> class in Java (with just one exception) is a subclass
+of some other class.  If you create a class and don't explicitly make it a subclass of
+some other class, then it automatically becomes a subclass of the special class
+named <classname>Object</classname>.  (<classname>Object</classname> is the one class
+that is not a subclass of any other class.)</p>
+
+<p>Class <classname>Object</classname> defines several instance methods that are inherited by
+every other class.  These methods can be used with any object whatsoever. I will mention
+just one of them here.  You will encounter more of them later in the book.</p>
+   
+<p>The instance method <code>toString()</code> in class <classname>Object</classname> returns
+a value of type <classname>String</classname> that is supposed to be a string representation
+of the object.  You've already used this method implicitly,  any time you've printed out an object or
+concatenated an object onto a string.  When you use an object in a context that requires a
+string, the object is automatically converted to type <classname>String</classname> 
+by calling its <code>toString()</code> method.</p>
+
+<p>The version of <code>toString</code> that is defined in <classname>Object</classname> just returns
+the name of the class that the object belongs to, concatenated with a code number called the
+<newword>hash code</newword> of the object; this is not very useful. When you create a class,
+you can write a new <code>toString()</code> method for it, which will replace the inherited
+version.  For example, we might add the following method to any of the <classname>PairOfDice</classname>
+classes from the previous section:</p>
+
+<pre>/**
+ * Return a String representation of a pair of dice, where die1
+ * and die2 are instance variables containing the numbers that are
+ * showing on the two dice.
+ */
+public String toString() {
+   if (die1 == die2)
+      return "double " + die1;
+   else
+      return die1 + " and " + die2;
+}</pre>
+   
+<np>If <code>dice</code> refers to a <classname>PairOfDice</classname> object, then
+<code>dice.toString()</code> will return strings such as "3&nbsp;and&nbsp;6",
+"5&nbsp;and&nbsp;1", and "double&nbsp;2", depending on the numbers showing on the dice.
+This method would be used automatically to convert <code>dice</code> to type
+<classname>String</classname> in a statement such as</np>
+   
+<pre>System.out.println( "The dice came up " + dice );</pre>
+   
+<np>so this statement might output, "The dice came up 5 and&nbsp;1" or "The
+dice came up double 2".  You'll see another example of a <code>toString()</code>
+method in the <localref href="OOP.4">next section</localref>.</np>
+   
+</subsection>
+
+<subsection id="OOP.3.4" title="Object-oriented Analysis and Design">
+
+<p>Every programmer builds up a stock of techniques and expertise expressed as
+snippets of code that can be reused in new programs using the tried-and-true
+method of cut-and-paste: The old code is physically copied into the new program
+and then edited to customize it as necessary. The problem is that the editing
+is error-prone and time-consuming, and the whole enterprise is dependent on the
+programmer's ability to pull out that particular piece of code from last year's
+project that looks like it might be made to fit. (On the level of a corporation
+that wants to save money by not reinventing the wheel for each new project,
+just keeping track of all the old wheels becomes a major task.)</p>
+
+<p>Well-designed classes are software components that can be reused without
+editing. A well-designed class is not carefully crafted to do a particular job
+in a particular program. Instead, it is crafted to model some particular type
+of object or a single coherent concept. Since objects and concepts can recur in
+many problems, a well-designed class is likely to be reusable without
+modification in a variety of projects.</p>
+
+<p>Furthermore, in an object-oriented programming language, it is possible to
+make <newword>subclasses</newword> of an existing class. This makes
+classes even more reusable. If a class needs to be customized, a subclass can
+be created, and additions or modifications can be made in the subclass without
+making any changes to the original class. This can be done even if the
+programmer doesn't have access to the source code of the class and doesn't know
+any details of its internal, hidden implementation.</p>
+
+<break/>
+   
+<p>The <classname>PairOfDice</classname> class in the <localref href="OOP.2">previous section</localref>
+is already an example of a generalized software component, although one that
+could certainly be improved. The class represents a single, coherent concept,
+"a pair of dice." The instance variables hold the data relevant to the state of
+the dice, that is, the number showing on each of the dice. The instance method
+represents the behavior of a pair of dice, that is, the ability to be rolled.
+This class would be reusable in many different programming projects.</p>
+
+<p>On the other hand, the <classname>Student</classname> class from the previous section is
+not very reusable. It seems to be crafted to represent students in a particular
+course where the grade will be based on three tests. If there are more tests or
+quizzes or papers, it's useless. If there are two people in the class who have
+the same name, we are in trouble (one reason why numerical student ID's are
+often used). Admittedly, it's much more difficult to develop a general-purpose
+student class than a general-purpose pair-of-dice class. But this particular
+<classname>Student</classname> class is good mostly as an example in a programming
+textbook.</p>
+
+<break/>
+
+<p>A large programming project goes through a number of stages, starting with
+<newword>specification</newword> of the problem to be solved,
+followed by <newword>analysis</newword> of the problem and
+<newword>design</newword> of a program to solve it. Then comes
+<newword>coding</newword>, in which the program's design is expressed
+in some actual programming language. This is followed by <newword>testing</newword> 
+and <newword>debugging</newword> of the
+program. After that comes a long period of <newword>maintenance</newword>, 
+which means fixing any new problems that are
+found in the program and modifying it to adapt it to changing requirements.
+Together, these stages form what is called the <newword>software life cycle</newword>. 
+(In the real world, the ideal of consecutive stages is
+seldom if ever achieved. During the analysis stage, it might turn out that the
+specifications are incomplete or inconsistent. A problem found during testing
+requires at least a brief return to the coding stage. If the problem is serious
+enough, it might even require a new design. Maintenance usually involves
+redoing some of the work from previous stages&dots;.)</p>
+
+<p>Large, complex programming projects are only likely to succeed if a careful,
+systematic approach is adopted during all stages of the software life cycle.
+The systematic approach to programming, using accepted principles of good
+design, is called <newword>software engineering</newword>. The
+software engineer tries to efficiently construct programs that verifiably meet
+their specifications and that are easy to modify if necessary. There is a wide
+range of "methodologies" that can be applied to help in the systematic design
+of programs. (Most of these methodologies seem to involve drawing little boxes
+to represent program components, with labeled arrows to represent relationships
+among the boxes.)</p>
+
+<p>We have been discussing object orientation in programming languages, which
+is relevant to the coding stage of program development. But there are also
+object-oriented methodologies for analysis and design. The question in this
+stage of the software life cycle is, How can one discover or invent the overall
+structure of a program? As an example of a rather simple object-oriented
+approach to analysis and design, consider this advice: Write down a description
+of the problem. Underline all the nouns in that description. The nouns should
+be considered as candidates for becoming classes or objects in the program
+design. Similarly, underline all the verbs. These are candidates for methods.
+This is your starting point. Further analysis might uncover the need for more
+classes and methods, and it might reveal that subclassing can be used to take
+advantage of similarities among classes.</p>
+
+<p>This is perhaps a bit simple-minded, but the idea is clear and the general
+approach can be effective: Analyze the problem to discover the concepts that
+are involved, and create classes to represent those concepts. The design should
+arise from the problem itself, and you should end up with a program whose
+structure reflects the structure of the problem in a natural way.</p>
+   
+</subsection>
+
+
+</section>

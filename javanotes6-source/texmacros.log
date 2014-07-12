@@ -1,0 +1,31 @@
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013 on Slackware (SlackBuilds.org)) (format=pdflatex 2014.3.22)  10 JUL 2014 19:28
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**texmacros.tex
+(./texmacros.tex
+LaTeX2e <2011/06/27>
+Babel <3.9f> and hyphenation patterns for 78 languages loaded.
+\blanklineskipamount=\skip41
+\hruledefaultheight=\dimen102
+\hruledefaultdepth=\dimen103
+\vruledefaultwidth=\dimen104
+\c@exercisecounter=\count79
+\c@quizcounter=\count80
+\c@mylistcounter=\count81
+)
+! Emergency stop.
+<*> texmacros.tex
+                 
+*** (job aborted, no legal \end found)
+
+ 
+Here is how much of TeX's memory you used:
+ 67 strings out of 493315
+ 809 string characters out of 6143651
+ 52158 words of memory out of 5000000
+ 3619 multiletter control sequences out of 15000+600000
+ 3640 words of font info for 14 fonts, out of 8000000 for 9000
+ 957 hyphenation exceptions out of 8191
+ 9i,0n,12p,158b,12s stack positions out of 5000i,500n,10000p,200000b,80000s
+!  ==> Fatal error occurred, no output PDF file produced!

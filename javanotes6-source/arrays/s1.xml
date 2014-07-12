@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<section id="arrays.1" title="Creating and Using Arrays">
+   
+<p><start><big>W</big>hen a number of data items</start> are chunked together
+into a unit, the result is a <newword>data structure</newword>. Data
+structures can be very complex, but in many applications, the
+appropriate data structure consists simply of a sequence of data items. Data
+structures of this simple variety can be either <newword>arrays</newword> or 
+<newword>records</newword>.</p>
+
+<p>The term "record" is not used in Java. A record is essentially the same as a
+Java object that has instance variables only, but no instance methods. Some
+other languages, which do not support objects in general, nevertheless do
+support records. The C programming language, for example, is not
+object-oriented, but it has records, which in C go by the name "struct." The
+data items in a record&mdash;in Java, an object's instance variables&mdash;are called
+the <newword>fields</newword> of the record. Each item is referred to
+using a <newword>field name</newword>. In Java, field names are just
+the names of the instance variables. The distinguishing characteristics of a
+record are that the data items in the record are referred to by name and that
+different fields in a record are allowed to be of different types. For example,
+if the class <classname>Person</classname> is defined as:</p>
+
+<pre>class Person {
+   String name;
+   int id_number;
+   Date birthday;
+   int age;
+}</pre>
+
+<np>then an object of class <classname>Person</classname> could be considered to be a record
+with four fields. The field names are <code>name</code>, <code>id_number</code>,
+<code>birthday</code>, and <code>age</code>. Note that the fields are of various types:
+<classname>String</classname>, <ptype>int</ptype>, and <classname>Date</classname>.</np>
+
+<p>Because records are just a special type of object, I will not discuss them
+further.</p>
+
+<subsection id="arrays.1.1" title="Arrays">   
+
+<p>Like a record, an array is a sequence of items. However, where items in a
+record are referred to by <b>name</b>, the items in an array are
+numbered, and individual items are referred to by their <b>position
+number</b>. Furthermore, all the items in an array must be of the same
+type. The definition of an array is: a numbered sequence of items, which are
+all of the same type. The number of items in an array is called the
+<newword>length</newword> of the array. The position number of an
+item in an array is called the <newword>index</newword> of that item.
+The type of the individual items in an array is called the 
+<newword>base type</newword> of the array.</p>
+
+<p>The base type of an array can be any Java type, that is, one of the
+primitive types, or a class name, or an interface name. If the base type of an
+array is <ptype>int</ptype>, it is referred to as an "array of <ptype>ints</ptype>." An
+array with base type <classname>String</classname> is referred to as an "array of
+<classname>Strings</classname>." However, an array is not, properly speaking, a list of
+integers or strings or other <b>values</b>. It is better thought of
+as a list of <b>variables</b> of type <ptype>int</ptype>, or a list of variables of type
+<classname>String</classname>, or of some other type. As always, there is some potential for
+confusion between the two uses of a variable: as a name for a memory location
+and as a name for the value stored in that memory location. Each position in an
+array acts as a variable. Each position can hold a value of a specified type
+(the base type of the array). The value can be changed at any time. Values are
+stored <b>in</b> an array. The array <b>is</b> the
+container, not the values.</p>
+
+<p>The items in an array&mdash;really, the individual variables that make up the
+array&mdash;are more often referred to as the <newword>elements</newword> 
+of the array. In Java, the elements in an array are
+always numbered starting from zero. That is, the index of the first element in
+the array is zero. If the length of the array is <code>N</code>, then the index of
+the last element in the array is <code>N-1</code>. Once an array has been created,
+its length cannot be changed.</p>
+
+<p>Java arrays are <b>objects</b>. This has several consequences.
+Arrays are created using a special form of the <code>new</code> operator. No variable can
+ever <b>hold</b> an array; a variable can only <b>refer</b>
+to an array. Any variable that can refer to an array can also hold the value
+<code>null</code>, meaning that it doesn't at the moment refer to anything. Like
+any object, an array belongs to a class, which like all classes is a subclass
+of the class <classname>Object</classname>. The elements of the array are, essentially,
+instance variables in the array object, except that they are referred to by
+number rather than by name.</p>
+
+<p>Nevertheless, even though arrays are objects, there are differences between
+arrays and other kinds of objects, and there are a number of special language
+features in Java for creating and using arrays.</p>
+
+</subsection>
+   
+<subsection id="arrays.1.2" title="Using Arrays">
+
+<p>Suppose that <code>A</code> is a variable that refers to an array. Then the element
+at index <code>k</code> in <code>A</code> is referred to as <code>A[k]</code>. The first
+element is <code>A[0]</code>, the second is <code>A[1]</code>, and so forth.
+"<code>A[k]</code>" is really a variable, and it can be used just like any other
+variable. You can assign values to it, you can use it in expressions, and you
+can pass it as a parameter to a subroutine. All of this will be discussed in
+more detail below. For now, just keep in mind the syntax</p>
+
+<pre><bnf>array-variable</bnf> [ <bnf>integer-expression</bnf> ]</pre>
+
+<np>for referring to an element of an array.</np>
+
+<p>Although every array, as an object, belongs to some class, array classes
+never have to be defined. Once a type exists, the corresponding array class
+exists automatically. If the name of the type is <classname>BaseType</classname>, then the
+name of the associated array class is <atype>BaseType[]</atype>. That is to say, an
+object belonging to the class <atype>BaseType[]</atype> is an array of items, where
+each item is a variable of type <classname>BaseType</classname>. The brackets, "<code>[]</code>",
+are meant to recall the syntax for referring to the individual items in the
+array. "<atype>BaseType[]</atype>" is read as "array of BaseType" or "BaseType
+array." It might be worth mentioning here that if <classname>ClassA</classname> is a subclass
+of <classname>ClassB</classname>, then the class <atype>ClassA[]</atype> is automatically a subclass of
+<atype>ClassB[]</atype>.</p>
+
+<p>The base type of an array can be any legal Java type. From the primitive
+type <ptype>int</ptype>, the array type <atype>int[]</atype> is derived. Each element in an
+array of type <atype>int[]</atype> is a variable of type <ptype>int</ptype>, which holds a
+value of type <ptype>int</ptype>. From a class named <classname>Shape</classname>, the array type
+<atype>Shape[]</atype> is derived. Each item in an array of type <atype>Shape[]</atype> is
+a variable of type <classname>Shape</classname>, which holds a value of type <classname>Shape</classname>.
+This value can be either <code>null</code> or a reference to an object belonging to
+the class <classname>Shape</classname>. (This includes objects belonging to subclasses of
+<classname>Shape</classname>.)</p>
+
+<break/>
+
+<p>Let's try to get a little more concrete about all this, using arrays of
+integers as our first example. Since <atype>int[]</atype> is a class, it can be used
+to declare variables. For example,</p>
+
+<pre>int[] list;</pre>
+
+<np>creates a variable named <code>list</code> of type <atype>int[]</atype>. This variable
+is <b>capable</b> of referring to an array of <code>ints</code>, but initially its
+value is <code>null</code> (if <code>list</code> is a member variable in a class) or undefined (if
+<code>list</code> is a local variable in a method). The <code>new</code> operator is used to
+create a new array object, which can then be assigned to <code>list</code>. The
+syntax for using <code>new</code> with arrays is different from the syntax you
+learned previously. As an example,</np>
+
+<pre>list = new int[5];</pre>
+
+<np>creates an array of five integers. More generally, the constructor "<code>new&nbsp;BaseType[N]</code>" 
+is used to create an array belonging to the class
+<atype>BaseType[]</atype>. The value <code>N</code> in brackets specifies the length of
+the array, that is, the number of elements that it contains. Note that the
+array "knows" how long it is. The length of the array is an instance variable
+in the array object. In fact, the length of an array, <code>list</code>, can be
+referred to as <code>list.length</code>. (However, you are not allowed to change
+the value of <code>list.length</code>, so it's really a "<code>final</code>" instance
+variable, that is, one whose value cannot be changed after it has been
+initialized.)</np>
+
+<p>The situation produced by the statement "<code>list = new int[5];</code>" can be
+pictured like this:</p>
+
+<img src="array_of_ints.png" width="506" height="183" tex="array_of_ints.eps" texscale="0.6"
+   alt="(Illustration of an array of ints)" />
+
+
+<np>Note that the newly created array of integers is automatically filled with
+zeros. In Java, a newly created array is <b>always</b> filled with a known,
+default value: zero for numbers, <code>false</code> for <ptype>boolean</ptype>, the
+character with Unicode number zero for <ptype>char</ptype>, and <code>null</code> for
+objects.</np>
+
+<p>The elements in the array, <code>list</code>, are referred to as
+<code>list[0]</code>, <code>list[1]</code>, <code>list[2]</code>, <code>list[3]</code>, and
+<code>list[4]</code>. (Note again that the index for the last item is one less than
+<code>list.length</code>.) However, array references can be much more general than
+this. The brackets in an array reference can contain any expression whose value
+is an integer. For example if <code>indx</code> is a variable of type <ptype>int</ptype>,
+then <code>list[indx]</code> and <code>list[2*indx+7]</code> are syntactically correct
+references to elements of the array <code>list</code>. Thus, the following loop
+would print all the integers in the array, <code>list</code>, to standard
+output:</p>
+
+<pre>for (int i = 0; i &lt; list.length; i++) {
+   System.out.println( list[i] );
+}</pre>
+
+<np>The first time through the loop, <code>i</code> is 0, and <code>list[i]</code>
+refers to <code>list[0]</code>. So, it is the value stored in the variable
+<code>list[0]</code> that is printed. The second time through the loop, <code>i</code>
+is 1, and the value stored in <code>list[1]</code> is printed. The loop ends after
+printing the value of <code>list[4]</code>, when <code>i</code> becomes equal to 5 and
+the continuation condition "<code>i&nbsp;&lt;&nbsp;list.length</code>" is no longer true. This
+is a typical example of using a loop to process an array. I'll discuss more
+examples of array processing throughout this chapter.</np>
+
+<p>Every use of a variable in a program specifies a memory location. Think for
+a moment about what the computer does when it encounters a reference to an
+array element, <code>list[k]</code>, while it is executing a program. The computer
+must determine which memory location is being referred to. To the computer,
+<code>list[k]</code> means something like this: "Get the pointer that is stored in
+the variable, <code>list</code>. Follow this pointer to find an array object. Get
+the value of <code>k</code>. Go to the <code>k</code>-th position in the array, and
+that's the memory location you want." There are two things that can go wrong
+here. Suppose that the value of <code>list</code> is <code>null</code>. If that is the case,
+then <code>list</code> doesn't even refer to an array. The attempt to refer to an
+element of an array that doesn't exist is an error that will cause an exception of
+type <classname>NullPointerException</classname> to be thrown. 
+ The second possible error occurs if <code>list</code> does
+refer to an array, but the value of <code>k</code> is outside the legal range of
+indices for that array. This will happen if <code>k&nbsp;&lt;&nbsp;0</code> or if <code>k&nbsp;&gt;=
+list.length</code>. This is called an "array index out of bounds" error. 
+When an error of this type occurs, an exception of type
+<classname>ArrayIndexOutOfBoundsException</classname> is thrown.
+When you use arrays in a program, you should be mindful that both types of error are
+possible. However, array index out of bounds errors are by far the most common
+error when working with arrays.</p>
+
+</subsection>
+   
+<subsection  id="arrays.1.3" title="Array Initialization">
+   
+
+<p>For an array variable, just as for any variable, you can declare the
+variable and initialize it in a single step. For example,</p>
+
+<pre>int[] list = new int[5];</pre>
+
+<np>If <code>list</code> is a local variable in a subroutine, then this is exactly
+equivalent to the two statements:</np>
+
+<pre>int[] list;
+list = new int[5];</pre>
+
+<np>(If <code>list</code> is an instance variable, then of course you can't simply
+replace "<code>int[] list = new int[5];</code>" with "<code>int[] list; list = new
+int[5];</code>" since the assignment statement "<code>list = new int[5];</code>" is
+only legal inside a subroutine.)</np>
+
+<p>The new array is filled with the default value appropriate for the base type
+of the array&mdash;zero for <ptype>int</ptype> and <code>null</code> for class types, for
+example. However, Java also provides a way to initialize an array variable with
+a new array filled with a specified list of values. In a declaration statement
+that creates a new array, this is done with an <newword>array initializer</newword>. 
+For example,</p>
+
+<pre>int[] list = { 1, 4, 9, 16, 25, 36, 49 };</pre>
+
+<np>creates a new array containing the seven values 1, 4, 9, 16, 25, 36, and 49,
+and sets <code>list</code> to refer to that new array. The value of
+<code>list[0]</code> will be 1, the value of <code>list[1]</code> will be 4, and so
+forth. The length of <code>list</code> is seven, since seven values are provided in
+the initializer.</np>
+
+<p>An array initializer takes the form of a list of values, separated by commas
+and enclosed between braces. The length of the array does not have to be
+specified, because it is implicit in the list of values. The items in an array
+initializer don't have to be constants. They can be variables or arbitrary
+expressions, provided that their values are of the appropriate type. For
+example, the following declaration creates an array of eight <classname>Colors</classname>.
+Some of the colors are given by expressions of the form "<code>new Color(r,g,b)</code>"
+instead of by constants:</p>
+
+<pre>Color[] palette = {
+             Color.BLACK,
+             Color.RED,
+             Color.PINK,
+             new Color(0,180,0),  // dark green
+             Color.GREEN,
+             Color.BLUE,
+             new Color(180,180,255),  // light blue
+             Color.WHITE
+           };</pre>
+
+<p>A list initializer of this form can be used <b>only</b> in a declaration
+statement, to give an initial value to a newly declared array variable. It
+cannot be used in an assignment statement to assign a value to a variable that
+has been previously declared. However, there is another, similar notation for
+creating a new array that can be used in an assignment statement or passed as a
+parameter to a subroutine. The notation uses another form of the <code>new</code>
+operator to both create and initialize a new array object at the same time.
+(The rather odd syntax
+is similar to the syntax for anonymous classes, which were discussed in
+<localref href="OOP.7.3"/>.) For example to assign a new value to
+an array variable, <code>list</code>, that was declared previously, you could
+use:</p>
+
+<pre>list = new int[] { 1, 8, 27, 64, 125, 216, 343 };</pre>
+
+<np>The general syntax for this form of the <code>new</code> operator is</np>
+
+<pre>new <bnf>base-type</bnf> [ ] { <bnf>list-of-values</bnf> }</pre>
+
+<np>This is actually an expression whose value is a reference to a newly created
+array object. This means that it can be used in any
+context where an object of type <bnf>base-type</bnf><code>[]</code> is expected. For example, if
+<code>makeButtons</code> is a method that takes an array of <classname>Strings</classname> as a
+parameter, you could say:</np>
+
+<pre>makeButtons( new String[] { "Stop", "Go", "Next", "Previous" } );</pre>
+   
+<np>Being able to create and use an array "in place" in this way can be very convenient,
+in the same way that anonymous nested classes are convenient.</np>
+   
+<p>By the way, it is perfectly legal to use the "<code>new BaseType[] {&nbsp;&dots;&nbsp;}</code>" syntax
+instead of the array initializer syntax in the declaration of an array variable.  For example,
+instead of saying:</p>
+   
+<pre>int[] primes = { 2, 3, 5, 7, 11, 13, 17, 19 };</pre>
+   
+<np>you can say, equivalently,</np>
+   
+<pre>int[] primes = new int[] { 2, 3, 5, 7, 11, 17, 19 };</pre>
+   
+<np>In fact, rather than use a special notation that works only in the context
+of declaration statements, I prefer to use the second form.</np>
+
+<break/>
+
+<p>One final note: For historical reasons, an array declaration such as</p>
+
+<pre>int[] list;</pre>
+
+<np>can also be written as</np>
+   
+<pre>int list[];</pre>
+
+<np>which is a syntax used in the languages C and C++. However, this alternative
+syntax does not really make much sense in the context of Java, and it is
+probably best avoided. After all, the intent is to declare a variable of a
+certain type, and the name of that type is "<atype>int[]</atype>". It makes sense to
+follow the "<bnf>type-name</bnf>  <bnf>variable-name</bnf>;" syntax for such declarations.</np>
+   
+</subsection>
+
+</section>

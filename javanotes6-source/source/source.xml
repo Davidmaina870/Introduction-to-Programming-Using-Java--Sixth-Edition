@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<source>
+   
+<p>
+<web><start><big>T</big>his page contains links</start> to the source code for</web>
+<tex><start><big>T</big>his appendix contains a list</start> of the</tex>
+examples appearing in the free, on-line textbook <i><a href="../index.html">Introduction 
+to Programming Using Java,</a></i> Sixth Edition. <tex>The source code files can
+be found in the on-line version of this book, or in the <code>source</code> directory
+of a download of the web site.</tex>
+You should be able to compile the files and use them. Note however that some of these
+examples depend on other source files, such as <sourceref href="TextIO.java"/> 
+and <sourceref href="MosaicPanel.java"/>,
+that are not built into Java. These are classes that I have written. <b>Links to
+all necessary non-standard source code files are provided below.</b>  To compile
+a program that uses a non-standard class, the source code file or the compiled class
+file for that class should be in the same location as the program that uses it.
+To run the program, you only need the compiled class file.
+Note that almost all of my classes are meant to be placed in the default package,
+to be used by programs that are also in the default package.  To use them
+in other packages, you will have to add an appropriate "package" declaration to the
+beginning of the source code.</p>
+
+<p>The solutions to end-of-chapter exercises are <b>not</b>
+listed <web>on this page</web><tex>in this appendix</tex>. Each end-of-chapter 
+exercise has its own Web page, which
+discusses its solution. The source code of a sample solution of each exercise
+is given in full on the solution page for that exercise. If you want to compile
+the solution, you should be able to cut-and-paste the solution out of a Web
+browser window and into a text editing program. (You can't cut-and-paste from
+the HTML source of the solution page, since it contains extra HTML markup
+commands that the Java compiler won't understand; the HTML markup does
+not appear when the page is displayed in a Web browser.)</p>
+
+<p>Note that most of these examples require Java version 5.0 or later. A few of
+them were written for older versions, but will still work with current
+versions. When you compile some of these older programs with current versions
+of Java, you might get warnings about "deprecated" methods. These warnings are
+<b>not</b> errors. When a method is deprecated, it means that it should not be used in
+new code, but it has not yet been removed from the language. It is possible
+that deprecated methods might be removed from the language at some future time,
+but for now you just get a warning about using them.</p>
+
+
+<subsection id="source.1" title="Part 1: Text-oriented Examples">
+
+<p>Many of the sample programs in the text are based on console-style
+input/output, where the computer and the user type lines of text back and forth
+to each other. Some of these programs use the standard output object,
+<code>System.out</code>, for output. Many of them use my non-standard class,
+<classname>TextIO</classname>, for both input and output. For the programs that use <classname>TextIO</classname>,
+one of the files <sourceref href="TextIO.java"/> or TextIO.class must
+be available when you compile the program, and TextIO.class must be available
+when you run the program.  There is also a GUI version of TextIO;
+you can find information about it at the end of <web>this web page</web><tex>Part&nbsp;4, below</tex>.</p>
+
+<p>The programs listed here are stand-alone
+applications, not applets, but I have written applets that simulate many of the
+programs.  These "console applets" appear on Web pages in the on-line version
+of this textbook.  They
+are based on <sourceref href="TextIOApplet.java"/>, which provides
+the same methods as <classname>TextIO</classname>, but in an applet instead of in
+a stand-alone application.  It is straightforward to convert a
+TextIO program to a TextIOApplet applet.  See the comments in the
+<sourceref href="TextIOApplet.java"/> file for information about
+how to do it.  One example of this can be found in the file
+<sourceref href="Interest3Console.java"/>.</p>
+
+<ul>
+   <li><sourceref href="Interest.java"/>, from <localref href="basics.2"/>, computes the interest on
+   a specific amount of money over a period of one year.</li>
+   <li><sourceref href="TimedComputation.java"/>, from <localref href="basics.3"/>, demonstrates a few
+   basic built-in subroutines and functions.</li>
+   <li><sourceref href="EnumDemo.java"/>, from <localref href="basics.3"/>, a <b>very</b> simple
+   first demonstration of enum types.</li>
+   <li><sourceref href="PrintSquare.java"/>, from <localref href="basics.4"/>, reads an integer 
+   typed in by the user and prints the square of that integer. <b>This program depends on 
+   <sourceref href="TextIO.java"/>.  The same is true for almost all of the programs in the
+   rest of this list.</b></li>
+   <li><sourceref href="Interest2.java"/>, from <localref href="basics.4"/>, calculates
+   interest on an investment for one year, based on user input. </li>
+   <li><sourceref href="CreateProfile.java"/>, from <localref href="basics.4"/>, a simple
+   demo of output to a file, using TextIO.</li>
+   <li><sourceref href="Interest2WithScanner.java"/>, from <localref href="basics.4"/>, is a version
+   of <sourceref href="Interest2.java"/> that uses <classname>Scanner</classname> instead of
+   <classname>TextIO</classname> to read input from the user.</li>
+   <li><sourceref href="Interest3.java"/>, from <localref href="control.1"/>, the first
+   example that uses control statements.</li>
+   <li><sourceref href="ThreeN1.java"/>, from <localref href="control.2"/>, outputs a 3N+1 sequence
+   for a given stating value.</li>
+   <li><sourceref href="ComputeAverage.java"/>, from <localref href="control.3"/>, computes the average
+   value of some integers entered by the user.</li>
+   <li><sourceref href="CountDivisors.java"/>, from <localref href="control.4"/>, counts the number of
+   divisors of an integer entered by the user.</li>
+   <li><sourceref href="ListLetters.java"/>, from <localref href="control.4"/>, lists all the distinct
+   letters in a string entered by the user.</li>
+   <li><sourceref href="LengthConverter.java"/>, from <localref href="control.5"/>, converts length
+   measurements input by the user into different units of measure.</li>
+   <li><sourceref href="ReadNumbersFromFile.java"/>, from <localref href="control.7"/>, finds the sum
+   and the average of numbers read from a file.  Demonstrates <code>try..catch</code> statements.</li>
+   <li><sourceref href="GuessingGame.java"/>, from <localref href="subroutines.2"/>, lets the user
+   play guessing games where the computer picks a number and the user tries to guess it.
+   A slight variation of this program, which 
+   reports the number of games won by the user, is <sourceref href="GuessingGame2.java"/>.</li>
+   <li><sourceref href="RowsOfChars.java"/>, from <localref href="subroutines.3"/>, a rather useless
+   program in which one subroutine calls another.</li>
+   <li><sourceref href="ThreeN2.java"/>, from <localref href="subroutines.4"/>, is an improved
+   3N+1 program that uses subroutines and prints its output in neat columns.</li>
+   <li><sourceref href="HighLow.java"/>, from <localref href="OOP.4"/>, a simple card game.
+   It uses the classes <sourceref href="Card.java"/> and <sourceref href="Deck.java"/>, which are
+   given as examples of object-oriented programming.  Also available, the card-related classes
+   <sourceref href="Hand.java"/> and, from <localref href="OOP.5.1"/>,
+   <sourceref href="BlackjackHand.java"/>.</li>
+   <li><sourceref href="RollTwoPairs.java"/>, from <localref href="OOP.5.2"/>, uses 
+   <sourceref href="PairOfDice.java"/> to simulate rolling two pairs of dice until
+   the same total is rolled on both pairs.</li>
+   <li><sourceref href="BirthdayProblemDemo.java"/>, from <localref href="arrays.2"/>, demonstrates
+   random access to array elements using the "birthday problem" (how many people do you have
+   to choose at random until two are found whose birthdays are on the same day of the year).</li>
+   <li><sourceref href="ReverseInputNumbers.java"/>, from <localref href="arrays.3"/>, is a 
+   short program that illustrates the use of a partially full array by reading some numbers
+   from the user and then printing them in reverse order.</li>
+   <li><sourceref href="ReverseWithDynamicArray.java"/>, from <localref href="arrays.3"/>, reads
+   numbers from the user then prints them out in reverse order.  It does this using the
+   class <sourceref href="DynamicArrayOfInt.java"/> as an example of using dynamic arrays.</li>
+   <li><sourceref href="LengthConverter2.java"/>, from <localref href="robustness.2"/>,
+   converts measurements input by the user to inches, feet, yards, and miles.
+   This improvement on <sourceref href="LengthConverter.java"/> allows inputs combining
+   several measurements, such as "3 feet 7 inches," and it detects illegal inputs.</li>
+   <li><sourceref href="LengthConverter3.java"/>, from <localref href="robustness.3"/>, is
+   a revision of the previous example that uses exceptions to handle errors in the
+   user's input.</li>
+   <li><sourceref href="TowersOfHanoi.java"/>, from <localref href="recursion.2"/>,
+   prints out the steps in a solution to the Towers of Hanoi problem; an example
+   of recursion.</li>
+   <li><sourceref href="StringList.java"/>, from <localref href="recursion.2"/>,
+   implements a linked list of strings.  The program <sourceref href="ListDemo.java"/>
+   tests this class.</li>
+   <li><sourceref href="PostfixEval.java"/>, from <localref href="recursion.3"/>,
+   evaluates postfix expressions using a stack.  Depends on the <classname>StackOfDouble</classname>
+   class defined in <sourceref href="StackOfDouble.java"/>.</li>
+   <li><sourceref href="SortTreeDemo.java"/>, from <localref href="recursion.4"/>,
+   demonstrates a binary sort tree of strings.</li>
+   <li><sourceref href="SimpleParser1.java"/>, from <localref href="recursion.5"/>,
+   evaluates fully parenthesized expressions input by the user.</li>
+   <li><sourceref href="SimpleParser2.java"/>, from <localref href="recursion.5"/>,
+   evaluates ordinary infix expressions input by the user.</li>
+   <li><sourceref href="SimpleParser3.java"/>, from <localref href="recursion.5"/>,
+   reads infix expressions input by the user and constructs expression trees that
+   represent those expressions.</li>
+   <li><sourceref href="WordListWithTreeSet.java"/>, from <localref href="generics.2"/>,
+   makes an alphabetical list of words from a file.  A <classname>TreeSet</classname> 
+   is used to eliminate duplicates and sort the words.</li>
+   <li><sourceref href="SimpleInterpreter.java"/>, from <localref href="generics.4"/>,
+   demonstrates the use of a <classname>HashMap</classname> as a symbol table in a
+   program that interprets simple commands from the user.</li>
+   <li><sourceref href="WordCount.java"/>, from <localref href="generics.4"/>,
+   counts the number of occurrences of each word in a file.  The program uses
+   several features from the Java Collection Framework.</li>
+   <li><sourceref href="ReverseFile.java"/>, from <localref href="IO.2"/>, shows how
+   to read and write files in a simple command-line application; uses the
+   non-standard class <sourceref href="TextReader.java"/>.  <sourceref href="ReverseFileWithScanner.java"/>
+   is a version of the program that uses a <classname>Scanner</classname> instead of a 
+   <classname>TextReader</classname>.</li>
+   <li><sourceref href="DirectoryList.java"/>, from <localref href="IO.2"/>, lists
+   the contents of a directory specified by the user; demonstrates the use of
+   the <classname>File</classname> class.</li>
+   <li><sourceref href="CopyFile.java"/>, from <localref href="IO.3"/>, is a 
+   program that makes a copy of a file, using file names that are given as command-line
+   arguments.</li>
+   <li><sourceref href="PhoneDirectoryFileDemo.java"/>, from <localref href="IO.3"/>, demonstrates
+   the use of a file for storing data between runs of a program.</li>
+   <li><sourceref href="ReadURL.java"/>, from <localref href="IO.4"/>, reads and displays the contents
+   of a specified URL, if the URL refers to a text file.  <sourceref href="ReadURLApplet.java"/>
+   is an applet that does much the same thing.</li>
+   <li><sourceref href="ShowMyNetwork.java"/>, mentioned in <localref href="IO.4"/>, is
+   a short program that prints information about each network interface on the computer
+   where it is run, including IP addresses associated with each interface.</li>
+   <li><sourceref href="DateClient.java"/> and <sourceref href="DateServer.java"/>, from
+   <localref href="IO.4"/>, are very simple first examples of network client and
+   server programs.</li>
+   <li><sourceref href="CLChatClient.java"/> and <sourceref href="CLChatServer.java"/>, from
+   <localref href="IO.4"/>, demonstrate two-way communication over a network by
+   letting users send messages back and forth; however, no threading is used and
+   the messages must strictly alternate.</li>
+   <li><sourceref href="ThreadTest1.java"/>, from section <localref href="threads.1"/>,
+   runs one or more threads that all perform the same task, to demonstrate that they
+   run simultaneously and finish in an indeterminate order.</li>
+   <li><sourceref href="ThreadTest2.java"/>, from section <localref href="threads.1"/>,
+   divides up a task (counting primes) among several threads, to demonstrate parallel
+   processing and the use of synchronization.</li>
+   <li><sourceref href="DateServerWithThreads.java"/> and <sourceref href="DateServerWithThreadPool.java"/>,
+   from <localref href="threads.4"/>, are modifications of <sourceref href="DateServer.java"/>
+   (<localref href="IO.4.4"/>) that use threads to handle communication with clients.
+   The first program creates a new thread for each connection.  The second uses a thread
+   pool, and it uses a blocking queue to send connections from the main program to
+   the pool.  The threaded servers will work with original client program,
+   <sourceref href="DateClient.java"/>.</li>
+   <li><sourceref href="CLMandelbrotMaster.java"/>, <sourceref href="CLMandelbrotWorker.java"/>,
+   and <sourceref href="CLMandelbrotTask.java"/>, from <localref href="threads.4"/>, are
+   a demonstration of distributed computing in which pieces of a large computation
+   are sent over a network to be computed by "worker" programs.</li>
+ </ul>
+
+
+</subsection>
+
+
+
+<subsection id="source.2" title="Part 2: Graphical Examples from the Text">
+
+<p>The following programs use a graphical user interface.  The majority of them
+can be run both as stand-alone applications and as applets.  (If you have
+downloaded the web site for this book, note that most of the jar files
+for <localref href="GUI1"/> and <localref href="GUI2"/> are executable jar
+files which can be run as applications.)</p>
+
+<ul>
+   <li><sourceref href="GUIDemo.java"/> is a simple demonstration of some basic
+   GUI components from the Swing graphical user interface library.  It appears in
+   the text in <localref href="overview.6"/>, but you won't be able to understand
+   it until you learn about GUI programming.</li>
+   <li><sourceref href="StaticRects.java"/> is a rather useless applet that simply
+   draws a static image.  It is the first example of GUI programming, in
+   <localref href="control.8"/>.   This
+   applet depends on <sourceref href="AnimationBase.java"/>, which is
+   a simple framework for writing animated applets (even though there's actually
+   no animation.)</li>
+   <li><sourceref href="MovingRects.java"/>, also from <localref href="control.8"/>, 
+   draws an animated version of the image in the preceding example.  This
+   applet depends on <sourceref href="AnimationBase.java"/>, which is
+   a simple framework for writing animated applets.</li>
+   <li><sourceref href="RandomMosaicWalk.java"/>, a standalone
+   program that displays a window full of colored squares with a moving
+   disturbance, from <localref href="subroutines.6"/>.  This program depends on
+   <sourceref href="MosaicCanvas.java"/> and <sourceref href="Mosaic.java"/>.</li>
+   <li><sourceref href="RandomMosaicWalk2.java"/> is a version of the previous example, 
+   modified to use a few named constants. From <localref href="subroutines.7"/>.</li>
+   <li><sourceref href="ShapeDraw.java"/>, from <localref href="OOP.5"/>, is an applet
+   that lets the user place various shapes on a drawing area; an example of
+   abstract classes, subclasses, and polymorphism.</li>
+   <li><sourceref href="HelloWorldGUI1.java"/> and <sourceref href="HelloWorldGUI2.java"/>,
+   from <localref href="GUI1.1"/>, show the message "Hello World" in a window, the first
+   one by using the built-in <classname>JOptionPane</classname> class and the second
+   by building the interface "by hand."  Another variation, <sourceref href="HelloWorldGUI4.java"/>,
+   from <localref href="GUI1.4"/>, uses anonymous inner classes where <sourceref href="HelloWorldGUI1.java"/>
+   uses named nested classes.</li>
+   <li><sourceref href="HelloWorldApplet.java"/>, from <localref href="GUI1.2"/>, defines
+   an applet that displays the message "Hello World" or "Goodbye World".  The message 
+   changes when the user clicks a button.</li>
+   <li><sourceref href="HelloWorldPanel.java"/>, from <localref href="GUI1.2"/>, is
+   a panel that displays a message.  The panel is used as the content pane both in the
+   applet <sourceref href="HelloWorldApplet2.java"/> and in the window of the
+   stand-alone application <sourceref href="HelloWorldGUI3.java"/>.  This example
+   illustrates the technique of using the same panel class in both an applet and
+   a stand-alone application, a technique that will be used in many examples in the
+   rest of the book.</li>
+   <li><sourceref href="ColorChooserApplet.java"/>, used in <localref href="GUI1.3"/>
+   to demonstrate RGB and HSB colors. This applet uses techniques that are not
+   covered until later in the text, and it is not presented as a programming
+   example.</li>
+   <li><sourceref href="RandomStringsApplet.java"/>, from <localref href="GUI1.3"/>,
+   shows 25 copies of the string "Java!" (or some other string specified in an applet
+   param) in random colors and fonts.  The applet uses <sourceref href="RandomStringsPanel.java"/>
+   for its content pane, and there is a stand-alone application <sourceref href="RandomStringsApp.java"/>
+   that uses the same panel class.</li>
+   <li><sourceref href="ClickableRandomStringsApp.java"/>, from <localref href="GUI1.4"/>,
+   is similar to <sourceref href="RandomStringsApp.java"/> except that the window is repainted
+   when the user clicks the window.  This is a first example of using a mouse listener.
+   The applet version is <sourceref href="ClickableRandomStringsApplet.java"/>.</li>
+   <li><sourceref href="SimpleStamper.java"/>, from <localref href="GUI1.4"/>,
+   lets the user place rectangles and ovals on a drawing area by clicking with the mouse.
+   The applet version is <sourceref href="SimpleStamperApplet.java"/>.  Both versions
+   use <sourceref href="SimpleStamperPanel.java"/> for their content panes.</li>
+   <li><sourceref href="SimpleTrackMouse.java"/>, from <localref href="GUI1.4"/>,
+   shows information about mouse events.
+   The applet version is <sourceref href="SimpleTrackMouseApplet.java"/>.  Both versions
+   use <sourceref href="SimpleTrackMousePanel.java"/> for their content panes.</li>
+   <li><sourceref href="SimplePaint.java"/>, from <localref href="GUI1.4"/>,
+   lets the user draw curves in a drawing area and select the drawing color from a
+   palette.  The class <classname>SimplePaint</classname> can be used either as
+   an applet or as a stand-alone application.</li>
+   <li><sourceref href="RandomArtPanel.java"/>, from <localref href="GUI1.5"/>, shows
+   a new random "artwork" every four seconds.  This is an example of using a <classname>Timer</classname>.
+   Used in an applet version of the program, <sourceref href="RandomArtApplet.java"/>, and
+   a stand-alone application version, <sourceref href="RandomArt.java"/>.</li>
+   <li><sourceref href="KeyboardAndFocusDemo.java"/>, from <localref href="GUI1.5"/>, shows
+   how to use keyboard and focus events.  This class can be run either has an applet or
+   as a stand-alone application.</li>
+   <li><sourceref href="SubKillerPanel.java"/>, from <localref href="GUI1.5"/>, lets the
+   user play a simple game.  Uses a timer as well as keyboard and focus events.  The
+   applet version is <sourceref href="SubKillerApplet.java"/>, and the stand-alone application
+   version is <sourceref href="SubKiller.java"/>.</li>
+   <li><sourceref href="SliderDemo.java"/>, a simple demo from <localref href="GUI1.6"/>, is an applet
+   that shows three <classname>JSliders</classname>.</li>
+   <li><sourceref href="TextAreaDemo.java"></sourceref>, from <localref href="GUI1.6"/>, is an applet
+   that demonstrates a <classname>JTextArea</classname> in a <classname>JScrollPane</classname>.</li>
+   <li><sourceref href="BorderDemo.java"/>, from <localref href="GUI1.7"/>, a very simple applet
+   that demonstrates six types of border.</li>
+   <li><sourceref href="SliderAndComboBoxDemo.java"/>, from <localref href="GUI1.7"/>,
+   shows how to create several components and lay them out in a <classname>GridLayout</classname>.
+   Can be used either as an applet or as a stand-alone application.</li>
+   <li><sourceref href="SimpleCalc.java"/>, from <localref href="GUI1.7"/>, lets the
+   user add, subtract, multiply, or divide two numbers input by the user.  A demo
+   of text fields, buttons, and layout with nested subpanels.
+   Can be used either as an applet or as a stand-alone application.</li>
+   <li><sourceref href="NullLayoutDemo.java"/>, from <localref href="GUI1.7"/>, shows
+   how to lay out the components in a container for which the layout manager has been
+   set to <code>null</code>. Can be used either as an applet or as a stand-alone application.</li>
+   <li><sourceref href="HighLowGUIPanel.java"/>, from <localref href="GUI1.7"/>, is a subclass of
+   <classname>JPanel</classname> that implements a GUI version of the card game
+   <sourceref href="HighLow.java"/>, in which the user sees a playing card and guesses
+   whether the next card will be higher or lower in value. This class depends on
+   <sourceref href="Card.java"/>, <sourceref href="Hand.java"/>, and
+   <sourceref href="Deck.java"/>. A standalone application that uses this panel is
+   in <sourceref href="HighLowGUI.java"/>.  An applet that uses it is in
+   <sourceref href="HighLowGUIApplet.java"/>.</li>
+   <li><sourceref href="MosaicDrawController.java"/>, from <localref href="GUI1.8"/>,
+   demonstrates menus and a color chooser dialog.  This is used in a program where
+   the user colors the squares of a mosaic by clicking-and-dragging the mouse. It uses
+   <sourceref href="MosaicPanel.java"/> to define the mosaic panel itself.
+   <classname>MosaicDrawController</classname> is used in the stand-alone application
+   <sourceref href="MosaicDrawFrame.java"/>, in the applet
+   <sourceref href="MosaicDrawApplet.java"/>, and in the applet
+   <sourceref href="MosaicDrawLauncherApplet.java"/>.  The latter applet appears
+   as a button on a web page; clicking the button opens a <classname>MosaicDrawFrame</classname>.</li>
+   <li><sourceref href="SimpleDialogDemo.java"/>, from <localref href="GUI1.8"/>,
+   is an applet that demonstrates <classname>JColorChooser</classname> and some
+   dialogs from <classname>JOptionPane</classname>.</li>
+   <li><sourceref href="RandomStringsWithArray.java"/>, from <localref href="arrays.2"/>,
+   shows 25 copies of a message in random colors, sizes, and positions.  This is an
+   improved version of <sourceref href="RandomStringsPanel.java"/> that uses an
+   array to keep track of the data, so that the same picture can be redrawn whenever
+   necessary.  (Written only as an applet.)</li>
+   <li><sourceref href="SimpleDrawRects.java"/>, from <localref href="arrays.3"/>, lets
+   the user place colored rectangles in a drawing area.  Illustrates the use of
+   an <classname>ArrayList</classname>.  An applet version is
+   <sourceref href="SimpleDrawRectsApplet.java"/>.  This program uses and depends on
+   <sourceref href="RainbowPalette.java"/>.</li>
+   <li><sourceref href="SimplePaint2.java"/>, from <localref href="arrays.3"/>, lets
+   the user draw colored curves and stores the data needed for repainting the
+   drawing surface in a list of type <atype>ArrayList&lt;CurveData&gt;</atype>.
+   <sourceref href="SimplePaint2Applet.java"/> runs the program as an applet.</li>
+   <li><sourceref href="Checkers.java"/>, from <localref href="arrays.5"/>, lets two
+   users play a game of checkers against each other.  Illustrates the use of a 
+   two-dimensional array. (This is the longest program in the book so far, at over 750
+   lines!) <sourceref href="CheckersApplet.java"/> runs the program as an applet.</li>
+   <li><sourceref href="Blobs.java"/>, from <localref href="recursion.1"/>, recursively
+   counts groups of colored squares in a grid.</li>
+   <li><sourceref href="DepthBreadth.java"/>, from <localref href="recursion.3"/>,
+   demonstrates stacks and queues.</li>
+   <li><sourceref href="TrivialEdit.java"/>, from <localref href="IO.3"/>, lets
+   the user edit short text files.  This program demonstrates reading and writing
+   files and using file dialogs.</li>
+   <li><sourceref href="SimplePaintWithFiles.java"/>, from <localref href="IO.3"/>,
+   demonstrates saving data from a program to a file in both binary and character form.  The
+   program is a simple sketching program based on <sourceref href="SimplePaint2.java"/>.</li>
+   <li><sourceref href="SimplePaintWithXML.java"/> and <sourceref href="SimplePaintWithXMLEncoder.java"/>,
+   from <localref href="IO.5"/>, demonstrate saving data from a program to a file in XML format.  
+   The first program uses an invented XML language, while the second uses an
+   <classname>XMLEncoder</classname> for writing files and an <classname>XMLDecoder</classname>
+   for reading files.  These programs are modifications of <sourceref href="SimplePaintWithFiles.java"/>.</li>
+   <li><sourceref href="XMLDemo.java"/>, from <localref href="IO.5"/>, is a simple
+   program that demonstrates basic parsing of an XML document and traversal of the Document Object
+   Model representation of the document.  The user enters the XML to be parsed in
+   a text area.  The trivial class <sourceref href="XMLDemoApplet.java"/> runs the
+   program as an applet.</li>
+   <li><sourceref href="RandomArtWithThreads.java"/>, from <localref href="threads.2"/>,
+   uses a thread to drive a very simple animation.  Compare to <sourceref href="RandomArtPanel.java"/>,
+   which does the same thing with a timer.</li>
+   <li><sourceref href="QuicksortThreadDemo.java"/>, from <localref href="threads.2"/>,
+   demonstrates using a separate thread to perform a computation, with simple inter-thread
+   communication.  The program is a visual demo of the QuickSort algorithm.
+   (<sourceref href="QuicksortThreadDemoApplet.java"/> is a trivial class
+   that shows the program as an applet.)</li>
+   <li><sourceref href="BackgroundComputationDemo.java"/>, from <localref href="threads.2"/>,
+   demonstrates using a thread running at a lower priority to perform a lengthy computation
+   in the background.  (The program computes a visualization of a small piece of the Mandelbrot
+   set, but the particular computation that is done is not important.)</li>
+   <li><sourceref href="MultiprocessingDemo1.java"/>, from <localref href="threads.2"/>,
+   is a modification of the previous example that uses several threads to perform the
+   background computation.  This speeds up the computation on multi-processor machines.
+   (<sourceref href="MultiprocessingDemo1Applet.java"/> is a trivial class
+   that shows the program as an applet.)</li>
+   <li><sourceref href="MultiprocessingDemo2.java"/>, from <localref href="threads.3"/>,
+   is a modification of the previous example that decomposes its task into a large number
+   of fairly small subtasks, in order to achieve better load balancing.  The program
+   uses a thread pool and a queue of tasks.
+   (<sourceref href="MultiprocessingDemo2Applet.java"/> is a trivial class
+   that shows the program as an applet.)</li>
+   <li><sourceref href="MultiprocessingDemo3.java"/>, from <localref href="threads.3"/>,
+   is yet another version of the previous examples.  This one uses a pool of threads
+   that run forever, taking tasks from a queue and executing them.  To make this possible,
+   a blocking queue is used, defined by the standard <classname>LinkedBlockingQueue</classname>
+   class.  <sourceref href="MyLinkedBlockingQueue.java"/> is a simple example of
+   using <code>wait()</code> and <code>notify()</code> directly that can be used
+   as a replacement for <classname>LinkedBlockingQueue</classname> in
+   <code>MultiprocessingDemo3</code>.</li>
+   <li><sourceref href="TowersOfHanoiWithControls.java"/>, from <localref href="threads.3"/>,
+   shows an animation of the famous Towers Of Hanoi problem.  The user can control
+   the animation with Run/Pause, Next, and StartAgain buttons.  The program is
+   an example of using <code>wait()</code> and <code>notify()</code> directly
+   for communication between threads.
+   (<sourceref href="TowersOfHanoiWithControlsApplet.java"/> is a trivial class
+   that shows the program as an applet.)</li>
+   <li><sourceref href="ChatSimulation.java"/>, from <localref href="threads.4"/> (on-line version only),
+   is an applet that simulates a network chat.  There is no networking in this applet.  
+   The only point is to demonstrate how
+   a thread could be used to process (simulated) incoming messages.</li>
+   <li><sourceref href="GUIChat.java"/>, from <localref href="threads.4"/>, is a simple GUI program
+   for chatting between two people over a network.  It demonstrates using a thread for
+   reading data from a network connection.</li>
+   <li><sourceref href="netgame/common/">netgame.common</sourceref>, from <localref href="threads.5"/>, 
+   is a package that defines a framework for networked games.  This framework is used in several
+   examples:  A chat room, defined in package <sourceref href="netgame/chat/">netgame.chat</sourceref>;
+   a tic-tac-toe game, defined in package <sourceref href="netgame/tictactoe">netgame.tictactoe</sourceref>;
+   and a poker game, defined in package <sourceref href="netgame/fivecarddraw/">netgame.fivecarddraw</sourceref>.</li>
+   <li><sourceref href="HighLowWithImages.java"/>, from <localref href="GUI2.1"/>, is a 
+   variation of <sourceref href="HighLowGUI.java"/> that takes playing card images from an
+   image file.  Requires the image file <sourceref href="cards.png"/> and depends on
+   <sourceref href="Card.java"/>, <sourceref href="Deck.java"/>, and <sourceref href="Hand.java"/>.
+   <sourceref href="HighLowWithImagesApplet.java"/> runs this program as an applet.</li>
+   <li><sourceref href="PaintWithOffScreenCanvas.java"/>, from <localref href="GUI2.1"/>, is a little
+   paint program that illustrates the use of a <classname>BufferedImage</classname> as
+   an off-screen canvas.  This class, like many other examples from Chapter 12, includes
+   a static nested subclass of <classname>JApplet</classname> that can be used to run the
+   program as an applet.  This is, admittedly, a somewhat tricky way to do things.  See
+   the source code for information about how to use the applet class.</li>
+   <li><sourceref href="SoundAndCursorDemo.java"/>, from <localref href="GUI2.1"/>, lets the user
+   play a few sounds and change the cursor by clicking some buttons.  This demonstrates
+   using audio resource files and using an image resource to create a custom cursor.  Requires
+   the resource files in the directory <sourceref href="snc_resources"/>.</li>
+   <li><sourceref href="TransparencyDemo.java"/>, from <localref href="GUI2.2"/>, demonstrates
+   using the alpha component of colors.  It is also an example of using <classname>FontMetrics</classname>.</li>
+   <li><sourceref href="StrokeDemo.java"/>, from <localref href="GUI2.2"/>, demonstrates the
+   use of various <classname>BasicStrokes</classname> for drawing lines and rectangles.
+   Also demonstrates antialiasing.</li>
+   <li><sourceref href="PaintDemo.java"/>, from <localref href="GUI2.2"/>, demonstrates
+   using a <classname>GradientPaint</classname> and using a <classname>TexturePaint</classname>
+   to fill a polygon.  Uses the image resource files <sourceref href="TinySmiley.png"/>
+   and <sourceref href="QueenOfHearts.png"/>.</li>
+   <li><sourceref href="RadioButtonDemo.java"/>, from <localref href="GUI2.3"/>, does
+   what its name indicates.</li>
+   <li><sourceref href="ToolBarDemo.java"/>, from <localref href="GUI2.3"/>, uses a <classname>JToolBar</classname>
+   that holds a group of 3 radio buttons and a push button.  All the buttons use custom
+   icons, and the push button is created from an <classname>Action</classname>.</li>
+   <li><sourceref href="SillyStamper.java"/>, from <localref href="GUI2.4"/>, demonstrates using
+   a <classname>JList</classname> of <classname>Icons</classname>.  The user can "stamp" images
+   of a selected icon onto a drawing area.  This program uses the icon images in the
+   directory <sourceref href="stamper_icons"/> as resources.</li>
+   <li><sourceref href="StatesAndCapitalsTableDemo.java"/>, from <localref href="GUI2.4"/>, is
+   a completely trivial demo of  a <classname>JTable</classname>.</li>
+   <li><sourceref href="ScatterPlotTableDemo.java"/>, from <localref href="GUI2.4"/>, uses
+   a <classname>TableModel</classname> to customize a <classname>JTable</classname>.
+   The table is a list of xy-points that the user can edit.  A scatter plot of the
+   points is displayed.</li>
+   <li><sourceref href="SimpleWebBrowser.java"/> and <sourceref href="SimpleWebBrowserWithThread.java"/>,
+   from <localref href="GUI2.4"/>, implement a simple web browser using <classname>JEditorPane</classname>
+   (which is ridiculously easy).  The difference between the programs is that the first
+   loads documents synchronously, which can hang the program in an unpleasant way, while
+   the second uses a thread to load documents asynchronously.</li>
+   <li><sourceref href="SimpleRTFEdit.java"/>, mentioned but just barely discussed
+   in <localref href="GUI2.4"/>, lets the user edit RTF files, which are text files in
+   a format that include style information such as bold and italics.  This is mainly a simple
+   demo of using <classname>Actions</classname> defined by "editor kits."</li>
+   <li><sourceref href="StopWatchLabel.java"/> and <sourceref href="MirrorText.java"/>, from
+   <localref href="GUI2.4"/>, are classes that implement custom components.
+   <sourceref href="CustomComponentTest.java"/> is a program that tests them.</li>
+   <li>The Mandelbrot program from <localref href="GUI2.5"/>, which computes and
+   displays visualizations of the Mandelbrot set, is defined by several classes in the
+   package <code>edu.hws.eck.mdb</code>.  The source code files can be found in
+   the directory <sourceref href="edu/hws/eck/mdb"/>.</li>
+</ul>
+
+   
+</subsection>
+
+
+
+<subsection id="source.3" title="Part 3: End-of-Chapter Applets">
+
+<p>This section contains the source code for the applets that are used as
+decorations at the end of each chapter<tex> in the on-line version of this textbook</tex>. 
+In general, you should not expect to be
+able to understand these applets at the time they occur in the text.   Some of
+these are older applets that will work with Java 1.1 or even Java 1.0.  They
+are not meant as examples of good programming practice for more recent
+versions of Java.</p>
+
+<ul>
+   <li><sourceref href="Moire.java"/>, an animated design, shown at the end
+   of <localref href="overview.7"/>.  You can use applet parameters to
+   control various aspects of this applet's behavior. Also note that you can click
+   on the applet and drag the pattern around by hand. See the source code for
+   details.</li>
+   <li><sourceref href="JavaPops.java"/>, from <localref href="basics.6"/>
+   is a simple animation that shows copies
+   of the string "Java!" in various sizes and colors appearing and disappearing.
+   This is an old applet that depends on an old animation framework
+   named <sourceref href="SimpleAnimationApplet.java"/></li>
+   <li><sourceref href="RandomBrighten.java"/>, showing a grid of
+   colored squares that get more and more red as a wandering disturbance visits
+   them, from the end of <localref href="subroutines.7"/>. Depends on
+   <sourceref href="MosaicCanvas.java"/> </li>
+   <li><sourceref href="SymmetricBrighten.java"/>, a subclass of the previous example that makes 
+   a symmetric pattern, from the end of <localref href="OOP.7"/>.  Depends on
+   <sourceref href="MosaicCanvas.java"/> and <sourceref href="RandomBrighten.java"/>.</li>
+   <li><sourceref href="TrackLines.java"/>, an applet with lines that
+   track the mouse, from <localref href="GUI1.8"/>.</li>
+   <li><sourceref href="KaleidoAnimate.java"/>, from <localref href="arrays.5"/>, shows moving
+   kaleidoscopic images.</li>
+   <li><sourceref href="SimpleCA.java"/>, a Cellular Automaton applet,
+   from the end of <localref href="robustness.5"/>. This applet depends on
+   the file <sourceref href="CACanvas.java"/> For more information on
+   cellular automata see <a href="http://math.hws.edu/xJava/CA/">http://math.hws.edu/xJava/CA/</a>.</li>
+   <li><sourceref href="TowersOfHanoiGUI.java"/>, from <localref href="recursion.5"/>,
+   graphically shows the solution to the Towers of Hanoi problem with 10 disks.
+   A newer version of this program, with buttons that allow some control of the
+   animation is <sourceref href="TowersOfHanoiWithControls.java"/>, from <localref href="threads.3"/>.</li>
+   <li><sourceref href="LittlePentominosApplet.java"/>, from <localref href="generics.5"/>,
+   solves pentominos puzzles using a simple recursive backtracking algorithm.  This
+   applet depends on <sourceref href="MosaicPanel.java"/>.  For a much more complex
+   Pentominos applet, see 
+   <a href="http://math.hws.edu/xJava/PentominosSolver/">http://math.hws.edu/xJava/PentominosSolver/</a>.</li>
+   <li><sourceref href="Maze.java"/>, an applet that creates a random maze and
+   solves it, from <localref href="IO.5"/>.</li> 
+   <li><sourceref href="LittleQuicksortDemo.java"/>, 
+   from the end of <localref href="threads.5"/>, is a simplified version of
+   <sourceref href="QuicksortThreadDemo.java"/>, which is discussed in 
+   <localref href="threads.2"/>.  The applet shows a visualization of the
+   QuickSort algorithm where the goal is to sort a list of colored bars
+   into spectral order from red to violet.</li>
+   <li>The applet at the end of <localref href="GUI2.5"/> is the same Mandelbrot program
+   that is discussed as an example in that section, with source files in the
+   directory <sourceref href="edu/hws/eck/mdb"/>.</li>
+</ul>
+
+</subsection>
+
+
+<subsection id="source.4" title="Part 4: Auxiliary Files">
+
+<p>This section lists some of the extra source files that are required by
+various examples in the previous sections. The files listed here
+are those which are general enough to be potentially useful in
+other programming projects. Links to these files are also given above,
+along with the programs that use them.</p>
+
+<ul>
+   <li><sourceref href="TextIO.java"/> defines a class containing some
+   static methods for doing input/output. These methods make it easier to use the
+   standard input and output streams, <code>System.in</code> and <code>System.out</code>.
+   <classname>TextIO</classname> also supports other input sources and output destinations,
+   such as files.  Note that this version of <classname>TextIO</classname> requires Java 5.0 (or higher).  The
+   <classname>TextIO</classname> class defined by this file is only useful in a command-line
+   environment, and it might be inconvenient to use in integrated development environments such
+   as Eclipse in which standard input does not work particularly well. In that case, you might want to use
+   the following file instead.</li>
+   <li><sourceref href="TextIO-GUI/TextIO.java">TextIO.java for GUI</sourceref> defines an
+   alternative to the preceding file. It defines a version of <classname>TextIO</classname> with the same set of
+   input and output routines as the original version. But
+   instead of using standard I/O, this GUI version opens its own window, and the
+   input/output is done in that window.  Please read the comments at the beginning
+   of the file. (For people who have downloaded this book: The file is located in
+   a directory named TextIO-GUI inside the source directory.)</li>
+   <li><sourceref href="TextIOApplet.java"/> can be used for writing applets that simulate
+   <classname>TextIO</classname> programs.  This makes it possible to write applets that use
+   "console-style" input/output.  Such applets are created as subclasses of <classname>TextIOApplet</classname>.
+   See the comments in the file for more information about how to convert a TextIO
+   program into a TextIOApplet applet.  An example can be found in the file
+   <sourceref href="Interest3Console.java"/>.</li>
+   <li><sourceref href="AnimationBase.java"/>, a
+   class that can be used as a framework for writing animated applets. To use the
+   framework, you have to define a subclass of <classname>AnimationBase</classname>.
+   <localref href="control.8"/> has an example.</li> 
+   <li><sourceref href="Mosaic.java"/> contains subroutines for opening and controlling a
+   window that contains a grid of colored rectangles.  It depends on <sourceref href="MosaicCanvas.java"/>.
+   This is a toolbox for writing simple stand-alone applications that use a "mosaic window."  This
+   is rather old code, but it is used in examples in <localref href="subroutines.6"/>
+   and <localref href="subroutines.7"/>.</li>
+   <li><sourceref href="MosaicPanel.java"/> is a greatly improved version of <sourceref href="MosaicCanvas.java"/>
+   that has many options.  This class defines a subclass of JPanel that shows little
+   rectangles arranged in rows and columns.  It is used in the "mosaic draw" example in
+   <localref href="GUI1.8"/>.</li>
+   <li><sourceref href="Expr.java"/> defines a class <classname>Expr</classname> that
+   represent mathematical expressions involving the variable <code>x</code>.  It is used
+   in some of the exercises in <localref href="robustness"/>.</li>
+   <li><sourceref href="netgame/common/">netgame.common</sourceref> is a package that defines a 
+   framework for networked games,
+   which is discussed in detail in <localref href="threads.5"/>.<tex> (If you 
+   have downloaded the web site for this book, you can find the files that make up this package 
+   in the subdirectory <code>netgame/common</code> of the <code>source</code> directory.)</tex></li>
+   <li><sourceref href="netgame/fivecarddraw/PokerRank.java">PokerRank.java</sourceref> can be
+   used to assign ranks to hands of cards in poker games.  The cards are defined
+   in the class <sourceref href="netgame/fivecarddraw/PokerCard.java">PokerCard.java</sourceref>.
+   Both of these classes are part of the package <sourceref href="netgame/fivecarddraw/">netgame.fivecarddraw</sourceref>,
+   which is discussed in <localref href="threads.5.4"/>.<tex> (The file can be found
+   in the subdirectory <code>netgame/fivecarddraw</code> 
+   of the <code>source</code> directory.)</tex></li>
+   <li><sourceref href="edu/hws/eck/mdb/I18n.java">I18n.java</sourceref> is a class that
+   can be used to help in internationalization of a program.  See
+   <localref href="GUI2.5.3"/>.<tex> (This file in the subdirectory <code>edu/hws/eck/mdb</code> of the <code>source</code> 
+   directory.)</tex></li>
+</ul>
+
+</subsection>
+</source>

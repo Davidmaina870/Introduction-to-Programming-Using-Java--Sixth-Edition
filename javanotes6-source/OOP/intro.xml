@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<intro><p><start><big>W</big>hereas a subroutine</start> represents a single task, an
+object can encapsulate both data (in the form of instance variables) and a
+number of different tasks or "behaviors" related to that data (in the form of
+instance methods). Therefore objects provide another, more sophisticated type
+of structure that can be used to help manage the complexity of large
+programs.</p>
+
+<p>This chapter covers the creation and use of objects in Java. <localref href="OOP.5"/>
+covers the central ideas of object-oriented programming: inheritance and
+polymorphism. However, in this textbook, we will generally use these ideas in a
+limited form, by creating independent classes and building on existing classes
+rather than by designing entire hierarchies of classes from scratch. <localref href="OOP.6"/>
+and <localref href="OOP.7"/> cover some of the many details of object oriented programming in
+Java. Although these details are used occasionally later in the book, you might
+want to skim through them now and return to them later when they are actually
+needed.</p>
+
+</intro>

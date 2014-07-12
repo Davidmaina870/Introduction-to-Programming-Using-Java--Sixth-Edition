@@ -1,0 +1,932 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<section id="arrays.3" title="Dynamic Arrays and ArrayLists">
+
+<p><start><big>T</big>he size of an array</start> is fixed when it is created.
+In many cases, however, the number of data items that are actually stored in
+the array varies with time. Consider the following examples: An array that
+stores the lines of text in a word-processing program. An array that holds the
+list of computers that are currently downloading a page from a Web site. An
+array that contains the shapes that have been added to the screen by the user
+of a drawing program. Clearly, we need some way to deal with cases where the
+number of data items in an array is not fixed.</p>
+
+<subsection id="arrays.3.1" title="Partially Full Arrays">
+
+<p>Consider an application where the number of items that we want to store in
+an array changes as the program runs. Since the size of the array can't
+actually be changed, a separate counter variable must be used to keep track of
+how many spaces in the array are in use. (Of course, every space in the array
+has to contain something; the question is, how many spaces contain useful or
+valid items?)</p>
+
+<p>Consider, for example, a program that reads positive integers entered by the
+user and stores them for later processing. The program stops reading when the
+user inputs a number that is less than or equal to zero. The input numbers can
+be kept in an array, <code>numbers</code>, of type <atype>int[]</atype>. Let's say that
+no more than 100 numbers will be input. Then the size of the array can be fixed
+at 100. But the program must keep track of how many numbers have actually been
+read and stored in the array. For this, it can use an integer variable,
+<code>numCount</code>. Each time a number is stored in the array, <code>numCount</code> must
+be incremented by one. As a rather silly example, let's write a program that
+will read the numbers input by the user and then print them in the reverse of the
+order in which they were entered.
+(This is, at least, a processing task that requires that the numbers be saved
+in an array. Remember that many types of processing, such as finding the sum or
+average or maximum of the numbers, can be done without saving the individual
+numbers.)</p>
+
+<pre>public class ReverseInputNumbers {
+
+   public static void main(String[] args) {
+   
+     int[] numbers;  // An array for storing the input values.
+     int numCount;   // The number of numbers saved in the array.
+     int num;        // One of the numbers input by the user.
+     
+     numbers = new int[100];   // Space for 100 ints.
+     numCount = 0;             // No numbers have been saved yet.
+     
+     TextIO.putln("Enter up to 100 positive integers; enter 0 to end.");
+     
+     while (true) {   // Get the numbers and put them in the array.
+        TextIO.put("? ");
+        num = TextIO.getlnInt();
+        if (num &lt;= 0)
+           break;
+        numbers[numCount] = num;
+        numCount++;
+     }
+     
+     TextIO.putln("\nYour numbers in reverse order are:\n");
+     
+     for (int i = numCount - 1; i &gt;= 0; i--) {
+         TextIO.putln( numbers[i] );
+     }
+     
+   } // end main();
+   
+}  // end class ReverseInputNumbers</pre>
+
+<p>It is especially important to note that the variable <code>numCount</code> plays a
+dual role. It is the number of items that have been entered into the array.
+But it is also the index of the next available spot in the array. For example,
+if 4 numbers have been stored in the array, they occupy locations number 0, 1,
+2, and 3. The next available spot is location 4. When the time comes to print
+out the numbers in the array, the last occupied spot in the array is location
+<code>numCount&nbsp;-&nbsp;1</code>, so the <code>for</code> loop prints out values starting from
+location <code>numCount&nbsp;-&nbsp;1</code> and going down to 0.</p>
+
+<p>Let's look at another, more realistic example. Suppose that you write a game
+program, and that players can join the game and leave the game as it
+progresses. As a good object-oriented programmer, you probably have a class
+named <classname>Player</classname> to represent the individual players in the game. A list
+of all players who are currently in the game could be stored in an array,
+<code>playerList</code>, of type <atype>Player[]</atype>. Since the number of players can
+change, you will also need a variable, <code>playerCt</code>, to record the number
+of players currently in the game. Assuming that there will never be more than
+10 players in the game, you could declare the variables as:</p>
+
+<pre>Player[] playerList = new Player[10];  // Up to 10 players.
+int      playerCt = 0;  // At the start, there are no players.</pre>
+
+<p>After some players have joined the game, <code>playerCt</code> will be greater
+than 0, and the player objects representing the players will be stored in the
+array elements <code>playerList[0]</code>, <code>playerList[1]</code>, &dots;,
+<code>playerList[playerCt-1]</code>. Note that the array element
+<code>playerList[playerCt]</code> is <b>not</b> in use. The procedure for
+adding a new player, <code>newPlayer</code>, to the game is simple:</p>
+
+<pre>playerList[playerCt] = newPlayer; // Put new player in next
+                                  //     available spot.
+playerCt++;  // And increment playerCt to count the new player.</pre>
+
+<p>Deleting a player from the game is a little harder, since you don't want to
+leave a "hole" in the array. Suppose you want to delete the player at index
+<code>k</code> in <code>playerList</code>. If you are not worried about keeping the
+players in any particular order, then one way to do this is to move the player
+from the last occupied position in the array into position <code>k</code> and then
+to decrement the value of <code>playerCt</code>:</p>
+
+<pre>playerList[k] = playerList[playerCt - 1];
+playerCt--;</pre>
+
+<np>The player previously in position <code>k</code> is no longer in the array. The
+player previously in position <code>playerCt&nbsp;-&nbsp;1</code> is now in the array twice.
+But it's only in the occupied or valid part of the array once, since
+<code>playerCt</code> has decreased by one. Remember that every element of the
+array has to hold some value, but only the values in positions 0 through
+<code>playerCt&nbsp;-&nbsp;1</code> will be looked at or processed in any way.
+(By the way, you should think about what happens if the player that is being deleted
+is in the last position in the list.  The code does still work in this case.  What
+exactly happens?)</np>
+
+<p>Suppose that when deleting the player in position <code>k</code>, you'd like to
+keep the remaining players in the same order. (Maybe because they take turns in
+the order in which they are stored in the array.) To do this, all the players
+in positions <code>k+1</code> and above must move down one position in the array.
+Player <code>k+1</code> replaces player <code>k</code>, who is out of the game. Player
+<code>k+2</code> fills the spot left open when player <code>k+1</code> is moved. And so
+on. The code for this is</p>
+
+<pre>for (int i = k+1; i &lt; playerCt; i++) {
+    playerList[i-1] = playerList[i];
+}
+playerCt--;</pre>
+
+<break/>
+
+<p>It's worth emphasizing that the <classname>Player</classname> example deals with an array
+whose base type is a class. An item in the array is either <code>null</code> or is
+a reference to an object belonging to the class, <classname>Player</classname>. The
+<classname>Player</classname> objects themselves are not really stored in the array, only
+references to them. Note that because of the rules for assignment in Java, the
+objects can actually belong to subclasses of <classname>Player</classname>. Thus there could
+be different classes of players such as computer players, regular
+human players, players who are wizards, &dots;, all represented by different
+subclasses of <classname>Player</classname>.</p>
+
+<p>As another example, suppose that a class <classname>Shape</classname> represents the
+general idea of a shape drawn on a screen, and that it has subclasses to
+represent specific types of shapes such as lines, rectangles, rounded
+rectangles, ovals, filled-in ovals, and so forth. (<classname>Shape</classname> itself would
+be an abstract class, as discussed in <localref href="OOP.5.5"/>.)
+Then an array of type <atype>Shape[]</atype> can hold references to objects belonging
+to the subclasses of <classname>Shape</classname>. For example, the situation created by the
+statements</p>
+
+<pre>Shape[] shapes = new Shape[100]; // Array to hold up to 100 shapes.
+shapes[0] = new Rect();          // Put some objects in the array.
+shapes[1] = new Line(); 
+shapes[2] = new FilledOval(); 
+int shapeCt = 3;  // Keep track of number of objects in array.</pre>
+
+<np>could be illustrated as:</np>
+
+<img src="array_of_objects.png" width="417" height="208" alt="(Array containing references to three objects)" 
+   tex="array_of_objects.eps" texscale="0.75"/>
+
+<p>Such an array would be useful in a drawing program. The array could be used
+to hold a list of shapes to be displayed. If the <code>Shape</code> class includes
+a method, "<code>void redraw(Graphics&nbsp;g)</code>", for drawing the shape in a
+graphics context <code>g</code>, then all the shapes in the array could be redrawn
+with a simple for loop:</p>
+
+<pre>for (int i = 0; i &lt; shapeCt; i++)
+   shapes[i].redraw(g);</pre>
+
+<np>The statement "<code>shapes[i].redraw(g);</code>" calls the <code>redraw()</code>
+method belonging to the particular shape at index <code>i</code> in the array. Each
+object knows how to redraw itself, so that repeated executions of the statement
+can produce a variety of different shapes on the screen. This is nice example
+both of polymorphism and of array processing.</np>
+
+</subsection>
+
+<subsection id="arrays.3.2" title="Dynamic Arrays">
+
+<p>In each of the above examples, an arbitrary limit was set on the number of
+items&mdash;100 <ptype>ints</ptype>, 10 <classname>Players</classname>, 100 <classname>Shapes</classname>. Since the
+size of an array is fixed, a given array can only hold a certain maximum number
+of items. In many cases, such an arbitrary limit is undesirable. Why should a
+program work for 100 data values, but not for 101? The obvious alternative of
+making an array that's so big that it will work in any practical case is not
+usually a good solution to the problem. It means that in most cases, a lot of
+computer memory will be wasted on unused space in the array. That memory might
+be better used for something else. And what if someone is using a computer that
+could handle as many data values as the user actually wants to process, but
+doesn't have enough memory to accommodate all the extra space that you've
+allocated for your huge array?</p>
+
+<p>Clearly, it would be nice if we could increase the size of an array at will.
+This is not possible, but what <b>is</b> possible is almost as good.
+Remember that an array variable does not actually hold an array. It just holds
+a reference to an array object. We can't make the array bigger, but we can make
+a new, bigger array object and change the value of the array variable so that
+it refers to the bigger array. Of course, we also have to copy the contents of
+the old array into the new array. The array variable then refers to an array
+object that contains all the data of the old array, with room for additional
+data. The old array will be garbage collected, since it is no longer in
+use.</p>
+
+<p>Let's look back at the game example, in which <code>playerList</code> is an
+array of type <atype>Player[]</atype> and <code>playerCt</code> is the number of spaces
+that have been used in the array. Suppose that we don't want to put a pre-set
+limit on the number of players. If a new player joins the game and the current
+array is full, we just make a new, bigger one. The same variable,
+<code>playerList</code>, will refer to the new array. Note that after this is done,
+<code>playerList[0]</code> will refer to a different memory location, but the value
+stored in <code>playerList[0]</code> will still be the same as it was before. Here
+is some code that will do this:</p>
+
+<pre>// Add a new player, even if the current array is full.
+
+if (playerCt == playerList.length) {
+        // Array is full.  Make a new, bigger array,
+        // copy the contents of the old array into it,
+        // and set playerList to refer to the new array.
+   int newSize = 2 * playerList.length;  // Size of new array.
+   Player[] temp = new Player[newSize];  // The new array.
+   System.arraycopy(playerList, 0, temp, 0, playerList.length);
+   playerList = temp;  // Set playerList to refer to new array.
+}
+
+// At this point, we KNOW there is room in the array.
+
+playerList[playerCt] = newPlayer; // Add the new player...
+playerCt++;                       //    ...and count it.</pre>
+
+<p>If we are going to be doing things like this regularly, it would be nice to
+define a reusable class to handle the details. An array-like object that
+changes size to accommodate the amount of data that it actually contains is
+called a <newword>dynamic array</newword>. A dynamic array supports
+the same operations as an array: putting a value at a given position and
+getting the value that is stored at a given position. But there is no upper
+limit on the positions that can be used (except those imposed by the size of
+the computer's memory). In a dynamic array class, the <code>put</code> and
+<code>get</code> operations must be implemented as instance methods. Here, for
+example, is a class that implements a dynamic array of <ptype>ints</ptype>:</p>
+
+<pre>/**
+ *  An object of type DynamicArrayOfInt acts like an array of int
+ *  of unlimited size.  The notation A.get(i) must be used instead
+ *  of A[i], and A.set(i,v) must be used instead of A[i] = v.
+ */
+public class DynamicArrayOfInt {
+
+   private int[] data;  // An array to hold the data.
+
+   /**
+    * Constructor creates an array with an initial size of 1,
+    * but the array size will be increased whenever a reference
+    * is made to an array position that does not yet exist.
+    */   
+   public DynamicArrayOfInt() {
+      data = new int[1];
+   }
+   
+   /**
+    *  Get the value from the specified position in the array.
+    *  Since all array elements are initialized to zero, when the
+    *  specified position lies outside the actual physical size
+    *  of the data array, a value of 0 is returned.  Note that
+    *  a negative value of position will still produce an
+    *  ArrayIndexOutOfBoundsException.
+    */
+   public int get(int position) {
+      if (position &gt;= data.length)
+         return 0;
+      else
+         return data[position];
+   }
+   
+   /**
+    *  Store the value in the specified position in the array.
+    *  The data array will increase in size to include this
+    *  position, if necessary.
+    */
+   public void put(int position, int value) {
+      if (position &gt;= data.length) {
+             // The specified position is outside the actual size of
+             // the data array.  Double the size, or if that still does
+             // not include the specified position, set the new size
+             // to 2*position. 
+         int newSize = 2 * data.length;
+         if (position &gt;= newSize)
+            newSize = 2 * position;
+         int[] newData = new int[newSize];
+         System.arraycopy(data, 0, newData, 0, data.length);
+         data = newData;
+             // The following line is for demonstration purposes only !!
+         System.out.println("Size of dynamic array increased to " + newSize);
+      }
+      data[position] = value;
+   }
+
+} // end class DynamicArrayOfInt</pre>
+
+<p>The data in a <classname>DynamicArrayOfInt</classname> object is actually stored in a
+regular array, but that array is discarded and replaced by a bigger array
+whenever necessary. If <code>numbers</code> is a variable of type
+<classname>DynamicArrayOfInt</classname>, then the command <code>numbers.put(pos,val)</code>
+stores the value <code>val</code> at position number <code>pos</code> in the dynamic
+array. The function <code>numbers.get(pos)</code> returns the value stored at
+position number <code>pos</code>.</p>
+
+<p>The first example in this section used an array to store positive integers
+input by the user. We can rewrite that example to use a
+<classname>DynamicArrayOfInt</classname>. A reference to <code>numbers[i]</code> is replaced by
+<code>numbers.get(i)</code>. The statement "<code>numbers[numCount] = num</code>;" is
+replaced by "<code>numbers.put(numCount,num);</code>". Here's the program:</p>
+
+<pre>public class ReverseWithDynamicArray {
+
+   public static void main(String[] args) {
+  
+      <newcode>DynamicArrayOfInt</newcode> numbers;  // To hold the input numbers.
+      int numCount;  // The number of numbers stored in the array.
+      int num;    // One of the numbers input by the user.
+    
+      <newcode>numbers = new DynamicArrayOfInt();</newcode>
+      numCount = 0;
+    
+      TextIO.putln("Enter some positive integers; Enter 0 to end");
+      while (true) {  // Get numbers and put them in the dynamic array.
+         TextIO.put("? ");
+         num = TextIO.getlnInt();
+         if (num &lt;= 0)
+            break;
+         <newcode>numbers.put(numCount, num);</newcode>  // Store num in the dynamic array.
+         numCount++;
+      }
+    
+      TextIO.putln("\nYour numbers in reverse order are:\n");
+    
+      for (int i = numCount - 1; i &gt;= 0; i--) {
+          TextIO.putln( <newcode>numbers.get(i)</newcode> );  // Print the i-th number.
+      }
+    
+   } // end main();
+  
+}  // end class ReverseWithDynamicArray</pre>
+
+<webdiv><p>The following applet simulates this program. I've included an output
+statement in the <classname>DynamicArrayOfInt</classname> class. This statement will inform
+you each time the data array increases in size. (Of course, the output
+statement doesn't really belong in the class. It's included here for
+demonstration purposes.)</p>
+
+<applet code="ReverseWithDynamicArrayConsole.class" archive="ReverseWithDynamicArray.jar"
+   width="550" height="275" alt="(Applet 'ReverseIntsConsole' should be displayed here.)"/>
+</webdiv>
+
+<texdiv><np>You can find an applet that simulates the program in the
+on-line version of this section.</np></texdiv>
+   
+</subsection>
+
+<subsection id="arrays.3.3" title="ArrrayLists">
+
+<p>The <classname>DynamicArrayOfInt</classname> class could be used in any situation where an
+array of <ptype>int</ptype> with no preset limit on the size is needed. However, if
+we want to store <classname>Shapes</classname> instead of <ptype>ints</ptype>, we would have to
+define a new class to do it. That class, probably named
+"<classname>DynamicArrayOfShape</classname>", would look exactly the same as the
+<classname>DynamicArrayOfInt</classname> class except that everywhere the type "<ptype>int</ptype>"
+appears, it would be replaced by the type "<classname>Shape</classname>". Similarly, we could
+define a <classname>DynamicArrayOfDouble</classname> class, a <classname>DynamicArrayOfPlayer</classname>
+class, and so on. But there is something a little silly about this, since all
+these classes are close to being identical. It would be nice to be able to
+write some kind of source code, once and for all, that could be used to
+generate any of these classes on demand, given the type of value that we want
+to store. This would be an example of <newword>generic programming</newword>. 
+Some programming languages, including C++, have had support for
+generic programming for some time.  With version 5.0, Java introduced true
+generic programming, but even before that it had something that was very
+similar:  One can come close to generic programming in Java by working with 
+data structures that contain elements of type <classname>Object</classname>.
+We will first consider the almost-generic programming that has been available
+in Java from the beginning, and then we will look at the change
+that was introduced in Java 5.0.  A full discussion of generic programming
+will be given in <localref href="generics"/>.</p>
+
+<p>In Java, every class is a subclass of the class named <classname>Object</classname>. This
+means that every object can be assigned to a variable of type <classname>Object</classname>.
+Any object can be put into an array of type <atype>Object[]</atype>.  If we defined a
+<classname>DynamicArrayOfObject</classname> class, then we could store objects of any type.
+This is not true generic programming, and it doesn't apply to the primitive
+types such as <ptype>int</ptype> and <ptype>double</ptype>. But it does come close. In
+fact, there is no need for us to define a <classname>DynamicArrayOfObject</classname> class.
+Java already has a standard class named <classname>ArrayList</classname> that serves much the
+same purpose. The <classname>ArrayList</classname> class is in the package
+<code>java.util</code>, so if you want to use it in a
+program, you should put the directive "<code>import java.util.ArrayList;</code>"
+at the beginning of your source code file.</p>
+
+<p>The <classname>ArrayList</classname> class differs from my <classname>DynamicArrayOfInt</classname>
+class in that an <classname>ArrayList</classname> object always has a definite size, and it
+is illegal to refer to a position in the <classname>ArrayList</classname> that lies outside
+its size. In this, an <classname>ArrayList</classname> is more like a regular array. However,
+the size of an <classname>ArrayList</classname> can be increased at will. The
+<classname>ArrayList</classname> class defines many instance methods. I'll describe some of
+the most useful. Suppose that <code>list</code> is a variable of type
+<classname>ArrayList</classname>.  Then we have:</p>
+
+<ul>
+<li><codedef>list.size()</codedef> &mdash; This function returns
+the current size of the <classname>ArrayList</classname>. The only valid positions in the
+list are numbers in the range <code>0</code> to <code>list.size()-1</code>. Note that
+the size can be zero. A call to the default constructor <code>new ArrayList()</code> 
+creates an <classname>ArrayList</classname> of size zero.</li>
+<li><codedef>list.add(obj)</codedef> &mdash; Adds an object onto
+the end of the list, increasing the size by&nbsp;1. The parameter,
+<code>obj</code>, can refer to an object of any type, or it can be <code>null</code>.</li>
+<li><codedef>list.get(N)</codedef> &mdash; This function returns
+the value stored at position <code>N</code> in the <classname>ArrayList</classname>. <code>N</code>
+must be an integer in the range <code>0</code> to <code>list.size()-1</code>. If
+<code>N</code> is outside this range, an error of type <classname>IndexOutOfBoundsException</classname>
+occurs. Calling this function is
+similar to referring to <code>A[N]</code> for an array, <code>A</code>, except that you
+can't use <code>list.get(N)</code> on the left side of an assignment statement.</li>
+<li><codedef>list.set(N, obj)</codedef> &mdash; Assigns the
+object, <code>obj</code>, to position <code>N</code> in the <classname>ArrayList</classname>,
+replacing the item previously stored at position <code>N</code>. The integer
+<code>N</code> must be in the range from <code>0</code> to <code>list.size()-1</code>. A
+call to this function is equivalent to the command <code>A[N]&nbsp;=&nbsp;obj</code> for an
+array <code>A</code>.</li>
+<li><codedef>list.remove(obj)</codedef> &mdash; If the specified
+object occurs somewhere in the <classname>ArrayList</classname>, it is removed from the list.
+Any items in the list that come after the removed item are moved down one
+position. The size of the <classname>ArrayList</classname> decreases by 1. If <code>obj</code>
+occurs more than once in the list, only the first copy is removed.</li>
+<li><codedef>list.remove(N)</codedef> &mdash; For an integer,
+<code>N</code>, this removes the <code>N-th</code> item in the <classname>ArrayList</classname>.
+<code>N</code> must be in the range <code>0</code> to <code>list.size()-1</code>. Any items
+in the list that come after the removed item are moved down one position. The
+size of the <classname>ArrayList</classname> decreases by 1.</li>
+<li><codedef>list.indexOf(obj)</codedef> &mdash; A function that
+searches for the object, <code>obj</code>, in the <classname>ArrayList</classname>. If the object
+is found in the list, then the position number where it is found is returned.
+If the object is not found, then <code>-1</code> is returned.</li>
+</ul>
+
+<p>For example, suppose again that players in a game are represented by objects
+of type <classname>Player</classname>. The players currently in the game could be stored in
+an <classname>ArrayList</classname> named <code>players</code>. This variable would be declared
+as</p>
+
+<pre>ArrayList players;</pre>
+
+<np>and initialized to refer to a new, empty <classname>ArrayList</classname> object with</np>
+
+<pre>players = new ArrayList();</pre>
+
+<np>If <code>newPlayer</code> is a variable that refers to a <classname>Player</classname> object,
+the new player would be added to the <classname>ArrayList</classname> and to the game by
+saying</np>
+
+<pre>players.add(newPlayer);</pre>
+
+<np>and if player number <code>i</code> leaves the game, it is only necessary to
+say</np>
+
+<pre>players.remove(i);</pre>
+
+<np>Or, if <code>player</code> is a variable that refers to the <classname>Player</classname> that
+is to be removed, you could say</np>
+
+<pre>players.remove(player);</pre>
+
+<p>All this works very nicely. The only slight difficulty arises when you use
+the function <code>players.get(i)</code> to get the value stored at position
+<code>i</code> in the <classname>ArrayList</classname>. The return type of this function is
+<classname>Object</classname>. In this case the object that is returned by the function is
+actually of type <classname>Player</classname>. In order to do anything useful with the
+returned value, it's usually necessary to type-cast it to type
+<classname>Player</classname>:</p>
+
+<pre>Player plr = (Player)players.get(i);</pre>
+
+<np>For example, if the <classname>Player</classname> class includes an instance method
+<code>makeMove()</code> that is called to allow a player to make a move in the
+game, then the code for letting every player make a move is</np>
+
+<pre>for (int i = 0;  i &lt; players.size();  i++) {
+    Player plr = (Player)players.get(i);
+    plr.makeMove();
+}</pre>
+
+<np>The two lines inside the <code>for</code> loop can be combined into a single
+line:</np>
+
+<pre>((Player)players.get(i)).makeMove();</pre>
+
+<np>This gets an item from the list, type-casts it, and then calls the
+<code>makeMove()</code> method on the resulting <classname>Player</classname>. The parentheses
+around "<code>(Player)players.get(i)</code>" are required because of Java's
+precedence rules. The parentheses force the type-cast to be performed before
+the <code>makeMove()</code> method is called.</np>
+   
+<p>For-each loops work for <classname>ArrayLists</classname> just as they do
+for arrays.  But note that since the items in an <classname>ArrayList</classname> are
+only known to be <classname>Objects</classname>, the type of the loop control variable
+must be <classname>Object</classname>.  For example, the <code>for</code> loop
+used above to let each <classname>Player</classname> make a move could be written
+as the for-each loop</p>
+   
+<pre>for ( Object plrObj : players ) {
+   Player plr = (Player)plrObj;
+   plr.makeMove();
+}</pre>
+   
+<np>In the body of the loop, the value of the loop control variable, <code>plrObj</code>,
+is one of the objects from the list, <code>players</code>.  This object must be
+type-cast to type <classname>Player</classname> before it can be used.</np>
+   
+<break/>
+
+<p>In <localref href="OOP.5.5"/>, I discussed a program,
+<classname>ShapeDraw</classname>, that uses <classname>ArrayLists</classname>. Here is another version of
+the same idea, simplified to make it easier to see how <classname>ArrayList</classname> is
+being used. The program supports the following operations: Click the large white drawing area to add a colored
+rectangle.  (The color of the
+rectangle is given by a "rainbow palette" along the bottom of the applet;
+click the palette to select a new color.)  Drag rectangles using the
+right mouse button.  Hold down the Alt key and click on a rectangle to
+delete it (or click it with the middle mouse button). 
+Shift-click a rectangle to move it out in front of all the other
+rectangles.  You can try an applet version of the program <web>here:</web><tex>in
+the on-line version of this section.</tex></p>
+
+<webdiv><applet code="SimpleDrawRectsApplet.class" archive="SimpleDrawRects.jar" width="266" height="290"
+      alt="(Applet 'SimpleDrawRects' should be displayed here.)"/></webdiv>
+   
+<p>Source code for the main panel for this program can 
+be found in <sourceref href="SimpleDrawRects.java"/>. You should be able
+to follow the source code in its entirety. (You can also take a look at the file
+<sourceref href="RainbowPalette.java"/>, which defines the color palette shown at the bottom of
+the applet, if you like.) Here, I just
+want to look at the parts of the program that use an <classname>ArrayList</classname>.</p>
+
+<p>The applet uses a variable named <code>rects</code>, of type <classname>ArrayList</classname>,
+to hold information about the rectangles that have been added to the drawing
+area. The objects that are stored in the list belong to a static nested class,
+<classname>ColoredRect</classname>, that is defined as</p>
+
+<pre>/**
+ * An object of type ColoredRect holds the data for one colored rectangle.
+ */
+private static class ColoredRect {
+   int x,y;           // Upper left corner of the rectangle.
+   int width,height;  // Size of the rectangle.  
+   Color color;       // Color of the rectangle.
+}</pre>
+
+<p>If <code>g</code> is a variable of type <code>Graphics</code>, then the following
+code draws all the rectangles that are stored in the list <code>rects</code> (with
+a black outline around each rectangle):</p>
+
+<pre>for (int i = 0;  i &lt; rects.size();  i++) {
+   ColoredRect rect = (ColoredRect)rects.get(i);
+   g.setColor( rect.color );
+   g.fillRect( rect.x, rect.y, rect.width, rect.height);
+   g.setColor( Color.BLACK );
+   g.drawRect( rect.x, rect.y, rect.width - 1, rect.height - 1);
+}</pre>
+   
+<np>The <code>i</code>-th rectangle in the list is obtained by calling
+<code>rects.get(i)</code>.  Since this method returns a value of type
+<classname>Object</classname>, the return value must be typecast
+to its actual type, <classname>ColoredRect</classname>, to get
+access to the data that it contains.</np>
+
+<p>To implement the mouse operations, it must be possible to
+find the rectangle, if any, that contains the point where the user clicked the
+mouse. To do this, I wrote the function</p>
+
+<pre>/**
+ * Find the topmost rect that contains the point (x,y). Return null 
+ * if no rect contains that point.  The rects in the ArrayList are 
+ * considered in reverse order so that if one lies on top of another, 
+ * the one on top is seen first and is returned.
+ */
+ColoredRect findRect(int x, int y) {
+
+   for (int i = rects.size() - 1;  i &gt;= 0;  i--) {
+      ColoredRect rect = (ColoredRect)rects.get(i);
+      if ( x &gt;= rect.x &amp;&amp; x &lt; rect.x + rect.width
+               &amp;&amp; y &gt;= rect.y &amp;&amp; y &lt; rect.y + rect.height )
+      return rect;  // (x,y) is inside this rect.
+   }
+   
+   return null;  // No rect containing (x,y) was found.
+   
+}</pre>
+   
+
+<p>The code for removing a <code>ColoredRect</code>, <code>rect</code>, from the
+drawing area is simply <code>rects.remove(rect)</code> (followed by a
+<code>repaint()</code>). Bringing a given rectangle out in front of all the other
+rectangles is just a little harder. Since the rectangles are drawn in the order
+in which they occur in the <classname>ArrayList</classname>, the rectangle that is in the
+last position in the list is in front of all the other rectangles on the
+screen. So we need to move the selected rectangle to the last position in the list. This
+can most easily be done in a slightly tricky way using built-in <classname>ArrayList</classname>
+operations: The rectangle is simply removed from its current position in the list and
+then added back at the end of the list:</p>
+
+<pre>void bringToFront(ColoredRect rect) {
+   if (rect != null) {
+      rects.remove(rect); // Remove rect from the list.
+      rects.add(rect);    // Add it back; it will be placed in the last position.
+      repaint();
+   }
+}</pre>
+
+<np>This should be enough to give you the basic idea. You can look in the source
+code for more details.</np>
+
+</subsection>
+
+<subsection id="arrays.3.4" title="Parameterized Types">
+   
+<p>The main difference between true generic programming and the <classname>ArrayList</classname>
+examples in the previous subsection is the use of the type <classname>Object</classname>
+as the basic type for objects that are stored in a list.  This has at least two unfortunate
+consequences:  First, it makes it necessary to use type-casting in almost every
+case when an element is retrieved from that list.  Second, since any type of object
+can legally be added to the list, there is no way for the compiler to detect an attempt
+to add the wrong type of object to the list; the error will be detected only at
+run time when the object is retrieved from the list and the attempt to type-cast
+the object fails.  Compare this to arrays.  An array of type <atype>BaseType[]</atype>
+can <b>only</b> hold objects of type <classname>BaseType</classname>.  An attempt
+to store an object of the wrong type in the array will be detected by the compiler,
+and there is no need to type-cast items that are retrieved from the array back to
+type <classname>BaseType</classname>.</p>
+
+<p>To address this problem, Java 5.0 introduced <newword>parameterized types</newword>.
+<classname>ArrayList</classname> is an example:  Instead of using the plain
+"ArrayList" type, it is possible to use <atype>ArrayList&lt;BaseType&gt;</atype>,
+where <classname>BaseType</classname> is any object type, that is, the name of
+a class or of an interface.  (<classname>BaseType</classname> <b>cannot</b> be one
+of the primitive types.)  <atype>ArrayList&lt;BaseType&gt;</atype> can be
+used to create lists that can hold only objects of type <classname>BaseType</classname>.
+For example,</p>
+   
+<pre>ArrayList&lt;ColoredRect&gt; rects;</pre>   
+
+<np>declares a variable named <code>rects</code> of type <atype>ArrayList&lt;ColoredRect&gt;</atype>, and</np>
+   
+<pre>rects  =  new ArrayList&lt;ColoredRect&gt;();</pre>
+   
+<np>sets <code>rects</code> to refer to a newly created list that can only
+hold objects belonging to the class <classname>ColoredRect</classname> (or to
+a subclass).  The funny-looking name "ArrayList&lt;ColoredRect&gt;" is being
+used here in exactly the same way as an ordinary class name&mdash;don't let
+the "&lt;ColoredRect&gt;" confuse you; it's just part of the name of the type,
+just as it would be in the array type <atype>ColoredRect[]</atype>.
+When a statement such as <code>rects.add(x);</code> occurs
+in the program, the compiler can check whether <code>x</code> is in fact
+of type <classname>ColoredRect</classname>.  If not, the compiler will
+report a syntax error.  When an object is retrieved from the list, the
+compiler knows that the object must be of type <classname>ColoredRect</classname>,
+so no type-cast is necessary.  You can say simply:</np>
+   
+<pre>ColoredRect rect = rects.get(i)</pre>
+   
+<np>You can even refer directly to an instance variable in the object,
+such as <code>rects.get(i).color</code>.
+This makes using <atype>ArrayList&lt;ColoredRect&gt;</atype> very
+similar to using <atype>ColoredRect[]</atype>, with the added advantage that the
+list can grow to any size.  Note that if a for-each loop is used to process
+the items in <code>rects</code>, the type of the loop control variable can
+be <classname>ColoredRect</classname>, and no type-cast is necessary.  For
+example, when using <atype>ArrayList&lt;ColoredRect&gt;</atype> as the
+type for the list <code>rects</code>, the code for drawing all the rectangles
+in the list could be rewritten as:</np>
+
+<pre>for ( ColoredRect rect : rects ) {
+   g.setColor( rect.color );
+   g.fillRect( rect.x, rect.y, rect.width, rect.height );
+   g.setColor( Color.BLACK );
+   g.drawRect( rect.x, rect.y, rect.width - 1, rect.height - 1 );
+}</pre>
+   
+<p>You can use <atype>ArrayList&lt;ColoredRect&gt;</atype> anyplace where you could
+use a normal type:  to declare variables, as the type of a formal parameter in
+a subroutine, or as the return type of a subroutine.  You can even create a
+subclass of <atype>ArrayList&lt;ColoredRect&gt;</atype>!  (Nevertheless,
+technically speaking, <atype>ArrayList&lt;ColoredRect&gt;</atype> is not
+considered to be a separate class from <classname>ArrayList</classname>.
+An object of type <atype>ArrayList&lt;ColoredRect&gt;</atype> actually belongs to
+the class <classname>ArrayList</classname>, but the compiler restricts the type
+of objects that can be added to the list.)</p>
+   
+<p>The only drawback to
+using parameterized types is that the base type cannot be a primitive type.
+For example, there is no such thing as "<code>ArrayList&lt;int&gt;</code>".
+However, this is not such a big drawback as it might seem at first, because
+of the "wrapper types" and "autoboxing" that were introduced in <localref href="OOP.3.2"/>.
+A wrapper type such as <classname>Double</classname> or <classname>Integer</classname>
+can be used as a base type for a parameterized type.  An object
+of type <atype>ArrayList&lt;Double&gt;</atype> can hold objects of type
+<classname>Double</classname>.  Since each object of type <classname>Double</classname>
+holds a value of type <ptype>double</ptype>, it's almost like having a list
+of <ptype>doubles</ptype>.  If <code>numlist</code> is declared to be of
+type <atype>ArrayList&lt;Double&gt;</atype> and if <code>x</code> is of type
+<ptype>double</ptype>, then the value of <code>x</code> can be added to the list
+by saying:</p>
+   
+<pre>numlist.add( new Double(x) );</pre>
+
+<np>Furthermore, because of autoboxing, the compiler will automatically do
+<ptype>double</ptype>-to-<classname>Double</classname> and
+<classname>Double</classname>-to-<ptype>double</ptype> type conversions
+when necessary.  This means that the compiler will treat "<code>numlist.add(x)</code>"
+as being equivalent to "<code>numlist.add( new Double(x)&nbsp;)</code>".  So, behind
+the scenes, "<code>numlist.add(x)</code>" is actually adding an object to the
+list, but it looks a lot as if you are working with a list of <ptype>doubles</ptype>.</np>
+
+<break/>
+   
+<p>The sample program <sourceref href="SimplePaint2.java"/> demonstrates the use
+of parameterized types.  In this program, the user can sketch curves in a drawing area
+by clicking and dragging with the mouse.  The curves can be of any color, and
+the user can select the drawing color using a menu.  The background color of the
+drawing area can also be selected using a menu.  And there is a "Control"
+menu that contains several commands:  An "Undo" command, which removes the
+most recently drawn curve from the screen, a "Clear" command that removes
+all the curves, and a "Use Symmetry" checkbox that turns a symmetry feature
+on and off.  Curves that are drawn by the user when the symmetry option is on
+are reflected horizontally and vertically to produce a symmetric pattern.
+You can try an applet version of the program <web>here:</web><tex>in the
+on-line version of this section.</tex></p>
+
+<webdiv>   
+<applet code="SimplePaint2Applet.class" archive="SimplePaint2.jar" width="400" height="400"
+   alt="Applet 'SimplePaint2' should appear here."/>
+</webdiv>
+   
+<p>Unlike the original SimplePaint program in <localref href="GUI1.4.4"/>, this new version
+uses a data structure to store information about the picture that has been
+drawn by the user.  This data is used in the <code>paintComponent()</code> method
+to redraw the picture whenever necessary.  Thus, the picture doesn't disappear
+when, for example, the picture is covered and then uncovered.  The data
+structure is implemented using <classname>ArrayLists</classname>.</p>
+   
+<p>The main data for a curve consists of a list of the points on the curve.  This
+data can be stored in an object of type <atype>ArrayList&lt;Point&gt;</atype>,
+where <code>java.awt.Point</code> is one of Java's standard classes.
+(A <classname>Point</classname> object contains two public integer variables
+<code>x</code> and <code>y</code> that represent the coordinates of a
+point.)  However, to redraw the curve, we also need to know its color,
+and we need to know whether the symmetry option should be applied to the curve.
+All the data that is needed to redraw the curve can be grouped into
+an object of type <classname>CurveData</classname> that is defined as</p>
+   
+<pre>private static class CurveData {
+   Color color;  // The color of the curve.
+   boolean symmetric;  // Are horizontal and vertical reflections also drawn?
+   ArrayList&lt;Point&gt; points;  // The points on the curve.
+}</pre>
+   
+<np>However, a picture can contain many curves, not just one, so to store
+all the data necessary to redraw the entire picture, we need a <b>list</b>
+of objects of type <classname>CurveData</classname>.  For this list,
+we can use a variable <code>curves</code> declared as</np>
+   
+   
+<pre>ArrayList&lt;CurveData&gt; curves = new ArrayList&lt;CurveData&gt;();</pre>
+   
+<np>Here we have a list of objects, where each object contains a list of
+points as part of its data!  Let's look at a few examples of processing
+this data structure.  When the user clicks the mouse on the drawing surface,
+it's the start of a new curve, and a new <classname>CurveData</classname>
+object must be created and added to the list of curves.  The instance
+variables in the new <classname>CurveData</classname> object must
+also be initialized.  Here is the code from the <code>mousePressed()</code>
+routine that does this:</np>
+     
+<pre>
+currentCurve = new CurveData();        // Create a new CurveData object.
+
+currentCurve.color = currentColor;     // The color of the curve is taken from an
+                                       // instance variable that represents the
+                                       // currently selected drawing color.
+
+currentCurve.symmetric = useSymmetry;  // The "symmetric" property of the curve
+                                       // is also copied from the current value
+                                       // of an instance variable, useSymmetry.
+
+currentCurve.points = new ArrayList&lt;Point&gt;();  // Create a new point list object.
+
+currentCurve.points.add( new Point(evt.getX(), evt.getY()) );
+           // The point where the user pressed the mouse is the first point on
+           // the curve.  A new Point object is created to hold the coordinates
+           // of that point and is added to the list of points for the curve.
+   
+curves.add(currentCurve);   // Add the CurveData object to the list of curves.</pre>
+   
+<np>As the user drags the mouse, new points are added to <code>currentCurve</code>,
+and <code>repaint()</code> is called.  When the picture is redrawn, the new
+point will be part of the picture.</np>
+
+<p>The <code>paintComponent()</code> method has to use the data in <code>curves</code>
+to draw all the curves.  The basic structure is a for-each loop that processes
+the data for each individual curve in turn.  This has the form:</p>
+   
+<pre>for ( CurveData curve : curves ) {
+   .
+   .  // Draw the curve represented by the object, curve, of type CurveData.
+   .  
+}</pre>
+   
+<np>In the body of this loop, <code>curve.points</code> is a variable of
+type <atype>ArrayList&lt;Point&gt;</atype> that holds the list of 
+points on the curve.  The <code>i-th</code> point on the curve can be
+obtained by calling the <code>get()</code> method of this list:
+<code>curve.points.get(i)</code>.  This returns a value of type
+<classname>Point</classname> which contains instance variables named
+<code>x</code> and <code>y</code>.  We can refer directly to the
+x-coordinate of the <code>i-th</code> point as:</np>
+   
+<pre>curve.points.get(i).x</pre>
+   
+<np>This might seem rather complicated, but it's a nice example of a complex name
+that specifies a path to a desired piece of data: Go to the object, <code>curve</code>.
+Inside <code>curve</code>, go to <code>points</code>.  Inside <code>points</code>,
+get the <code>i-th</code> item.  And from that item, get the instance variable
+named&nbsp;<code>x</code>.  Here is the complete definition of the
+<code>paintComponent()</code> method:</np>
+   
+<pre>public void paintComponent(Graphics g) {
+   super.paintComponent(g);
+   for ( CurveData curve : curves) {
+      g.setColor(curve.color);
+      for (int i = 1; i &lt; curve.points.size(); i++) {
+            // Draw a line segment from point number i-1 to point number i.
+         int x1 = curve.points.get(i-1).x;
+         int y1 = curve.points.get(i-1).y;
+         int x2 = curve.points.get(i).x;
+         int y2 = curve.points.get(i).y;
+         g.drawLine(x1,y1,x2,y2);
+         if (curve.symmetric) {
+               // Also draw the horizontal and vertical reflections
+               // of the line segment.
+            int w = getWidth();
+            int h = getHeight();
+            g.drawLine(w-x1,y1,w-x2,y2);
+            g.drawLine(x1,h-y1,x2,h-y2);
+            g.drawLine(w-x1,h-y1,w-x2,h-y2);
+         }
+      }
+   }
+} // end paintComponent()</pre>
+   
+<p>I encourage you to read the full source code, <sourceref href="SimplePaint2.java"/>.
+In addition to serving as an example of using parameterized types, it also serves
+as another example of creating and using menus.</p>
+
+</subsection>
+   
+<subsection id="arrays.3.5" title="Vectors">
+
+<p>The <classname>ArrayList</classname> class was introduced in Java version 1.2, as one of a
+group of classes designed for working with collections of objects. We'll look
+at these "collection classes" in <localref href="generics"/>.
+Early versions of Java did not include <classname>ArrayList</classname>, but they did have
+a very similar class named <code>java.util.Vector</code>. You can still see
+<classname>Vectors</classname> used in older code and in many of Java's standard classes, so
+it's worth knowing about them. Using a <classname>Vector</classname> is similar to using an
+<classname>ArrayList</classname>, except that different names are used for some commonly used
+instance methods, and some instance methods in one class don't correspond to
+any instance method in the other class.</p>
+
+<p>Like an <classname>ArrayList</classname>, a <classname>Vector</classname> is similar to an array of
+<classname>Objects</classname> that can grow to be as large as necessary. The default
+constructor, <code>new&nbsp;Vector()</code>, creates a vector with no elements.
+Suppose that <code>vec</code> is a <classname>Vector</classname>. Then we have:</p>
+
+<ul>
+<li><codedef>vec.size()</codedef> &mdash; a function that returns the number of elements
+currently in the vector.</li>
+
+<li><codedef>vec.elementAt(N)</codedef> &mdash; returns the <code>N-th</code> element of the vector, for an
+integer <code>N</code>. <code>N</code> must be in the range 0 to <code>vec.size()-1</code>.
+This is the same as <code>get(N)</code> for an <classname>ArrayList</classname>.</li>
+
+<li><codedef>vec.setElementAt(obj,N)</codedef> &mdash; sets the <code>N-th</code> element in
+the vector to be <code>obj</code>. <code>N</code> must be in the range 0 to <code>vec.size()-1</code>.
+This is the same as <code>set(N,obj)</code> for an <classname>ArrayList</classname>.</li>
+
+<li><codedef>vec.addElement(obj)</codedef> &mdash; adds the <classname>Object</classname>, <code>obj</code>, to
+the end of the vector. This is the same as the <code>add()</code> method of an
+<classname>ArrayList</classname>.</li>
+
+<li><codedef>vec.removeElement(obj)</codedef> &mdash; removes <code>obj</code> from the vector, if it
+occurs. Only the first occurrence is removed. This is the same as
+<code>remove(obj)</code> for an <classname>ArrayList</classname>.</li>
+
+<li><codedef>vec.removeElementAt(N)</codedef> &mdash; removes the <code>N-th</code> element, for an
+integer <code>N</code>. <code>N</code> must be in the range 0 to <code>vec.size()-1</code>.
+This is the same as <code>remove(N)</code> for an <classname>ArrayList</classname>.</li>
+
+<li><codedef>vec.setSize(N)</codedef> &mdash; sets the size of the vector to <code>N</code>. If there
+were more than <code>N</code> elements in <code>vec</code>, the extra elements are
+removed. If there were fewer than <code>N</code> elements, extra spaces are filled
+with <code>null</code>. The <classname>ArrayList</classname> class, unfortunately, does not have a
+<code>setSize()</code> method.</li>
+</ul>
+
+<p>The <classname>Vector</classname> class includes many more methods, but these are probably
+the most commonly used.  Note that in Java 5.0, <classname>Vector</classname> can be used
+as a parameterized type in exactly the same way as <classname>ArrayList</classname>.
+That is, if <classname>BaseType</classname> is any class or interface name, then
+<atype>Vector&lt;BaseType&gt;</atype> represents vectors that can hold only objects of type
+<classname>BaseType</classname>.</p>
+
+   
+</subsection>
+   
+</section>

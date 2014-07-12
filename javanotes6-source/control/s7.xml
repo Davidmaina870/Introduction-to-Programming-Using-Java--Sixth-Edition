@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<section id="control.7" title="Introduction to Exceptions and try..catch" shorttitle="Exceptions and try..catch">
+
+<p><start><big>I</big>n addition to the control</start> structures that
+determine the normal flow of control in a program, Java has a way to deal
+with "exceptional" cases that throw the flow of control off its normal
+track.  When an error occurs during the execution of a program, the default
+behavior is to terminate the program and to print an error message.  However,
+Java makes it possible to "catch" such errors and program a response different
+from simply letting the program crash.  This is done with the
+<newword>try..catch</newword> statement.  In this section, we will
+take a preliminary, incomplete look at using <code>try..catch</code> to handle errors.
+Error handling is a complex topic, which we will return to in
+<localref href="robustness"/>.</p>
+   
+<subsection id="control.7.1" title="Exceptions">
+
+<p>The term <newword>exception</newword> is used to refer to the type of
+error that one might want to handle with a <code>try..catch</code>.  An
+exception is an exception to the normal flow of control in the program.
+The term is used in preference to "error" because in some cases,
+an exception might not be considered to be an error at all.  You can
+sometimes think of an exception as just another way to organize
+a program.</p>
+   
+<p>Exceptions in Java are represented as objects of type <classname>Exception</classname>.
+Actual exceptions are defined by subclasses of <classname>Exception</classname>.
+Different subclasses represent different types of exceptions.  We will look at only
+two types of exception in this section:  <classname>NumberFormatException</classname>
+and <classname>IllegalArgumentException</classname>.</p>
+   
+<p>A <classname>NumberFormatException</classname> can occur when an attempt
+is made to convert a string into a number.  Such conversions are done by
+the functions <code>Integer.parseInt</code> and <code>Double.parseDouble</code>.
+(See <localref href="basics.5.7"/>.)  Consider the function call <code>Integer.parseInt(str)</code>
+where <code>str</code> is a variable of type <classname>String</classname>.
+If the value of <code>str</code> is the string <code>"42"</code>, then the
+function call will correctly convert the string into the <ptype>int</ptype>&nbsp;42.
+However, if the value of <code>str</code> is, say, <code>"fred"</code>, the function call 
+will fail because <code>"fred"</code> is not a legal string representation of
+an <ptype>int</ptype> value.  In this case, an exception of type
+<classname>NumberFormatException</classname> occurs.  If nothing is done
+to handle the exception, the program will crash.</p>
+
+<p>An <classname>IllegalArgumentException</classname> can occur when an illegal
+value is passed as a parameter to a subroutine.  For example, if a subroutine
+requires that a parameter be greater than or equal to zero, an <classname>IllegalArgumentException</classname>
+might occur when a negative value is passed to the subroutine.
+How to respond to the illegal value is up to the person who wrote the subroutine, 
+so we can't simply say that every illegal parameter value will result in an
+<classname>IllegalArgumentException</classname>.  However, it is a common response.</p>
+
+<p>One case where an <classname>IllegalArgumentException</classname> can occur is in
+the <code>valueOf</code> function of an enumerated type.  Recall from <localref href="basics.3.3"/>
+that this function tries to convert a string into one of the values of the enumerated
+type.  If the string that is passed as a parameter to <code>valueOf</code> is not
+the name of one of the enumerated type's values, then an <classname>IllegalArgumentException</classname>
+occurs.  For example, given the enumerated type</p>
+
+<pre>enum Toss { HEADS, TAILS }</pre>
+   
+<np><code>Toss.valueOf("HEADS")</code> correctly returns the value <code>Toss.HEADS</code>,
+while <code>Toss.valueOf("FEET")</code> results in an <classname>IllegalArgumentException</classname>.
+</np>
+
+</subsection>
+
+<subsection id="control.7.2" title="try..catch">
+   
+<p>When an exception occurs, we say that the exception is "thrown".
+For example, we say that <code>Integer.parseInt(str)</code> <newword>throws</newword>
+an exception of type <classname>NumberFormatException</classname> when the value of 
+<code>str</code> is illegal.  When an exception is thrown, it is possible
+to "catch" the exception and prevent it from crashing the program.  This is
+done with a <newword>try..catch</newword> statement.  In somewhat simplified
+form, the syntax for a <code>try..catch</code> is:</p>
+
+<pre>try {
+   <bnf>statements-1</bnf>
+}
+catch ( <bnf>exception-class-name</bnf>  <bnf>variable-name</bnf> ) {
+   <bnf>statements-2</bnf>
+}</pre>
+   
+<np>The <bnf>exception-class-name</bnf> could be <classname>NumberFormatException</classname>,
+<classname>IllegalArgumentException</classname>, or some other exception class.
+When the computer executes this statement, it executes the statements in the <code>try</code>
+part.  If no error occurs during the execution of <bnf>statements-1</bnf>, then the computer
+just skips over the <code>catch</code> part and proceeds with the rest of the program.
+However, if an exception of type <bnf>exception-class-name</bnf> occurs during the
+execution of <bnf>statements-1</bnf>, the computer immediately jumps to the
+<code>catch</code> part and executes <bnf>statements-2</bnf>, skipping any remaining statements in
+<bnf>statements-1</bnf>.  During the execution of <bnf>statements-2</bnf>, the
+<bnf>variable-name</bnf> represents the exception object, so that you can, for example,
+print it out.  At the end of the
+<code>catch</code> part, the computer proceeds with the rest of the program;
+the exception has been caught and handled and does not crash the program.
+Note that only one type of exception is caught; if some other type of exception occurs
+during the execution of <bnf>statements-1</bnf>, it will crash the program as usual.
+</np>
+   
+<p>By the way, note that the braces, { and }, are part of the syntax of the
+<code>try..catch</code> statement.  They are required even if there is only one
+statement between the braces.  This is different from the other statements we
+have seen, where the braces around a single statement are optional.</p>
+   
+<p>As an example, suppose that <code>str</code> is a variable of type <classname>String</classname>
+whose value might or might not represent a legal real number.  Then we could say:</p>
+   
+<pre>try {
+   double x;
+   x = Double.parseDouble(str);
+   System.out.println( "The number is " + x );
+}
+catch ( NumberFormatException e ) {
+   System.out.println( "Not a legal number." );
+}</pre>
+   
+<np>If an error is thrown by the call to <code>Double.parseDouble(str)</code>, then the
+output statement in the <code>try</code> part is skipped, and the statement in the
+<code>catch</code> part is executed.</np>
+   
+<p>It's not always a good idea to catch exceptions and continue with the program.  Often
+that can just lead to an even bigger mess later on, and it might be better just to let
+the exception crash the program at the point where it occurs.  However, sometimes it's
+possible to recover from an error.  For example, suppose that we have the enumerated
+type</p>
+   
+<pre>enum Day { MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY }</pre>
+   
+<np>and we want the user to input a value belonging to this type.  <code>TextIO</code> does
+not know about this type, so we can only read the user's response as a string.  The
+function <code>Day.valueOf</code> can be used to convert the user's response to
+a value of type <classname>Day</classname>.  This will throw an exception of 
+type <classname>IllegalArgumentException</classname> if the user's response
+is not the name of one of the values of type <classname>Day</classname>, but we
+can recover from the error easily enough by asking the user to enter another response.
+Here is a code segment that does this.  (Converting the user's response
+to upper case will allow responses such as "Monday" or "monday" in addition
+to "MONDAY".)</np>
+
+<pre>Day  weekday;  // User's response as a value of type Day.
+while ( true ) {
+   String response;  // User's response as a String.
+   System.out.print("Please enter a day of the week: ");
+   response = TextIO.getln();
+   response = response.toUpperCase();
+   try {
+      weekday = Day.valueOf(response);
+      break;
+   }
+   catch ( IllegalArgumentException e ) {
+      System.out.println( response + " is not the name of a day of the week." );
+   }
+}
+// At this point, a legal value has definitely been assigned to weekday.</pre>
+   
+<np>The <code>break</code> statement will be reached only if the user's response is
+acceptable, and so the loop will end only when a legal value has been assigned
+to <code>weekday</code>.</np>
+
+</subsection>
+   
+<subsection id="control.7.3" title="Exceptions in TextIO">
+   
+<p>When <code>TextIO</code> reads a numeric value from the user, it makes sure
+that the user's response is legal, using a technique similar to the <code>while</code>
+loop and <code>try..catch</code> in the previous example.  However, <code>TextIO</code>
+can read data from other sources besides the user.  (See <localref href="basics.4.5"/>.)
+When it is reading from a file,
+there is no reasonable way for <code>TextIO</code> to recover from an illegal
+value in the input, so it responds by throwing an exception.
+To keep things simple, <code>TextIO</code> only throws exceptions of type
+<classname>IllegalArgumentException</classname>, no matter what type of error it
+encounters.  For example, an exception
+will occur if an attempt is made to read from a file after all the data in the
+file has already been read.  In <code>TextIO</code>, the exception is of type
+<classname>IllegalArgumentException</classname>.
+If you have a better response to file errors than to let the
+program crash, you can use a <code>try..catch</code> to catch exceptions of
+type <classname>IllegalArgumentException</classname>.  
+</p>
+   
+<p>For example, suppose that a file contains nothing but real numbers, and we
+want a program that will read the numbers and find their sum and their average.
+Since it is unknown how many numbers are in the
+file, there is the question of when to stop reading.  One approach is simply
+to try to keep reading indefinitely.  When the end of the file is reached,
+an exception occurs.  This exception is not really an error&mdash;it's just
+a way of detecting the end of the data, so we can catch the exception and
+finish up the program.  We can read the data in a <code>while&nbsp;(true)</code> loop
+and break out of the loop when an exception occurs.  This is an example
+of the somewhat unusual technique of using an exception as part of the 
+expected flow of control in a program.
+</p>
+   
+<p>To read from the file, we need to know the file's name.  To make the program
+more general, we can let the user enter the file name, instead of hard-coding
+a fixed file name in the program.  However, it is possible that the user will
+enter the name of a file that does not exist.  When we use <code>TextIO.readfile</code>
+to open a file that does not exist, an exception of type 
+<classname>IllegalArgumentException</classname> occurs.  We can catch
+this exception and ask the user to enter a different file name.  Here is
+a complete program that uses all these ideas:</p>
+
+<pre>/**
+ * This program reads numbers from a file.  It computes the sum and 
+ * the average of the numbers that it reads.  The file should contain 
+ * nothing but numbers of type double; if this is not the case, the 
+ * output will be the sum and average of however many numbers were 
+ * successfully read from the file.  The name of the file will be
+ * input by the user.
+ */
+
+public class ReadNumbersFromFile {
+   
+   public static void main(String[] args) {
+            
+      while (true) {
+         String fileName;  // The name of the file, to be input by the user.
+         TextIO.put("Enter the name of the file: ");
+         fileName = TextIO.getln();
+         try {
+            TextIO.readFile( fileName );  // Try to open the file for input.
+            break;  // If that succeeds, break out of the loop.
+         }
+         catch ( IllegalArgumentException e ) {
+            TextIO.putln("Can't read from the file \"" + fileName + "\".");
+            TextIO.putln("Please try again.\n");
+         }
+      }
+      
+      // At this point, TextIO is reading from the file.
+      
+      double number;  // A number read from the data file.
+      double sum;     // The sum of all the numbers read so far.
+      int count;      // The number of numbers that were read.
+      
+      sum = 0;
+      count = 0;
+      
+      try {
+         while (true) { // Loop ends when an exception occurs.
+             number = TextIO.getDouble();
+             count++;  // This is skipped when the exception occurs
+             sum += number;
+         }
+      }
+      catch ( IllegalArgumentException e ) {
+         // We expect this to occur when the end-of-file is encountered.
+         // We don't consider this to be an error, so there is nothing to do
+         // in this catch clause.  Just proceed with the rest of the program.
+      }
+      
+      // At this point, we've read the entire file.
+      
+      TextIO.putln();
+      TextIO.putln("Number of data values read: " + count);
+      TextIO.putln("The sum of the data values: " + sum);
+      if ( count == 0 )
+         TextIO.putln("Can't compute an average of 0 values.");
+      else
+         TextIO.putln("The average of the values:  " + (sum/count));
+      
+   }
+
+}</pre>  
+
+</subsection>
+   
+</section>

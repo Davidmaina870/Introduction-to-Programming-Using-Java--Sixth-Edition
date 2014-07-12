@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!ENTITY pi "&#960;">       <!-- these are used by javanotes6.xml but are redefined in javanotes6-tex.xml -->
+<!ENTITY Omega "&#937;">
+<!ENTITY Theta "&#920;">
+<!ENTITY nbsp "&#160;">
+<!ENTITY BigOh "O">
+<!ENTITY dots "...">
+<!ENTITY mdash " -- ">
+<!ENTITY leftquote '"'>
+<!ENTITY textitlebreak "">
+<!ENTITY newcodestyle "red">
+
+<!ENTITY includes SYSTEM "javanotes6-xml-includes.txt">
+
+<!ENTITY % textitem "b|i|u|big|sub|sup|code|br|a|localref|web|tex|sourceref|ptype|newword|codedef|bnf|newcode|start|classname|atype">
+<!ENTITY % simpletext "(#PCDATA|%textitem;)*">
+<!ENTITY % text "(p|np|pre|break|img|applet|ul|ol|narrower|centered|imageclear|webdiv|texdiv)*">
+
+<!ELEMENT javanotes (preface?,chapter*,fudgeref*,glossary?,source?)>
+<!ELEMENT preface (%text;)>
+<!ELEMENT intro (%text;)>
+
+<!ELEMENT chapter (intro,section*,exercises?,quiz?)>
+<!ATTLIST chapter 
+	id ID #REQUIRED
+	title CDATA #REQUIRED
+	shorttitle CDATA #IMPLIED>
+
+<!ELEMENT section (%text;,subsection*,endchapter?)>
+<!ATTLIST section 
+	id ID #REQUIRED
+	title CDATA #REQUIRED
+	shorttitle CDATA #IMPLIED>
+
+<!ELEMENT subsection (%text;)>
+<!ATTLIST subsection 
+	id ID #REQUIRED
+	title CDATA #REQUIRED
+	shorttitle CDATA #IMPLIED>
+<!ELEMENT endchapter (applet?)>
+
+<!ELEMENT source (%text;,subsection*)>
+
+<!ELEMENT glossary (gitem*)>
+<!ELEMENT gitem %simpletext;>
+<!ATTLIST gitem
+   term CDATA #REQUIRED>
+
+<!ELEMENT fudgeref EMPTY>
+<!ATTLIST fudgeref
+   id ID #REQUIRED
+   text CDATA #REQUIRED>
+
+<!ELEMENT exercises (exercise*)>
+<!ELEMENT exercise (exercise-question,exercise-discuss,exercise-code)>
+<!ATTLIST exercise
+    id ID #IMPLIED>
+<!ELEMENT exercise-question %text;>
+<!ELEMENT exercise-discuss %text;>
+<!ELEMENT exercise-code %text;>
+
+<!ELEMENT quiz (question*)>
+<!ELEMENT question (ques,ans)>
+<!ELEMENT ques %text;>
+<!ELEMENT ans %text;>
+
+<!ELEMENT pre %simpletext;>
+<!ATTLIST pre
+	xml:space CDATA #FIXED "preserve">
+
+<!ELEMENT p %simpletext;>
+<!ATTLIST p 
+    align CDATA #IMPLIED>
+<!ELEMENT np %simpletext;>
+
+<!ELEMENT narrower %text;>
+<!ATTLIST narrower
+   margin CDATA #IMPLIED>
+
+<!ELEMENT centered %text;>
+
+<!ELEMENT localref (#PCDATA)>
+<!ATTLIST localref
+    href CDATA #REQUIRED>
+
+<!ELEMENT sourceref (#PCDATA)>
+<!ATTLIST sourceref
+    href CDATA #REQUIRED>
+
+<!ELEMENT a (#PCDATA)>
+<!ATTLIST a
+    href CDATA #REQUIRED>
+
+<!ELEMENT img EMPTY>
+<!ATTLIST img
+    src CDATA #IMPLIED
+    alt CDATA #IMPLIED
+    width CDATA #IMPLIED
+    height CDATA #IMPLIED
+    bordered CDATA #IMPLIED
+    align CDATA #IMPLIED
+    tex CDATA #IMPLIED
+    texscale CDATA #IMPLIED>
+
+<!ELEMENT applet (param*)>
+<!ATTLIST applet
+    code CDATA #REQUIRED
+    width CDATA #REQUIRED
+    height CDATA #REQUIRED
+    archive CDATA #IMPLIED
+    alt CDATA #IMPLIED
+    img CDATA #IMPLIED
+    tex CDATA #IMPLIED
+    texscale CDATA #IMPLIED>
+
+<!ELEMENT param EMPTY>
+<!ATTLIST param
+    name CDATA #REQUIRED
+    value CDATA #REQUIRED>
+    
+<!ELEMENT ul (li*)>
+<!ELEMENT ol (li*)>
+<!ELEMENT li %simpletext;>
+
+<!ELEMENT br EMPTY>
+<!ELEMENT break EMPTY>
+<!ELEMENT imageclear EMPTY> <!-- adds a "br clear=all" in the web version -->
+<!ELEMENT i %simpletext;>
+<!ELEMENT b %simpletext;>
+<!ELEMENT u %simpletext;>
+<!ELEMENT big %simpletext;>
+<!ELEMENT start %simpletext;>
+<!ELEMENT sup %simpletext;>
+<!ELEMENT sub %simpletext;>
+<!ELEMENT code %simpletext;>
+<!ELEMENT newcode %simpletext;>
+<!ELEMENT web %simpletext;>   <!-- appears only in web version -->
+<!ELEMENT tex %simpletext;>   <!-- appears only in tex version -->
+<!ELEMENT ptype %simpletext;>   <!-- primitive type -->
+<!ELEMENT bnf %simpletext;>
+<!ELEMENT classname (#PCDATA)>
+<!ELEMENT atype (#PCDATA)>       <!-- array type -->
+<!ELEMENT newword %simpletext;>
+<!ELEMENT codedef %simpletext;>
+<!ELEMENT webdiv %text;>   <!-- appears only in web version -->
+<!ELEMENT texdiv %text;>   <!-- appears only in tex version -->
+
+<!ENTITY source SYSTEM "source/source.xml">
+<!ENTITY glossary SYSTEM "glossary.xml">
+<!ENTITY preface SYSTEM "preface.xml">
+
+<!ENTITY overview_intro SYSTEM "overview/intro.xml">
+<!ENTITY overview_s1 SYSTEM "overview/s1.xml">
+<!ENTITY overview_s2 SYSTEM "overview/s2.xml">
+<!ENTITY overview_s3 SYSTEM "overview/s3.xml">
+<!ENTITY overview_s4 SYSTEM "overview/s4.xml">
+<!ENTITY overview_s5 SYSTEM "overview/s5.xml">
+<!ENTITY overview_s6 SYSTEM "overview/s6.xml">
+<!ENTITY overview_s7 SYSTEM "overview/s7.xml">
+<!ENTITY overview_quiz SYSTEM "overview/quiz.xml">
+
+<!ENTITY basics_intro SYSTEM "basics/intro.xml">
+<!ENTITY basics_s1 SYSTEM "basics/s1.xml">
+<!ENTITY basics_s2 SYSTEM "basics/s2.xml">
+<!ENTITY basics_s3 SYSTEM "basics/s3.xml">
+<!ENTITY basics_s4 SYSTEM "basics/s4.xml">
+<!ENTITY basics_s5 SYSTEM "basics/s5.xml">
+<!ENTITY basics_s6 SYSTEM "basics/s6.xml">
+<!ENTITY basics_exercises SYSTEM "basics/exercises.xml">
+<!ENTITY basics_quiz SYSTEM "basics/quiz.xml">
+
+<!ENTITY control_intro SYSTEM "control/intro.xml">
+<!ENTITY control_s1 SYSTEM "control/s1.xml">
+<!ENTITY control_s2 SYSTEM "control/s2.xml">
+<!ENTITY control_s3 SYSTEM "control/s3.xml">
+<!ENTITY control_s4 SYSTEM "control/s4.xml">
+<!ENTITY control_s5 SYSTEM "control/s5.xml">
+<!ENTITY control_s6 SYSTEM "control/s6.xml">
+<!ENTITY control_s7 SYSTEM "control/s7.xml">
+<!ENTITY control_s8 SYSTEM "control/s8.xml">
+<!ENTITY control_exercises SYSTEM "control/exercises.xml">
+<!ENTITY control_quiz SYSTEM "control/quiz.xml">
+
+<!ENTITY subroutines_intro SYSTEM "subroutines/intro.xml">
+<!ENTITY subroutines_s1 SYSTEM "subroutines/s1.xml">
+<!ENTITY subroutines_s2 SYSTEM "subroutines/s2.xml">
+<!ENTITY subroutines_s3 SYSTEM "subroutines/s3.xml">
+<!ENTITY subroutines_s4 SYSTEM "subroutines/s4.xml">
+<!ENTITY subroutines_s5 SYSTEM "subroutines/s5.xml">
+<!ENTITY subroutines_s6 SYSTEM "subroutines/s6.xml">
+<!ENTITY subroutines_s7 SYSTEM "subroutines/s7.xml">
+<!ENTITY subroutines_exercises SYSTEM "subroutines/exercises.xml">
+<!ENTITY subroutines_quiz SYSTEM "subroutines/quiz.xml">
+
+<!ENTITY OOP_intro SYSTEM "OOP/intro.xml">
+<!ENTITY OOP_s1 SYSTEM "OOP/s1.xml">
+<!ENTITY OOP_s2 SYSTEM "OOP/s2.xml">
+<!ENTITY OOP_s3 SYSTEM "OOP/s3.xml">
+<!ENTITY OOP_s4 SYSTEM "OOP/s4.xml">
+<!ENTITY OOP_s5 SYSTEM "OOP/s5.xml">
+<!ENTITY OOP_s6 SYSTEM "OOP/s6.xml">
+<!ENTITY OOP_s7 SYSTEM "OOP/s7.xml">
+<!ENTITY OOP_exercises SYSTEM "OOP/exercises.xml">
+<!ENTITY OOP_quiz SYSTEM "OOP/quiz.xml">
+
+<!ENTITY GUI1_intro SYSTEM "GUI1/intro.xml">
+<!ENTITY GUI1_s1 SYSTEM "GUI1/s1.xml">
+<!ENTITY GUI1_s2 SYSTEM "GUI1/s2.xml">
+<!ENTITY GUI1_s3 SYSTEM "GUI1/s3.xml">
+<!ENTITY GUI1_s4 SYSTEM "GUI1/s4.xml">
+<!ENTITY GUI1_s5 SYSTEM "GUI1/s5.xml">
+<!ENTITY GUI1_s6 SYSTEM "GUI1/s6.xml">
+<!ENTITY GUI1_s7 SYSTEM "GUI1/s7.xml">
+<!ENTITY GUI1_s8 SYSTEM "GUI1/s8.xml">
+<!ENTITY GUI1_exercises SYSTEM "GUI1/exercises.xml">
+<!ENTITY GUI1_quiz SYSTEM "GUI1/quiz.xml">
+
+<!ENTITY arrays_intro SYSTEM "arrays/intro.xml">
+<!ENTITY arrays_s1 SYSTEM "arrays/s1.xml">
+<!ENTITY arrays_s2 SYSTEM "arrays/s2.xml">
+<!ENTITY arrays_s3 SYSTEM "arrays/s3.xml">
+<!ENTITY arrays_s4 SYSTEM "arrays/s4.xml">
+<!ENTITY arrays_s5 SYSTEM "arrays/s5.xml">
+<!ENTITY arrays_exercises SYSTEM "arrays/exercises.xml">
+<!ENTITY arrays_quiz SYSTEM "arrays/quiz.xml">
+
+<!ENTITY robustness_intro SYSTEM "robustness/intro.xml">
+<!ENTITY robustness_s1 SYSTEM "robustness/s1.xml">
+<!ENTITY robustness_s2 SYSTEM "robustness/s2.xml">
+<!ENTITY robustness_s3 SYSTEM "robustness/s3.xml">
+<!ENTITY robustness_s4 SYSTEM "robustness/s4.xml">
+<!ENTITY robustness_s5 SYSTEM "robustness/s5.xml">
+<!ENTITY robustness_exercises SYSTEM "robustness/exercises.xml">
+<!ENTITY robustness_quiz SYSTEM "robustness/quiz.xml">
+
+<!ENTITY recursion_intro SYSTEM "recursion/intro.xml">
+<!ENTITY recursion_s1 SYSTEM "recursion/s1.xml">
+<!ENTITY recursion_s2 SYSTEM "recursion/s2.xml">
+<!ENTITY recursion_s3 SYSTEM "recursion/s3.xml">
+<!ENTITY recursion_s4 SYSTEM "recursion/s4.xml">
+<!ENTITY recursion_s5 SYSTEM "recursion/s5.xml">
+<!ENTITY recursion_exercises SYSTEM "recursion/exercises.xml">
+<!ENTITY recursion_quiz SYSTEM "recursion/quiz.xml">
+
+<!ENTITY generics_intro SYSTEM "generics/intro.xml">
+<!ENTITY generics_s1 SYSTEM "generics/s1.xml">
+<!ENTITY generics_s2 SYSTEM "generics/s2.xml">
+<!ENTITY generics_s3 SYSTEM "generics/s3.xml">
+<!ENTITY generics_s4 SYSTEM "generics/s4.xml">
+<!ENTITY generics_s5 SYSTEM "generics/s5.xml">
+<!ENTITY generics_exercises SYSTEM "generics/exercises.xml">
+<!ENTITY generics_quiz SYSTEM "generics/quiz.xml">
+
+<!ENTITY IO_intro SYSTEM "IO/intro.xml">
+<!ENTITY IO_s1 SYSTEM "IO/s1.xml">
+<!ENTITY IO_s2 SYSTEM "IO/s2.xml">
+<!ENTITY IO_s3 SYSTEM "IO/s3.xml">
+<!ENTITY IO_s4 SYSTEM "IO/s4.xml">
+<!ENTITY IO_s5 SYSTEM "IO/s5.xml">
+<!ENTITY IO_exercises SYSTEM "IO/exercises.xml">
+<!ENTITY IO_quiz SYSTEM "IO/quiz.xml">
+
+<!ENTITY threads_intro SYSTEM "threads/intro.xml">
+<!ENTITY threads_s1 SYSTEM "threads/s1.xml">
+<!ENTITY threads_s2 SYSTEM "threads/s2.xml">
+<!ENTITY threads_s3 SYSTEM "threads/s3.xml">
+<!ENTITY threads_s4 SYSTEM "threads/s4.xml">
+<!ENTITY threads_s5 SYSTEM "threads/s5.xml">
+<!ENTITY threads_exercises SYSTEM "threads/exercises.xml">
+<!ENTITY threads_quiz SYSTEM "threads/quiz.xml">
+
+<!ENTITY GUI2_intro SYSTEM "GUI2/intro.xml">
+<!ENTITY GUI2_s1 SYSTEM "GUI2/s1.xml">
+<!ENTITY GUI2_s2 SYSTEM "GUI2/s2.xml">
+<!ENTITY GUI2_s3 SYSTEM "GUI2/s3.xml">
+<!ENTITY GUI2_s4 SYSTEM "GUI2/s4.xml">
+<!ENTITY GUI2_s5 SYSTEM "GUI2/s5.xml">
+<!ENTITY GUI2_exercises SYSTEM "GUI2/exercises.xml">
+<!ENTITY GUI2_quiz SYSTEM "GUI2/quiz.xml">
