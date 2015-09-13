@@ -1,3 +1,8 @@
+DEPRECATED
+Please [Visit JavaNote Ebook](https://github.com/joielechong/javanote-book)  for new work Indonesian translation.
+
+
+
                                                     June, 2011
 
 This is the README file for the javanotes source download...
